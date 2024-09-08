@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: data-collector
+  config:
+    import: optional:file:.env[.properties]
+server:
+  port: ${SERVER_PORT}
