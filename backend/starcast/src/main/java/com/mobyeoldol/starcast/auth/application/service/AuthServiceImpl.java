@@ -1,0 +1,64 @@
+package com.mobyeoldol.starcast.auth.application.service;
+
+import com.mobyeoldol.starcast.auth.application.dto.*;
+import io.netty.handler.codec.http.HttpHeaderValues;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Slf4j
+@Service
+public class AuthServiceImpl implements AuthService {
+
+    @Value("$ {kakao.auth.uri}")
+    String kakaoAuthUri;
+
+    @Value("$ {kakao.api.uri}")
+    String kakaoApiUri;
+
+    @Value("$ {kakao.client.id}")
+    String kakaoClientId;
+
+    @Value("$ {kakao.redirect.login}")
+    String kakaoRedirectUriLogin;
+
+    @Value("$ {kakao.redirect.logout}")
+    String kakaoRedirectUriLogout;
+
+    @Value("$ {kakao.response.type}")
+    String kakaoResponseType;
+
+    @Value("$ {kakao.grant.type}")
+    String kakaoGrantType;
+
+    @Override
+    public String getAccessCode() {
+        return kakaoAuthUri + "/oauth/authorize?client_id=" +
+                kakaoClientId + "&redirect_uri=" +
+                kakaoRedirectUriLogin + "&response_type=code";
+    }
+
+    @Override
+    public String getAccessToken(String code) {
+
+        WebClient webClient = WebClient.create(kakaoAuthUri);
+
+        KakaoTokenResponseDto response = webClient
+                .post()
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
+                        .path("/oauth/token")
+                        .queryParam("grant_type", kakaoGrantType)
+                        .queryParam("client_id", kakaoClientId)
+                        .queryParam("code", code)
+                        .build(true))
+                .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
+                .retrieve()
+                .bodyToMono(KakaoTokenResponseDto.class)
+                .block();
+
+        return response.getAccessToken();
+    }
+}

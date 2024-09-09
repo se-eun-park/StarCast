@@ -1,37 +1,22 @@
 spring:
-  application:
-    name: starcast
   config:
     import: optional:file:.env[.properties]
-  datasource:
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    url: ${SPRING_DATASOURCE_URL}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: 'true'
-        use_sql_comments: 'true'
-        show_sql: 'true'
-    hibernate:
-      ddl-auto: validate
-  redis:
-    host: ${SPRING_REDIS_HOST}
-    port: ${SPRING_REDIS_PORT}
+  application:
+    name: ${SPRING_APPLICATION_NAME}
 
-jwt:
-  secret: ${JWT_SECRET}
+server:
+  port: ${SERVER_PORT}
 
 kakao:
+  auth:
+    uri: ${KAKAO_AUTH_URI}
+  api:
+    uri: ${KAKAO_API_URI}
   client:
     id: ${KAKAO_CLIENT_ID}
-    secret: ${KAKAO_CLIENT_SECRET}
   redirect:
     login: ${KAKAO_REDIRECT_LOGIN}
-    logout: ${KAKAO_REDIRECT_LOGOUT}
-
-base:
-  profile-image: ${BASE_PROFILE_IMAGE}
-  server-domain : ${SERVER_DOMAIN}
+  response:
+    type: ${KAKAO_RESPONSE_TYPE}
+  grant:
+    type: ${KAKAO_GRANT_TYPE}
