@@ -87,4 +87,27 @@ public class AuthServiceImpl implements AuthService {
         log.info("logout - id: {}", logout.getId());
         return logout;
     }
+
+    @Override
+    public KakaoAuthenticateUserResponseDto authenticateUser(String accessToken) {
+        log.info("authenticateUser 집입");
+//        log.info("accessToken : {}", accessToken);
+
+        WebClient webClient = WebClient.create("https://kapi.kakao.com");
+
+        KakaoAuthenticateUserResponseDto userInfo = webClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
+                        .path("/v1/user/access_token_info")
+                        .build(true))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+                .bodyToMono(KakaoAuthenticateUserResponseDto.class)
+                .block();
+        log.info("user info - id: {}", userInfo.getId());
+        return userInfo;
+    }
 }

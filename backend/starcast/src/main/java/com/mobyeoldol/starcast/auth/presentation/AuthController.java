@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.auth.presentation;
 
+import com.mobyeoldol.starcast.auth.application.dto.KakaoAuthenticateUserResponseDto;
 import com.mobyeoldol.starcast.auth.application.dto.KakaoLogoutResponseDto;
 import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -45,4 +46,12 @@ public class AuthController {
         //얘도 redirectUrl 알아봐바
     }
 
+    @GetMapping("/authenticateUser")
+    public ResponseEntity<?> authenticateUser() {
+        log.info("로그인한 사용자 인증하기");
+        KakaoAuthenticateUserResponseDto userInfo = authService.authenticateUser(accessToken);
+        log.info("사용자 인증 성공 userInfo : {}", userInfo);
+
+        return new ResponseEntity<>(userInfo, HttpStatus.OK);
+    }
 }
