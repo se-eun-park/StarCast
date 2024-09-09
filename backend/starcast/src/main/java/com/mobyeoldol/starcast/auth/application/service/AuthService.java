@@ -2,6 +2,7 @@ package com.mobyeoldol.starcast.auth.application.service;
 
 import com.mobyeoldol.starcast.auth.application.dto.KakaoAuthenticateUserResponseDto;
 import com.mobyeoldol.starcast.auth.application.dto.KakaoLogoutResponseDto;
+import com.mobyeoldol.starcast.auth.application.dto.KakaoUnlinkResponseDto;
 
 public interface AuthService {
 
@@ -12,4 +13,6 @@ public interface AuthService {
     KakaoLogoutResponseDto logout(String accessToken);
 
     KakaoAuthenticateUserResponseDto authenticateUser(String accessToken);
+
+    KakaoUnlinkResponseDto unlink(String accessToken);
 }

@@ -2,6 +2,7 @@ package com.mobyeoldol.starcast.auth.presentation;
 
 import com.mobyeoldol.starcast.auth.application.dto.KakaoAuthenticateUserResponseDto;
 import com.mobyeoldol.starcast.auth.application.dto.KakaoLogoutResponseDto;
+import com.mobyeoldol.starcast.auth.application.dto.KakaoUnlinkResponseDto;
 import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,5 +54,15 @@ public class AuthController {
         log.info("사용자 인증 성공 userInfo : {}", userInfo);
 
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
+    }
+
+    @GetMapping("/unlink")
+    public ResponseEntity<?> unlink() {
+        log.info("탈퇴 진입");
+//        String accessToken = loginService.getAccessToken(code);
+        KakaoUnlinkResponseDto unlink = authService.unlink(accessToken);
+        log.info("탈퇴 성공 unlink : {}", unlink);
+
+        return new ResponseEntity<>(unlink, HttpStatus.OK);
     }
 }

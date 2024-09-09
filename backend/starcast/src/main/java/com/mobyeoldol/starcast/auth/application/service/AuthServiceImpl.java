@@ -110,4 +110,27 @@ public class AuthServiceImpl implements AuthService {
         log.info("user info - id: {}", userInfo.getId());
         return userInfo;
     }
+
+    @Override
+    public KakaoUnlinkResponseDto unlink(String accessToken) {
+        log.info("unlink 집입");
+        log.info("accessToken : {}", accessToken);
+
+        WebClient webClient = WebClient.create(kakaoApiUri);
+
+        KakaoUnlinkResponseDto unlink = webClient
+                .post()
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
+                        .path("/v1/user/unlink")
+                        .build(true))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+                .bodyToMono(KakaoUnlinkResponseDto.class)
+                .block();
+        log.info("unlink - id: {}", unlink.getId());
+        return unlink;
+    }
 }
