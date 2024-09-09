@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.auth.presentation;
 
+import com.mobyeoldol.starcast.auth.application.dto.KakaoLogoutResponseDto;
 import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,4 +34,15 @@ public class AuthController {
 
         return new ResponseEntity<>(accessToken, HttpStatus.OK);
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+        log.info("로그아웃 진입");
+        KakaoLogoutResponseDto logout = authService.logout(accessToken);
+        log.info("로그아웃 성공 logout : {}", logout);
+
+        return new ResponseEntity<>(logout, HttpStatus.OK);
+        //얘도 redirectUrl 알아봐바
+    }
+
 }
