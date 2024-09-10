@@ -15,4 +15,13 @@ public class KakaoTokenResponseDto {
 
     @JsonProperty("access_token")
     public String accessToken;
+
+    @JsonProperty("expires_in")
+    public String expiresIn;
+
+    @JsonProperty("refresh_token")
+    public String refreshToken;
+
+    @JsonProperty("refresh_token_expires_in")
+    public String refreshTokenExpiresIn;
 }
