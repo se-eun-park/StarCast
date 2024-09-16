@@ -102,15 +102,26 @@ pipeline {
             }
             steps {
                 script {
-                    // 프론트엔드 Docker 이미지 빌드
-                    sh 'docker build -t frontend:latest /var/jenkins_home/workspace/a609/frontend'
+                              // 프론트엔드 Docker 이미지 빌드
+                              sh 'docker build -t frontend:latest /var/jenkins_home/workspace/a609/frontend'
 
-                    // 백엔드 디렉토리로 이동하여 실행 권한 부여 및 Gradle 빌드 실행
-                    sh 'chmod +x /var/jenkins_home/workspace/a609/backend/starcast/gradlew'
-                    sh '/var/jenkins_home/workspace/a609/backend/starcast/gradlew build'
+                              // 백엔드 디렉토리로 이동하여 Gradle 빌드 실행
+                              dir('/var/jenkins_home/workspace/a609/backend/starcast') {
+                                  sh 'chmod +x gradlew'
+                                  sh './gradlew build'
+                              }
 
-                    // Docker 이미지 빌드
-                    sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
+                              // Docker 이미지 빌드
+                              sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
+                    // // 프론트엔드 Docker 이미지 빌드
+                    // sh 'docker build -t frontend:latest /var/jenkins_home/workspace/a609/frontend'
+
+                    // // 백엔드 디렉토리로 이동하여 실행 권한 부여 및 Gradle 빌드 실행
+                    // sh 'chmod +x /var/jenkins_home/workspace/a609/backend/starcast/gradlew'
+                    // sh '/var/jenkins_home/workspace/a609/backend/starcast/gradlew build'
+
+                    // // Docker 이미지 빌드
+                    // sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
                 }
             }
         }
