@@ -105,8 +105,12 @@ pipeline {
                     // 프론트엔드 및 백엔드 Docker 이미지를 각각 빌드. 
                     // Dockerfile이 있는 디렉토리에서 실행됨.
                     sh 'docker build -t frontend:latest /var/jenkins_home/workspace/a609/frontend'
-                    // 백엔드 애플리케이션 빌드
-                    sh "cd /var/jenkins_home/workspace/a609/backend/starcast && ./gradlew build"
+                    // 백엔드 디렉토리로 이동
+                    sh "cd /var/jenkins_home/workspace/a609/backend/starcast"
+                    // 실행 권한 부여
+                    sh "chmod +x gradlew"
+                    // Gradle 빌드 실행
+                    sh "./gradlew build"
                     // Docker 이미지 빌드
                     sh "docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast"
                 }
