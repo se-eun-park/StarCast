@@ -7,7 +7,7 @@ pipeline {
     tools {
       jdk ("jdk21")
     }
-    
+
 		// Jenkins 환경 변수 (.env 안 쓰고 직접 넣어줘도 됨)
     environment {
 		    // Jenkins에 저장된 SSH 인증 정보를 사용하여 원격 서버에 연결.
@@ -117,15 +117,7 @@ pipeline {
 
                               // Docker 이미지 빌드
                               sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
-                    // // 프론트엔드 Docker 이미지 빌드
-                    // sh 'docker build -t frontend:latest /var/jenkins_home/workspace/a609/frontend'
 
-                    // // 백엔드 디렉토리로 이동하여 실행 권한 부여 및 Gradle 빌드 실행
-                    // sh 'chmod +x /var/jenkins_home/workspace/a609/backend/starcast/gradlew'
-                    // sh '/var/jenkins_home/workspace/a609/backend/starcast/gradlew build'
-
-                    // // Docker 이미지 빌드
-                    // sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
                 }
             }
         }
@@ -148,15 +140,15 @@ pipeline {
                     // SSH 인증을 통해 원격 서버에 연결
                     sshagent([SSH_CREDENTIALS_ID]) {  
                         sh '''
-                        // 프론트엔드 이미지를 원격 서버로 전송하고 로드
+                        # 프론트엔드 이미지를 원격 서버로 전송하고 로드
                         docker save frontend:latest | ssh -o StrictHostKeyChecking=no ${REMOTE_SERVER} 'docker load'
-                        // 백엔드 이미지를 원격 서버로 전송하고 로드
+                        # 백엔드 이미지를 원격 서버로 전송하고 로드
                         docker save backend:latest | ssh -o StrictHostKeyChecking=no ${REMOTE_SERVER} 'docker load'
 												
-												// Docker Compose 파일을 원격 서버로 전송
+												# Docker Compose 파일을 원격 서버로 전송
                         scp -o StrictHostKeyChecking=no ${DOCKER_COMPOSE_FILE} ${REMOTE_SERVER}:/home/ubuntu  
 
-												// 원격 서버에서 Docker Compose로 컨테이너 실행
+												# 원격 서버에서 Docker Compose로 컨테이너 실행
                         ssh -o StrictHostKeyChecking=no ${REMOTE_SERVER} << EOF
                             cd /home/ubuntu
                             docker-compose -f ${DOCKER_COMPOSE_FILE} up -d  
