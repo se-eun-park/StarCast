@@ -115,6 +115,8 @@ pipeline {
                                   sh './gradlew build'
                               }
 
+                              sh 'ls -l /var/jenkins_home/workspace/a609/backend/starcast/build/libs/'
+
                               // Docker 이미지 빌드
                               sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
 
