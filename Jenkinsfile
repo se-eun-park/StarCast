@@ -4,6 +4,10 @@ pipeline {
 		// 현재 특화 PJT에서 사용하는 노드나 파이프라인은 한 개라서 따로 설정할 필요 없음
     agent any  
 		
+    tools {
+      jdk ("jdk21")
+    }
+    
 		// Jenkins 환경 변수 (.env 안 쓰고 직접 넣어줘도 됨)
     environment {
 		    // Jenkins에 저장된 SSH 인증 정보를 사용하여 원격 서버에 연결.
