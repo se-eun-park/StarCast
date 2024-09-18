@@ -13,4 +13,5 @@ EXPOSE 8000
 
 # 5. 애플리케이션을 실행 (환경에 따라 JVM 옵션을 추가 가능)
 # ENTRYPOINT ["java", "-jar", "app.jar"]
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/starcast-0.0.1-SNAPSHOT.jar"]
