@@ -3,7 +3,6 @@ package com.mobyeoldol.starcast.place.presentation;
 import com.mobyeoldol.starcast.place.application.PlaceServiceImpl;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.presentation.response.FavouriteSpotResponse;
-import com.mobyeoldol.starcast.test.Test;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/place")
 public class PlaceController {
 
-    private final Test authTest;
     private final PlaceServiceImpl placeService;
 
     @PostMapping("/{place_uid}/favourite")
@@ -24,7 +22,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken
     ){
         log.info("[즐겨찾기 등록 API] POST /api/v1/place/{place_uid}/favourite");
-        String profileUid = authTest.authenticateMember(bearerToken);
+        String profileUid = ""; // authenticateMember(bearerToken);
 
         try {
             log.info("[즐겨찾기 등록 API] 즐겨찾기 등록 Service 로직 수행");
@@ -46,7 +44,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken
     ){
         log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{spot_uid}");
-        String profileUid = authTest.authenticateMember(bearerToken);
+        String profileUid = ""; // authenticateMember(bearerToken);
 
         try {
             log.info("[즐겨찾기 삭제 API] 즐겨찾기 삭제 Service 로직 수행");
