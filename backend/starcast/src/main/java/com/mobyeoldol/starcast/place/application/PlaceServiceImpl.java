@@ -1,6 +1,7 @@
 package com.mobyeoldol.starcast.place.application;
 
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
+import com.mobyeoldol.starcast.place.domain.enums.SpotType;
 import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .spotUid(UUID.randomUUID().toString())
                 .placeUid(placeUid)
                 .profileUid(profileUid)
-                .spotType("FAVOURITE")
+                .spotType(SpotType.FAVOURITE)
                 .castarPoint(-1)
                 .isDeleted(false)
                 .build();
