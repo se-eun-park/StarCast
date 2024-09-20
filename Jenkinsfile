@@ -56,9 +56,7 @@ pipeline {
 		                // 브랜치가 develop일 경우
                     expression { env.GIT_BRANCH == 'origin/release' } 
                     // 브랜치가 master일 경우 
-                    expression { env.GIT_BRANCH == 'origin/master' }  
-                    //임시브랜치ㅣㅣ
-                    expression { env.GIT_BRANCH == 'origin/infra_test' }  
+                    expression { env.GIT_BRANCH == 'origin/master' }
                 }
             }
             steps {
@@ -70,8 +68,6 @@ pipeline {
                         git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     } else if (env.BRANCH_NAME == 'master') {
                         git branch: 'master', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
-                    } else if (env.BRANCH_NAME == 'infra_test') {
-                        git branch: 'infra_test', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     }
                 }
             }
@@ -101,7 +97,6 @@ pipeline {
                 anyOf {
                     expression { env.GIT_BRANCH == 'origin/release' }  
                     expression { env.GIT_BRANCH == 'origin/master' }
-                    expression { env.GIT_BRANCH == 'origin/infra_test' }
                 }
             }
             steps {
@@ -135,7 +130,6 @@ pipeline {
                 anyOf {
                     expression { env.GIT_BRANCH == 'origin/release' }  
                     expression { env.GIT_BRANCH == 'origin/master' }  
-                    expression { env.GIT_BRANCH == 'origin/infra_test' }  
                 }
             }
             steps {
