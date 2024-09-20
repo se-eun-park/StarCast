@@ -9,19 +9,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Community {
+public class Plan {
 
     @Id
-    @Column(name = "community_uid")
-    private String communityUid;
+    @Column(name = "plan_uid")
+    private String planUid;
 
     @ManyToOne
     @JoinColumn(name = "profile_uid", unique = true)
@@ -31,11 +29,11 @@ public class Community {
     @JoinColumn(name = "place_uid", unique = true)
     private Place place;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "date_time")
+    private LocalDateTime dateTime;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "castar_point")
+    private int castarPoint;
 
     @CreationTimestamp
     @Column(name = "created_date")
@@ -45,23 +43,6 @@ public class Community {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
-    @OneToOne
-    @JoinColumn(name = "plan_uid", unique = true)
-    private Plan plan;
-
     @Column(name = "is_deleted")
     private Boolean isDeleted;
-
-    @OneToMany(mappedBy = "community")
-    private List<CommunityImage> communityImages = new ArrayList<CommunityImage>();
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-        if(!profile.getCommunities().contains(this)) profile.getCommunities().add(this);
-    }
-
-    public void addCommunityImage(CommunityImage communityImage) {
-        this.communityImages.add(communityImage);
-        if (communityImage.getCommunity() != this) communityImage.setCommunity(this);
-    }
 }

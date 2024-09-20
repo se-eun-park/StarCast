@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FavouriteSpot {
+public class MySpot {
 
     @Id
-    @Column(name = "favourite_spot_uid")
-    private String spotUid;
+    @Column(name = "my_spot_uid")
+    private String mySpotUid;
 
     @ManyToOne
     @JoinColumn(name = "profile_uid", unique = true)

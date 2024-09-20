@@ -1,13 +1,19 @@
 package com.mobyeoldol.starcast.member.application.service;
 
+import com.mobyeoldol.starcast.member.application.dto.AddressDto;
+import com.mobyeoldol.starcast.member.application.dto.AuthorDto;
 import com.mobyeoldol.starcast.member.domain.*;
 import com.mobyeoldol.starcast.member.domain.repository.*;
 import com.mobyeoldol.starcast.member.presentation.exception.CustomErrorCode;
 import com.mobyeoldol.starcast.member.presentation.exception.CustomException;
+import com.mobyeoldol.starcast.member.presentation.response.CommunityByMemberResponse;
 import com.mobyeoldol.starcast.member.presentation.response.MyInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -16,7 +22,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final ProfileRepository profileRepository;
     private final RankRepository rankRepository;
-    private final PlaceRepository placeRepository;
     private final CommunityRepository communityRepository;
     private final FavouriteSpotRepository favouriteSpotRepository;
 
@@ -46,44 +51,40 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
-    /*
+
     public List<CommunityByMemberResponse> getCommunityListByMember(String bearerToken) {
 //        String profileUid = authenticateMember(bearerToken);
         String profileUid = "testProfileId1234";
         List<Community> communityList = communityRepository.findByProfileIdAndIsDeleted(profileUid)
                 .orElseThrow(()->new CustomException(CustomErrorCode.COMMUNITY_LIST_NOT_FOUND));
+        List<CommunityByMemberResponse> communities = new ArrayList<>();
 
-
-
-        Post post = postRepository.findByPostIdAndDeleteFlagPostFalse(postId)
-                .orElseThrow(() -> new CustomException(CustomErrorCode.POST_NOT_FOUND));
-
-        List<Comment> comments = commentRepository.findByPostIdAndDeleteFlagCommentFalse(post.getPostId());
-        List<CommentResponse> commentResponseList = new ArrayList<>();
-
-        for (Comment comment : comments) {
-            CommentResponse commentResponse = CommentResponse.builder()
-                    .commentId(comment.getCommentId())
-                    .nickName(comment.getNickName())
-                    .commentContent(comment.getCommentContent())
-                    .commentCreatedDate(comment.getCommentCreatedDate())
+        for (Community community : communityList) {
+            AuthorDto authorDto = AuthorDto.builder()
+                    .profile_uid(community.getProfile().getProfileUid())
+                    .nickname(community.getProfile().getNickname())
+                    .profileImage(community.getProfile().getProfileImgNum())
                     .build();
-            commentResponseList.add(commentResponse);
+
+            AddressDto addressDto = AddressDto.builder()
+                    .address1(community.getPlace().getAddress1())
+                    .address2(community.getPlace().getAddress2())
+                    .address3(community.getPlace().getAddress3())
+                    .build();
+
+            CommunityByMemberResponse response = CommunityByMemberResponse.builder()
+                    .communityUid(community.getCommunityUid())
+                    .mainImage(community.getCommunityImages().getFirst().getUrl())
+                    .title(community.getTitle())
+                    .author(authorDto)
+                    .date_time(community.getCreatedDate())
+                    .address(addressDto)
+                    .castarPoint(community.getPlan().getCastarPoint())
+                    .build();
+
+            communities.add(response);
         }
 
-        return PostResponse.fromEntity(post, commentResponseList);
-
-
-
-        return CommunityByMemberResponse.builder()
-                .communityUid(profile.getName())
-                .nickname(profile.getNickname())
-                .email(profile.getEmail())
-                .profileImage(profile.getProfileImgNum())
-                .address(placeAddress)
-                .myCurExp(profile.getExp())
-                .rank(rank.getName())
-                .build();
+        return communities;
     }
-    */
 }

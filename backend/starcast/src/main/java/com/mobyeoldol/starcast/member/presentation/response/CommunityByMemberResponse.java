@@ -1,10 +1,13 @@
 package com.mobyeoldol.starcast.member.presentation.response;
 
-import com.mobyeoldol.starcast.member.domain.Profile;
+import com.mobyeoldol.starcast.member.application.dto.AddressDto;
+import com.mobyeoldol.starcast.member.application.dto.AuthorDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -15,10 +18,12 @@ public class CommunityByMemberResponse {
     private String communityUid;
     private String mainImage;
     private String title;
-    private Profile author;
-    private String email;
-    private String profileImage;
-    private String address;
-    private int myCurExp;
-    private String rank;
+    private AuthorDto author;
+    private LocalDateTime date_time;
+    private AddressDto address;
+    private int castarPoint;
 }
+
+
+
+
