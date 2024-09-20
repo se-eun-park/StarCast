@@ -37,9 +37,9 @@ public class Place {
     @Column(name = "phone_num", length = 20)
     private String phoneNum;
 
-    @Column(name = "web_address", length = 100)
+    @Column(name = "web_address", length = 2000)
     private String webAddress;
 
-    @Column(name = "image", length = 100)
+    @Column(name = "image", length = 10)
     private String image;
 }
