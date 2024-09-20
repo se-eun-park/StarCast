@@ -4,6 +4,7 @@ export default {
   theme: {
     colors: {
       white: '#FFFFFF',
+      black: '#000000',
 
       bg: {
         100: '#0064CC',
@@ -19,7 +20,7 @@ export default {
 
       primary: {
         DEFAULT: '#FAFA33',
-        light: '#FAFA7A',
+        light: '#FDFDB4',
         dark: '#A2A220',
       },
 
@@ -42,7 +43,12 @@ export default {
       },
     },
 
-    extend: {},
+    extend: {
+      borderRadius: {
+        '2xl': '1.25rem',
+        '3xl': '1.875rem',
+      },
+    },
   },
   plugins: [],
 }
