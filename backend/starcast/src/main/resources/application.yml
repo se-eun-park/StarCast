@@ -17,12 +17,6 @@ spring:
         show_sql: 'true'
     hibernate:
       ddl-auto: validate
-  redis:
-    host: ${SPRING_REDIS_HOST}
-    port: ${SPRING_REDIS_PORT}
-
-jwt:
-  secret: ${JWT_SECRET}
 
 kakao:
   client:
@@ -35,3 +29,11 @@ kakao:
 base:
   profile-image: ${BASE_PROFILE_IMAGE}
   server-domain : ${SERVER_DOMAIN}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${CLOUD_AWS_CREDENTIALS_ACCESS_KEY}
+      secret-key: ${CLOUD_AWS_CREDENTIALS_SECRET_KEY}
+    region:
+      static: ${CLOUD_AWS_REGION_STATIC}
