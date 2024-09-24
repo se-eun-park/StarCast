@@ -36,6 +36,8 @@ services:
       - .env
     ports:
       - "8000:8000"
+    depends_on:
+      - mysql
     # depends_on:
     #   - postgresql
     #   - redis
@@ -54,6 +56,19 @@ services:
     networks:
       - frontend
       - ssl
+
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
 
   # redis:
   #   container_name: redis
@@ -99,6 +114,10 @@ networks:
   ssl:
   backend:
   frontend:
+  mysql:
+
+volumes:
+  mysql-data:
 # volumes:
 #   redis-data:
 #   mongodb-data:
