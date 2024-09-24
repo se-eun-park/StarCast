@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.member.domain;
 
+import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.Plan;
 import jakarta.persistence.*;
@@ -19,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Community {
+public class Community extends BaseTimeEntity {
 
     @Id
     @Column(name = "community_uid")
@@ -38,14 +39,6 @@ public class Community {
 
     @Column(name = "content")
     private String content;
-
-    @CreationTimestamp
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
 
     @OneToOne
     @JoinColumn(name = "plan_uid", unique = true)

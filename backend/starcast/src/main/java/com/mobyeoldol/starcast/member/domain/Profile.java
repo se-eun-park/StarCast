@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.member.domain;
 
+import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Profile {
+public class Profile extends BaseTimeEntity {
 
     @Id
     @Column(name = "profile_uid")
@@ -45,14 +46,6 @@ public class Profile {
 
     @Column(name = "exp")
     private int exp;
-
-    @CreationTimestamp
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.place.domain;
 
+import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import com.mobyeoldol.starcast.member.domain.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Plan {
+public class Plan extends BaseTimeEntity {
 
     @Id
     @Column(name = "plan_uid")
@@ -35,14 +36,6 @@ public class Plan {
 
     @Column(name = "castar_point")
     private int castarPoint;
-
-    @CreationTimestamp
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

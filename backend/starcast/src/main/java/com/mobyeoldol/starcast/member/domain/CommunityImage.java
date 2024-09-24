@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.member.domain;
 
+import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name="community_image")
-public class CommunityImage {
+public class CommunityImage extends BaseTimeEntity {
 
     @Id
     @Column(name = "image_uid")
@@ -31,14 +32,6 @@ public class CommunityImage {
 
     @Column(name = "image_seq")
     private int imageSeq;
-
-    @CreationTimestamp
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.member.domain;
 
+import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Auth {
+public class Auth extends BaseTimeEntity {
 
     @Id
     @Column(name = "auth_uid")
@@ -23,12 +24,4 @@ public class Auth {
 
     @Column(name = "kakao_uid", nullable = false)
     private int kakaoUid;
-
-    @CreationTimestamp
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
 }
