@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 
 type AstronomyInfoWidgetProps = {
   bgColor: string
-  refresh: boolean
+  refresh?: boolean
   details: string
   hour: string
   cloudCoverage: number
@@ -33,7 +33,7 @@ type ContentMapProps = {
 
 const AstronomyInfoWidget = ({
   bgColor,
-  refresh,
+  refresh = false,
   details,
   hour,
   cloudCoverage,
