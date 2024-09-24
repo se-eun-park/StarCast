@@ -32,6 +32,7 @@
       "@queries/*": ["queries/*"],
       "@routers/*": ["routers/*"],
       "@stores/*": ["stores/*"],
+      "@types/*": ["types/*"],
       "@dummy/*": ["dummy/*"]
     }
   },
