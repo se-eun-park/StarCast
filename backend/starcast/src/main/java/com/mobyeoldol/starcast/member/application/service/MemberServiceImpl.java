@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
         log.info("[내가 작성한 글 리스트 가져오기 API] 2. 리스트를 응답 형식으로 가공");
         for (Community community : communityList.get()) {
             AuthorDto authorDto = AuthorDto.builder()
-                    .profile_uid(community.getProfile().getProfileUid())
+                    .profileUid(community.getProfile().getProfileUid())
                     .nickname(community.getProfile().getNickname())
                     .profileImage(community.getProfile().getProfileImgNum())
                     .build();
@@ -82,7 +82,7 @@ public class MemberServiceImpl implements MemberService {
                     .mainImage(community.getCommunityImages().getFirst().getUrl())
                     .title(community.getTitle())
                     .author(authorDto)
-                    .date_time(community.getCreatedDate())
+                    .dateTime(community.getCreatedDate())
                     .address(addressDto)
                     .castarPoint(community.getPlan().getCastarPoint())
                     .build();

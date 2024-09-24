@@ -19,7 +19,7 @@ public class CommunityByMemberResponse {
     private String mainImage;
     private String title;
     private AuthorDto author;
-    private LocalDateTime date_time;
+    private LocalDateTime dateTime;
     private AddressDto address;
     private int castarPoint;
 }
