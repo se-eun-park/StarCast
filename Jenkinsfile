@@ -57,8 +57,6 @@ pipeline {
                     expression { env.GIT_BRANCH == 'origin/release' } 
                     // 브랜치가 master일 경우 
                     expression { env.GIT_BRANCH == 'origin/master' }  
-                    //임시브랜치ㅣㅣ
-                    expression { env.GIT_BRANCH == 'origin/infra_test' }  
                 }
             } 
             steps {
@@ -70,8 +68,6 @@ pipeline {
                         git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     } else if (env.BRANCH_NAME == 'master') {
                         git branch: 'master', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
-                    } else if (env.BRANCH_NAME == 'infra_test') {
-                        git branch: 'infra_test', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     }
                 }
             }
@@ -101,7 +97,6 @@ pipeline {
                 anyOf {
                     expression { env.GIT_BRANCH == 'origin/release' }  
                     expression { env.GIT_BRANCH == 'origin/master' }
-                    expression { env.GIT_BRANCH == 'origin/infra_test' }
                 }
             }
             steps {
@@ -132,7 +127,6 @@ pipeline {
                 anyOf {
                     expression { env.GIT_BRANCH == 'origin/release' }  
                     expression { env.GIT_BRANCH == 'origin/master' }  
-                    expression { env.GIT_BRANCH == 'origin/infra_test' }  
                 }
             }
             steps {
@@ -174,6 +168,42 @@ EOF
 
     // 6. 작업 완료 후 워크스페이스 정리
     post {
+        success {
+            script {
+                mattermostSend (
+                    color: 'good',
+                    // 본인 채널명
+                    channel: 'JenkinsBuild',
+                    // 본인 webhook
+                    endpoint: 'https://meeting.ssafy.com/hooks/e8wiuh31q3rqjjnwpyw5niprxo',
+                    message: """\
+빌드 성공 !! 당신은 유능한 개발자입니다 :castar_build_happy:
+Build Number: ${env.BUILD_NUMBER}
+Commit Message: ${env.COMMIT_MESSAGE}
+Committer: ${env.COMMITTER_NAME}
+Branch: ${env.GIT_BRANCH}
+<${origin/env.BUILD_URL}|Link to build>"""
+                )
+            }
+        }
+        failure {
+            script {
+                mattermostSend (
+                    color: 'danger',
+                    // 본인 채널명
+                    channel: 'JenkinsBuild',
+                    // 본인 webhook
+                    endpoint: 'https://meeting.ssafy.com/hooks/e8wiuh31q3rqjjnwpyw5niprxo',
+                    message: """\
+빌드 실패 !! 힘내서 고쳐주세요 :castar_build_sad:
+Build Number: ${env.BUILD_NUMBER}
+Commit Message: ${env.COMMIT_MESSAGE}
+Committer: ${env.COMMITTER_NAME}
+Branch: ${env.GIT_BRANCH}
+<${origin/env.BUILD_URL}|Link to build>"""
+                )
+            }
+        }
         always {
             cleanWs()  // 파이프라인 실행 후 워크스페이스 정리 (불필요한 파일 삭제)
         }
