@@ -47,14 +47,14 @@ pipeline {
             }
         }
 
-        // 3. 디렉토리 리스트 출력
-        stage('List Directory') {
-            steps {
-                sh 'ls -l'
-                sh 'ls -l /var/jenkins_home/workspace/a609/frontend'
-                sh 'ls -l /var/jenkins_home/workspace/a609/backend/starcast'
-            }
-        }
+        // // 3. 디렉토리 리스트 출력
+        // stage('List Directory') {
+        //     steps {
+        //         sh 'ls -l'
+        //         sh 'ls -l /var/jenkins_home/workspace/a609/frontend'
+        //         sh 'ls -l /var/jenkins_home/workspace/a609/backend/starcast'
+        //     }
+        // }
 
         // 4. Docker 이미지 빌드
         stage('Build Docker Images') {
@@ -128,7 +128,7 @@ EOF
 Build Number: ${env.BUILD_NUMBER}
 Commit Message: ${env.COMMIT_MESSAGE}
 Committer: ${env.COMMITTER_NAME}
-Branch: ${env.GIT_BRANCH  }
+Branch: ${env.GIT_BRANCH}
 <${origin/env.BUILD_URL}|Link to build>"""
                 )
             }
@@ -146,7 +146,7 @@ Branch: ${env.GIT_BRANCH  }
 Build Number: ${env.BUILD_NUMBER}
 Commit Message: ${env.COMMIT_MESSAGE}
 Committer: ${env.COMMITTER_NAME}
-Branch: ${env.GIT_BRANCH  }
+Branch: ${env.GIT_BRANCH}
 <${origin/env.BUILD_URL}|Link to build>"""
                 )
             }
