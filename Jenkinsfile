@@ -121,9 +121,9 @@ post {
                 message: """\
 빌드 성공 !! 당신은 유능한 개발자입니다 :castar_build_happy:
 Build Number: ${env.BUILD_NUMBER}
-Commit Message: ${env.GIT_COMMIT_MESSAGE}
-Committer: ${env.GIT_AUTHOR_NAME}
-Branch: ${env.GIT_BRANCH.replace('origin/', '')}
+Commit Message: ${env.COMMIT_MESSAGE}
+Committer: ${env.COMMITTER_NAME}
+Branch: ${env.GIT_BRANCH}
 <${env.BUILD_URL}|Link to build>"""
             )
         }
@@ -137,9 +137,9 @@ Branch: ${env.GIT_BRANCH.replace('origin/', '')}
                 message: """\
 빌드 실패 !! 힘내서 고쳐주세요 :castar_build_sad:
 Build Number: ${env.BUILD_NUMBER}
-Commit Message: ${env.GIT_COMMIT_MESSAGE}
-Committer: ${env.GIT_AUTHOR_NAME}
-Branch: ${env.GIT_BRANCH.replace('origin/', '')}
+Commit Message: ${env.COMMIT_MESSAGE}
+Committer: ${env.COMMITTER_NAME}
+Branch: ${env.GIT_BRANCH}
 <${env.BUILD_URL}|Link to build>"""
             )
         }
