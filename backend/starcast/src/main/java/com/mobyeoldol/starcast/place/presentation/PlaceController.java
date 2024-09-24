@@ -63,7 +63,7 @@ public class PlaceController {
             @PathVariable(value = "place_uid") String placeUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ){
-        log.info("[장소 하나 자세히 보기 API] DELETE /api/v1/place/favourite/{spot_uid}");
+        log.info("[장소 하나 자세히 보기 API] GET /api/v1/place/{place_uid}");
         String profileUid = ""; // authenticateMember(bearerToken);
 
         try {
