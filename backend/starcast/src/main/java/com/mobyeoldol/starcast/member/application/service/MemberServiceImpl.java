@@ -27,9 +27,7 @@ public class MemberServiceImpl implements MemberService {
     private final MySpotRepository mySpotRepository;
 
     @Override
-    public MyInfoResponse getMemberInfo(String bearerToken) {
-//        String profileUid = authenticateMember(bearerToken);
-        String profileUid = "profile-uid-01";
+    public MyInfoResponse getMemberInfo(String profileUid) {
 
         log.info("[내 정보 가져오기 API] 1. 유저 정보 인증");
         Optional<Profile> profile = profileRepository.findById(profileUid);
@@ -57,9 +55,7 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
-    public List<CommunityByMemberResponse> getCommunityListByMember(String bearerToken) {
-//        String profileUid = authenticateMember(bearerToken);
-        String profileUid = "profile-uid-01";
+    public List<CommunityByMemberResponse> getCommunityListByMember(String profileUid) {
 
         log.info("[내가 작성한 글 리스트 가져오기 API] 1. 내가 작성한 글 리스트 가져오기");
         Optional<List<Community>> communityList = communityRepository.findByProfileIdAndIsDeleted(profileUid);

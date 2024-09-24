@@ -22,8 +22,11 @@ public class MemberController {
     @GetMapping("/info")
     public ResponseEntity<MyInfoResponse> getMyInfo(@RequestHeader("Authorization") String bearerToken) {
         log.info("[내 정보 가져오기 API] GET/api/v1/member/info");
+//        String profileUid = authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";
+
         log.info("[내 정보 가져오기 API] 내 정보 가져오기 Service 로직 수행");
-        MyInfoResponse myInfo = memberService.getMemberInfo(bearerToken);
+        MyInfoResponse myInfo = memberService.getMemberInfo(profileUid);
 
         return ResponseEntity.status(HttpStatus.OK).body(myInfo);
     }
@@ -31,8 +34,11 @@ public class MemberController {
     @GetMapping("/my-community-list")
     public ResponseEntity<?> getCommunityListByMember(@RequestHeader("Authorization") String bearerToken) {
         log.info("[내가 작성한 글 리스트 가져오기 API] GET/api/v1/member/my-community-list");
+//        String profileUid = authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";
+
         log.info("[내가 작성한 글 리스트 가져오기 API] 글 리스트 가져오기 Service 로직 수행");
-        List<CommunityByMemberResponse> communities = memberService.getCommunityListByMember(bearerToken);
+        List<CommunityByMemberResponse> communities = memberService.getCommunityListByMember(profileUid);
 
         return ResponseEntity.status(HttpStatus.OK).body(communities);
     }
