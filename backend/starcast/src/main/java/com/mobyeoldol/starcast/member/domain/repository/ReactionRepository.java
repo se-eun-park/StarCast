@@ -1,6 +1,6 @@
-package com.mobyeoldol.starcast.place.domain.repository;
+package com.mobyeoldol.starcast.member.domain.repository;
 
-import com.mobyeoldol.starcast.place.domain.Reaction;
+import com.mobyeoldol.starcast.member.domain.Reaction;
 import com.mobyeoldol.starcast.place.domain.enums.ReactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
