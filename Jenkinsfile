@@ -28,9 +28,31 @@ pipeline {
 
         // 2. 코드 체크아웃
         stage('Checkout Code') {
+		        // when 조건으로 이런 상황일 때 진행하겠다고 정의
+            when {
+                anyOf {
+		                // 브랜치가 develop일 경우
+                    expression { env.GIT_BRANCH == 'origin/release' } 
+                    // 브랜치가 master일 경우 
+                    expression { env.GIT_BRANCH == 'origin/master' }  
+                    //임시브랜치ㅣㅣ
+                    expression { env.GIT_BRANCH == 'origin/front-dev' }
+                    expression { env.GIT_BRANCH == 'origin/back-dev' }  
+                }
+            } 
             steps {
                 script {
-                    git branch: "${env.BRANCH_NAME}", credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                    // 현재 브랜치가 develop이면 
+                    // develop 브랜치에서 코드를 가져오고 
+                    // master이면 master 브랜치에서 코드를 가져옴.
+                    if (env.BRANCH_NAME == 'release') {
+                        git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                    } else if (env.BRANCH_NAME == 'master') {
+                        git branch: 'master', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                    } else if (env.BRANCH_NAME == 'front-dev') {
+                        git branch: 'front-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                    } else if (env.BRANCH_NAME == 'back-dev') {
+                        git branch: 'front-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                 }
             }
         }
@@ -46,6 +68,16 @@ pipeline {
 
         // 4. Docker 이미지 빌드
         stage('Build Docker Images') {
+		        // 브랜치가 release일 경우
+		        // 브랜치가 master일 경우
+            when {
+                anyOf {
+                    expression { env.GIT_BRANCH == 'origin/release' }  
+                    expression { env.GIT_BRANCH == 'origin/master' }
+                    expression { env.GIT_BRANCH == 'origin/front-dev' }
+                    expression { env.GIT_BRANCH == 'origin/back-dev' }
+                }
+            }
             steps {
                 script {
                     // 프론트엔드 Docker 이미지 빌드
@@ -59,18 +91,25 @@ pipeline {
 
                     sh 'ls -l /var/jenkins_home/workspace/a609/backend/starcast/build/libs/'
 
-                    // Docker 이미지 빌드
-                    sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
-                    
-                    // 최근 커밋 메세지와 커밋 작성자 추출
-                    env.COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                    env.COMMITTER_NAME = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
+                              // Docker 이미지 빌드
+                              sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
+
                 }
             }
         }
 
         // 5. 원격 서버에 배포
         stage('Deploy to Remote Server') {
+		        // 브랜치가 release일 경우
+		        // 브랜치가 master일 경우
+            when {
+                anyOf {
+                    expression { env.GIT_BRANCH == 'origin/release' }  
+                    expression { env.GIT_BRANCH == 'origin/master' }  
+                    expression { env.GIT_BRANCH == 'origin/front-dev' }  
+                    expression { env.GIT_BRANCH == 'origin/back-dev' }  
+                }
+            }
             steps {
                 script {
                     sshagent([SSH_CREDENTIALS_ID]) {
@@ -90,40 +129,9 @@ EOF
     }
 
     post {
-        success {
-            script {
-                mattermostSend (
-                    color: 'good',
-                    channel: 'JenkinsBuild',
-                    endpoint: 'https://meeting.ssafy.com/hooks/e8wiuh31q3rqjjnwpyw5niprxo',
-                    message: """\
-빌드 성공 !! 당신은 유능한 개발자입니다 :castar_build_happy:
-Build Number: ${env.BUILD_NUMBER}
-Commit Message: ${env.COMMIT_MESSAGE}
-Committer: ${env.COMMITTER_NAME}
-Branch: ${env.BRANCH_NAME}
-<${env.BUILD_URL}|Link to build>"""
-                )
-            }
-        }
-        failure {
-            script {
-                mattermostSend (
-                    color: 'danger',
-                    channel: 'JenkinsBuild',
-                    endpoint: 'https://meeting.ssafy.com/hooks/e8wiuh31q3rqjjnwpyw5niprxo',
-                    message: """\
-빌드 실패 !! 힘내서 고쳐주세요 :castar_build_sad:
-Build Number: ${env.BUILD_NUMBER}
-Commit Message: ${env.COMMIT_MESSAGE}
-Committer: ${env.COMMITTER_NAME}
-Branch: ${env.BRANCH_NAME}
-<${env.BUILD_URL}|Link to build>"""
-                )
-            }
-        }
         always {
-            cleanWs()
+            cleanWs()  // 파이프라인 실행 후 워크스페이스 정리 (불필요한 파일 삭제)
         }
     }
 }
+
