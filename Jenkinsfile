@@ -64,9 +64,9 @@ pipeline {
                     // 현재 브랜치가 develop이면 
                     // develop 브랜치에서 코드를 가져오고 
                     // master이면 master 브랜치에서 코드를 가져옴.
-                    if (env.BRANCH_NAME == 'release') {
+                    if (env.GIT_BRANCH == 'origin/release') {
                         git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
-                    } else if (env.BRANCH_NAME == 'master') {
+                    } else if (env.GIT_BRANCH == 'origin/master') {
                         git branch: 'master', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     }
                 }
