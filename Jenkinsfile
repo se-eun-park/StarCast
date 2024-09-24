@@ -35,24 +35,16 @@ pipeline {
             }
             steps {
                 script {
-                    // 여기에서 git fetch 추가
+                    // 브랜치 동기화
+                    sh 'git fetch --all'
+                    sh 'git reset --hard origin/${env.GIT_BRANCH}' // 브랜치 리셋 후 최신 상태로 맞춤
+                    
                     if (env.GIT_BRANCH == 'origin/release') {
                         git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     } else if (env.GIT_BRANCH == 'origin/master') {
                         git branch: 'master', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     }
-                    // 최신 커밋 가져오도록 수정
-                    sh 'git fetch --all'
-                    sh 'git checkout ${env.GIT_BRANCH}'
                 }
-            }
-        }
-
-        stage('List Directory') {
-            steps {
-                sh 'ls -l'
-                sh 'ls -l /var/jenkins_home/workspace/a609/frontend'
-                sh 'ls -l /var/jenkins_home/workspace/a609/backend/starcast'
             }
         }
 
@@ -79,8 +71,8 @@ pipeline {
                     // Docker 이미지 빌드
                     sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
 
-                    // Git 명령어 수정: 커밋 정보를 가져오기 전에 체크아웃 확인
-                    sh 'git checkout ${env.GIT_BRANCH}'
+                    // 커밋 정보 다시 체크
+                    sh 'git reset --hard origin/${env.GIT_BRANCH}' // 추가된 부분
                     env.COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
                     env.COMMITTER_NAME = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
                 }
@@ -115,7 +107,6 @@ EOF
     post {
         success {
             script {
-                // 커밋 정보를 포함한 Mattermost 메시지
                 mattermostSend (
                     color: 'good',
                     channel: 'JenkinsBuild',
