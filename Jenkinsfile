@@ -113,7 +113,7 @@ Branch: ${env.BRANCH_NAME}
                     channel: 'JenkinsBuild',
                     endpoint: 'https://meeting.ssafy.com/hooks/e8wiuh31q3rqjjnwpyw5niprxo',
                     message: """\
-빌드 실패 !! 당신이 범인이었구나? :castar_build_sad:
+빌드 실패 !! 힘내서 고쳐주세요 :castar_build_sad:
 Build Number: ${env.BUILD_NUMBER}
 Commit Message: ${env.COMMIT_MESSAGE}
 Committer: ${env.COMMITTER_NAME}
