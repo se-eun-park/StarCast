@@ -4,8 +4,6 @@ import com.mobyeoldol.starcast.member.application.dto.AddressDto;
 import com.mobyeoldol.starcast.member.application.dto.AuthorDto;
 import com.mobyeoldol.starcast.member.domain.*;
 import com.mobyeoldol.starcast.member.domain.repository.*;
-import com.mobyeoldol.starcast.member.presentation.exception.CustomErrorCode;
-import com.mobyeoldol.starcast.member.presentation.exception.CustomException;
 import com.mobyeoldol.starcast.member.presentation.response.CommunityByMemberResponse;
 import com.mobyeoldol.starcast.member.presentation.response.MyInfoResponse;
 import com.mobyeoldol.starcast.place.domain.Place;
