@@ -14,7 +14,6 @@ pipeline {
     }
 
     stages {
-
         // 1. 브랜치 정보 출력
         stage('Print Branch Info') {
             steps {
@@ -28,23 +27,16 @@ pipeline {
 
         // 2. 코드 체크아웃
         stage('Checkout Code') {
-		        // when 조건으로 이런 상황일 때 진행하겠다고 정의
             when {
                 anyOf {
-		                // 브랜치가 develop일 경우
-                    expression { env.GIT_BRANCH == 'origin/release' } 
-                    // 브랜치가 master일 경우 
-                    expression { env.GIT_BRANCH == 'origin/master' }  
-                    //임시브랜치ㅣㅣ
-                    expression { env.GIT_BRANCH == 'origin/front-dev' }
-                    expression { env.GIT_BRANCH == 'origin/back-dev' }  
+                    expression { env.BRANCH_NAME == 'release' } 
+                    expression { env.BRANCH_NAME == 'master' }  
+                    expression { env.BRANCH_NAME == 'front-dev' }
+                    expression { env.BRANCH_NAME == 'back-dev' }  
                 }
             } 
             steps {
                 script {
-                    // 현재 브랜치가 develop이면 
-                    // develop 브랜치에서 코드를 가져오고 
-                    // master이면 master 브랜치에서 코드를 가져옴.
                     if (env.BRANCH_NAME == 'release') {
                         git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     } else if (env.BRANCH_NAME == 'master') {
@@ -52,7 +44,8 @@ pipeline {
                     } else if (env.BRANCH_NAME == 'front-dev') {
                         git branch: 'front-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     } else if (env.BRANCH_NAME == 'back-dev') {
-                        git branch: 'front-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                        git branch: 'back-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                    }  // 여기에 필요한 } 추가
                 }
             }
         }
@@ -68,14 +61,12 @@ pipeline {
 
         // 4. Docker 이미지 빌드
         stage('Build Docker Images') {
-		        // 브랜치가 release일 경우
-		        // 브랜치가 master일 경우
             when {
                 anyOf {
-                    expression { env.GIT_BRANCH == 'origin/release' }  
-                    expression { env.GIT_BRANCH == 'origin/master' }
-                    expression { env.GIT_BRANCH == 'origin/front-dev' }
-                    expression { env.GIT_BRANCH == 'origin/back-dev' }
+                    expression { env.BRANCH_NAME == 'release' }  
+                    expression { env.BRANCH_NAME == 'master' }
+                    expression { env.BRANCH_NAME == 'front-dev' }
+                    expression { env.BRANCH_NAME == 'back-dev' }
                 }
             }
             steps {
@@ -91,23 +82,20 @@ pipeline {
 
                     sh 'ls -l /var/jenkins_home/workspace/a609/backend/starcast/build/libs/'
 
-                              // Docker 이미지 빌드
-                              sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
-
+                    // Docker 이미지 빌드
+                    sh 'docker build -t backend:latest /var/jenkins_home/workspace/a609/backend/starcast'
                 }
             }
         }
 
         // 5. 원격 서버에 배포
         stage('Deploy to Remote Server') {
-		        // 브랜치가 release일 경우
-		        // 브랜치가 master일 경우
             when {
                 anyOf {
-                    expression { env.GIT_BRANCH == 'origin/release' }  
-                    expression { env.GIT_BRANCH == 'origin/master' }  
-                    expression { env.GIT_BRANCH == 'origin/front-dev' }  
-                    expression { env.GIT_BRANCH == 'origin/back-dev' }  
+                    expression { env.BRANCH_NAME == 'release' }  
+                    expression { env.BRANCH_NAME == 'master' }  
+                    expression { env.BRANCH_NAME == 'front-dev' }  
+                    expression { env.BRANCH_NAME == 'back-dev' }  
                 }
             }
             steps {
@@ -134,4 +122,3 @@ EOF
         }
     }
 }
-
