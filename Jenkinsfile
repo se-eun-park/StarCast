@@ -37,12 +37,12 @@ pipeline {
             } 
             steps {
                 script {
-                    // 체크아웃 전에 커밋 정보를 불러오기
+                    // 체크아웃
                     checkout scm
 
                     // 현재 커밋 정보 가져오기
                     env.COMMIT_MESSAGE = sh(script: "git log -1 --pretty=%B", returnStdout: true).trim()
-                    env.COMMITTER_NAME = sh(script: "git log -1 --pretty='%an'", returnStdout: true).trim()
+                    env.COMMITTER_NAME = sh(script: "git log -1 --pretty=%an", returnStdout: true).trim()
                 }
             }
         }
