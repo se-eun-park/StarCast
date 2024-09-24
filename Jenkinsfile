@@ -29,10 +29,10 @@ pipeline {
         stage('Checkout Code') {
             when {
                 anyOf {
-                    expression { env.BRANCH_NAME == 'release' } 
-                    expression { env.BRANCH_NAME == 'master' }  
-                    expression { env.BRANCH_NAME == 'front-dev' }
-                    expression { env.BRANCH_NAME == 'back-dev' }  
+                    expression { env.GIT_BRANCH  == 'origin/release' } 
+                    expression { env.GIT_BRANCH  == 'origin/master' }  
+                    expression { env.GIT_BRANCH  == 'origin/front-dev' }
+                    expression { env.GIT_BRANCH  == 'origin/back-dev' }  
                 }
             } 
             steps {
@@ -60,10 +60,10 @@ pipeline {
         stage('Build Docker Images') {
             when {
                 anyOf {
-                    expression { env.BRANCH_NAME == 'release' }  
-                    expression { env.BRANCH_NAME == 'master' }
-                    expression { env.BRANCH_NAME == 'front-dev' }
-                    expression { env.BRANCH_NAME == 'back-dev' }
+                    expression { env.GIT_BRANCH  == 'origin/release' }  
+                    expression { env.GIT_BRANCH  == 'origin/master' }
+                    expression { env.GIT_BRANCH  == 'origin/front-dev' }
+                    expression { env.GIT_BRANCH  == 'origin/back-dev' }
                 }
             }
             steps {
@@ -89,10 +89,10 @@ pipeline {
         stage('Deploy to Remote Server') {
             when {
                 anyOf {
-                    expression { env.BRANCH_NAME == 'release' }  
-                    expression { env.BRANCH_NAME == 'master' }  
-                    expression { env.BRANCH_NAME == 'front-dev' }  
-                    expression { env.BRANCH_NAME == 'back-dev' }  
+                    expression { env.GIT_BRANCH  == 'origin/release' }  
+                    expression { env.GIT_BRANCH  == 'origin/master' }  
+                    expression { env.GIT_BRANCH  == 'origin/front-dev' }  
+                    expression { env.GIT_BRANCH  == 'origin/back-dev' }  
                 }
             }
             steps {
@@ -128,8 +128,8 @@ EOF
 Build Number: ${env.BUILD_NUMBER}
 Commit Message: ${env.COMMIT_MESSAGE}
 Committer: ${env.COMMITTER_NAME}
-Branch: ${env.BRANCH_NAME}
-<${env.BUILD_URL}|Link to build>"""
+Branch: ${env.GIT_BRANCH  }
+<${origin/env.BUILD_URL}|Link to build>"""
                 )
             }
         }
@@ -146,8 +146,8 @@ Branch: ${env.BRANCH_NAME}
 Build Number: ${env.BUILD_NUMBER}
 Commit Message: ${env.COMMIT_MESSAGE}
 Committer: ${env.COMMITTER_NAME}
-Branch: ${env.BRANCH_NAME}
-<${env.BUILD_URL}|Link to build>"""
+Branch: ${env.GIT_BRANCH  }
+<${origin/env.BUILD_URL}|Link to build>"""
                 )
             }
         }
