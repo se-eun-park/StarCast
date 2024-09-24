@@ -62,7 +62,7 @@ services:
     image: mysql:latest
     volumes:
       - mysql-data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+    #   command: --default-authentication-plugin=mysql_native_password
     env_file:
       - .env
     ports:
