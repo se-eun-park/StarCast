@@ -1,13 +1,14 @@
 package com.mobyeoldol.starcast.place.domain;
 
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +23,7 @@ public class Place {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 20, nullable = false)
     private PlaceType type;
 
@@ -40,6 +42,9 @@ public class Place {
     @Column(name = "web_address", length = 2000)
     private String webAddress;
 
-    @Column(name = "image", length = 10)
+    @Column(name = "image", length = 2000)
     private String image;
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Community> communities = new ArrayList<>();
 }
