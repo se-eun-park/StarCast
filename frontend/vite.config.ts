@@ -25,4 +25,7 @@ export default defineConfig({
       { find: '@stores', replacement: '/src/stores' },
     ],
   },
+  server: {
+    port: 3000,
+  },
 })
