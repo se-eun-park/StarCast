@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface CommunityRepository extends JpaRepository<Community, String> {
-    @Query("SELECT communityUid, place, title, content, createdDate, isDeleted FROM Community WHERE profile = :profileUid and isDeleted = false")
-    Optional<List<Community>> findByProfileIdAndIsDeleted(@Param("profileId") String profileUid);
+    @Query("SELECT c FROM Community c WHERE c.profile.profileUid = :profileUid AND c.isDeleted = false")
+    Optional<List<Community>> findByProfileIdAndIsDeleted(@Param("profileUid") String profileUid);
 }

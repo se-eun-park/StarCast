@@ -1,5 +1,6 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.place.domain;
 
+import com.mobyeoldol.starcast.member.domain.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,11 +16,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FavouriteSpot {
+@Table(name="my_spot")
+public class MySpot {
 
     @Id
-    @Column(name = "favourite_spot_uid")
-    private String spotUid;
+    @Column(name = "my_spot_uid")
+    private String mySpotUid;
 
     @ManyToOne
     @JoinColumn(name = "profile_uid", unique = true)

@@ -1,9 +1,7 @@
 package com.mobyeoldol.starcast.place.domain;
 
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +20,7 @@ public class Place {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 20, nullable = false)
     private PlaceType type;
 

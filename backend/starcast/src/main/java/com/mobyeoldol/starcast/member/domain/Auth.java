@@ -22,7 +22,7 @@ public class Auth {
     private String authId;
 
     @Column(name = "kakao_uid", nullable = false)
-    private long kakaoUid;
+    private int kakaoUid;
 
     @CreationTimestamp
     @Column(name = "created_date")

@@ -8,12 +8,15 @@ import com.mobyeoldol.starcast.member.presentation.exception.CustomErrorCode;
 import com.mobyeoldol.starcast.member.presentation.exception.CustomException;
 import com.mobyeoldol.starcast.member.presentation.response.CommunityByMemberResponse;
 import com.mobyeoldol.starcast.member.presentation.response.MyInfoResponse;
+import com.mobyeoldol.starcast.place.domain.Place;
+import com.mobyeoldol.starcast.place.domain.repository.MySpotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,43 +26,51 @@ public class MemberServiceImpl implements MemberService {
     private final ProfileRepository profileRepository;
     private final RankRepository rankRepository;
     private final CommunityRepository communityRepository;
-    private final FavouriteSpotRepository favouriteSpotRepository;
+    private final MySpotRepository mySpotRepository;
 
     @Override
     public MyInfoResponse getMemberInfo(String bearerToken) {
 //        String profileUid = authenticateMember(bearerToken);
-        String profileUid = "testProfileId1234";
-        Profile profile = profileRepository.findById(profileUid)
-                .orElseThrow(()->new CustomException(CustomErrorCode.PROFILE_INFO_NOT_FOUND));
+        String profileUid = "profile-uid-01";
 
-        Rank rank = rankRepository.findById(profile.getRank().getRankUid())
-                .orElseThrow(()->new CustomException(CustomErrorCode.RANK_INFO_NOT_FOUND));
+        log.info("[내 정보 가져오기 API] 1. 유저 정보 인증");
+        Optional<Profile> profile = profileRepository.findById(profileUid);
+        if (profile.isEmpty()) throw new RuntimeException("존재하지 않는 유저입니다.");
 
-        Place place = favouriteSpotRepository.findByProfileIdAndSpotType(profileUid)
-                .orElseThrow(()->new CustomException(CustomErrorCode.MY_PLACE_INFO_NOT_FOUND));
+        log.info("[내 정보 가져오기 API] 2. 유저 랭크 확인");
+        Optional<Rank> rank = rankRepository.findById(profile.get().getRank().getRankUid());
+        if (rank.isEmpty()) throw new RuntimeException("존재하지 않는 랭크입니다.");
 
-        String placeAddress = place.getAddress1() + " " + place.getAddress2() + " " + place.getAddress3();
+        log.info("[내 정보 가져오기 API] 3. 유저의 내 장소 확인");
+        Optional<Place> place = mySpotRepository.findByProfileIdAndSpotType(profileUid);
+        if (place.isEmpty()) throw new RuntimeException("존재하지 않는 장소입니다.");
 
+        String placeAddress = place.get().getAddress1() + " " + place.get().getAddress2() + " " + place.get().getAddress3();
+
+        log.info("[내 정보 가져오기 API] 4. 내 정보 리턴");
         return MyInfoResponse.builder()
-                .name(profile.getName())
-                .nickname(profile.getNickname())
-                .email(profile.getEmail())
-                .profileImage(profile.getProfileImgNum())
+                .name(profile.get().getName())
+                .nickname(profile.get().getNickname())
+                .email(profile.get().getEmail())
+                .profileImage(profile.get().getProfileImgNum())
                 .address(placeAddress)
-                .myCurExp(profile.getExp())
-                .rank(rank.getName())
+                .myCurExp(profile.get().getExp())
+                .rank(rank.get().getName())
                 .build();
     }
 
-
     public List<CommunityByMemberResponse> getCommunityListByMember(String bearerToken) {
 //        String profileUid = authenticateMember(bearerToken);
-        String profileUid = "testProfileId1234";
-        List<Community> communityList = communityRepository.findByProfileIdAndIsDeleted(profileUid)
-                .orElseThrow(()->new CustomException(CustomErrorCode.COMMUNITY_LIST_NOT_FOUND));
+        String profileUid = "profile-uid-01";
+
+        log.info("[내가 작성한 글 리스트 가져오기 API] 1. 내가 작성한 글 리스트 가져오기");
+        Optional<List<Community>> communityList = communityRepository.findByProfileIdAndIsDeleted(profileUid);
+        if (communityList.isEmpty()) throw new RuntimeException("글 리스트가 존재하지 않습니다.");
+
         List<CommunityByMemberResponse> communities = new ArrayList<>();
 
-        for (Community community : communityList) {
+        log.info("[내가 작성한 글 리스트 가져오기 API] 2. 리스트를 응답 형식으로 가공");
+        for (Community community : communityList.get()) {
             AuthorDto authorDto = AuthorDto.builder()
                     .profile_uid(community.getProfile().getProfileUid())
                     .nickname(community.getProfile().getNickname())
@@ -85,6 +96,7 @@ public class MemberServiceImpl implements MemberService {
             communities.add(response);
         }
 
+        log.info("[내가 작성한 글 리스트 가져오기 API] 3. 글 리스트를 응답 형식으로 가공 후 리턴");
         return communities;
     }
 }

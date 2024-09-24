@@ -1,5 +1,7 @@
 package com.mobyeoldol.starcast.member.domain;
 
+import com.mobyeoldol.starcast.place.domain.Place;
+import com.mobyeoldol.starcast.place.domain.Plan;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,5 +1,6 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.place.domain;
 
+import com.mobyeoldol.starcast.member.domain.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +23,11 @@ public class Plan {
     private String planUid;
 
     @ManyToOne
-    @JoinColumn(name = "profile_uid", unique = true)
+    @JoinColumn(name = "profile_uid")
     private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "place_uid", unique = true)
+    @JoinColumn(name = "place_uid")
     private Place place;
 
     @Column(name = "date_time")

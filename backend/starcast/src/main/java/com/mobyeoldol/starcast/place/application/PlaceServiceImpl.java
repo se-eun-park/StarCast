@@ -32,8 +32,8 @@ public class PlaceServiceImpl implements PlaceService {
                 .spotUid(UUID.randomUUID().toString())
                 .placeUid(placeUid)
                 .profileUid(profileUid)
-                .spotType(SpotType.FAVOURITE)
-                .castarPoint(-1)
+//                .spotType(SpotType.FAVOURITE)
+//                .castarPoint(-1)
                 .isDeleted(false)
                 .build();
 
