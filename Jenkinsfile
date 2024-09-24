@@ -32,6 +32,8 @@ pipeline {
                 anyOf {
                     expression { env.GIT_BRANCH == 'release' } 
                     expression { env.GIT_BRANCH == 'master' }  
+                    expression { env.GIT_BRANCH == 'front-dev' }  
+                    expression { env.GIT_BRANCH == 'back-dev' }  
                 }
             } 
             steps {
@@ -40,6 +42,10 @@ pipeline {
                         git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     } else if (env.GIT_BRANCH == 'master') {
                         git branch: 'master', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                    } else if (env.GIT_BRANCH == 'front-dev') {
+                        git branch: 'front-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
+                    } else if (env.GIT_BRANCH == 'back-dev') {
+                        git branch: 'back-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
                     }
                 }
             }
@@ -58,6 +64,8 @@ pipeline {
                 anyOf {
                     expression { env.GIT_BRANCH == 'release' }  
                     expression { env.GIT_BRANCH == 'master' }
+                    expression { env.GIT_BRANCH == 'front-dev' }
+                    expression { env.GIT_BRANCH == 'back-dev' }
                 }
             }
             steps {
@@ -81,7 +89,9 @@ pipeline {
                 anyOf {
                     expression { env.GIT_BRANCH == 'release' }  
                     expression { env.GIT_BRANCH == 'master' }  
-                }
+                    expression { env.GIT_BRANCH == 'front-dev' }
+                    expression { env.GIT_BRANCH == 'back-dev' }
+              }
             }
             steps {
                 script {
