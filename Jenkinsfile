@@ -37,16 +37,13 @@ pipeline {
             } 
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'release') {
-                        git branch: 'release', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
-                    } else if (env.BRANCH_NAME == 'master') {
-                        git branch: 'master', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
-                    } else if (env.BRANCH_NAME == 'front-dev') {
-                        git branch: 'front-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
-                    } else if (env.BRANCH_NAME == 'back-dev') {
-                        git branch: 'back-dev', credentialsId: 'jenkins', url: 'https://lab.ssafy.com/s11-bigdata-dist-sub1/S11P21A609.git'
-                    }
-                } // 이 중괄호가 닫혀야 합니다.
+                    // 체크아웃 전에 커밋 정보를 불러오기
+                    checkout scm
+
+                    // 현재 커밋 정보 가져오기
+                    env.COMMIT_MESSAGE = sh(script: "git log -1 --pretty=%B", returnStdout: true).trim()
+                    env.COMMITTER_NAME = sh(script: "git log -1 --pretty='%an'", returnStdout: true).trim()
+                }
             }
         }
 
@@ -131,7 +128,7 @@ EOF
 Build Number: ${env.BUILD_NUMBER}
 Commit Message: ${env.COMMIT_MESSAGE}
 Committer: ${env.COMMITTER_NAME}
-Branch: ${env.BRANCH_NAME}  // GIT_BRANCH에서 BRANCH_NAME으로 변경
+Branch: ${env.BRANCH_NAME}
 <${env.BUILD_URL}|Link to build>"""
                 )
             }
@@ -149,7 +146,7 @@ Branch: ${env.BRANCH_NAME}  // GIT_BRANCH에서 BRANCH_NAME으로 변경
 Build Number: ${env.BUILD_NUMBER}
 Commit Message: ${env.COMMIT_MESSAGE}
 Committer: ${env.COMMITTER_NAME}
-Branch: ${env.BRANCH_NAME}  // GIT_BRANCH에서 BRANCH_NAME으로 변경
+Branch: ${env.BRANCH_NAME}
 <${env.BUILD_URL}|Link to build>"""
                 )
             }
