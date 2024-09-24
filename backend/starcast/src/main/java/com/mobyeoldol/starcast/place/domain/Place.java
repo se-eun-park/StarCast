@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -39,6 +42,9 @@ public class Place {
     @Column(name = "web_address", length = 2000)
     private String webAddress;
 
-    @Column(name = "image", length = 10)
+    @Column(name = "image", length = 2000)
     private String image;
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Community> communities = new ArrayList<>();
 }

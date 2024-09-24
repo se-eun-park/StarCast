@@ -3,6 +3,7 @@ package com.mobyeoldol.starcast.place.presentation;
 import com.mobyeoldol.starcast.place.application.PlaceServiceImpl;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.presentation.response.FavouriteSpotResponse;
+import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,25 @@ public class PlaceController {
             return ResponseEntity.ok().body("즐겨찾기가 성공적으로 삭제되었습니다.");
         } catch (IllegalArgumentException e) {
             log.info("[즐겨찾기 삭제 API] 즐겨찾기 항목을 찾을 수 없는 경우 404 반환");
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/{place_uid}")
+    public ResponseEntity<?> getPlaceDetails(
+            @PathVariable(value = "place_uid") String placeUid,
+            @RequestHeader(value = "Authorization") String bearerToken
+    ){
+        log.info("[장소 하나 자세히 보기 API] GET /api/v1/place/{place_uid}");
+        String profileUid = ""; // authenticateMember(bearerToken);
+
+        try {
+            log.info("[장소 하나 자세히 보기 API] 장소 조회 Service 로직 수행");
+            PlaceDetailsResponse placeDetailsResponse = placeService.getPlaceDetails(placeUid);
+            return ResponseEntity.ok().body(placeDetailsResponse);
+        } catch (IllegalArgumentException e) {
+            log.info("[장소 하나 자세히 보기 API] 장소를 찾을 수 없는 경우 404 반환");
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
