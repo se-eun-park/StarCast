@@ -23,6 +23,8 @@ export default defineConfig({
       { find: '@queries', replacement: '/src/queries' },
       { find: '@routers', replacement: '/src/routers' },
       { find: '@stores', replacement: '/src/stores' },
+      { find: '@types', replacement: '/src/types' },
+      { find: '@dummy', replacement: '/src/dummy' },
     ],
   },
 })
