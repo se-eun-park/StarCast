@@ -32,14 +32,6 @@ public class FavouriteSpot extends BaseTimeEntity {
     @Column(name = "place_uid", length = 36, nullable = false)
     private String placeUid;
 
-    @CreationTimestamp
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
-
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 }
