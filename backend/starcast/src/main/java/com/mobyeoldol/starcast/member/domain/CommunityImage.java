@@ -6,10 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,20 +16,20 @@ import java.time.LocalDateTime;
 public class CommunityImage extends BaseTimeEntity {
 
     @Id
-    @Column(name = "image_uid")
+    @Column(name = "image_uid", length = 36, nullable = false)
     private String imageUid;
 
     @ManyToOne
     @JoinColumn(name = "community_uid", unique = true)
     private Community community;
 
-    @Column(name = "url")
+    @Column(name = "url", length = 2000, nullable = false)
     private String url;
 
-    @Column(name = "image_seq")
+    @Column(name = "image_seq", nullable = false)
     private int imageSeq;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
     public void setCommunity(Community community) {
