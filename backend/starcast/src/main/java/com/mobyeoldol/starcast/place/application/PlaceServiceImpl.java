@@ -80,6 +80,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .address1(curPlace.getAddress1())
                 .address2(curPlace.getAddress2())
                 .address3(curPlace.getAddress3())
+                .address4(curPlace.getAddress4()==null?"":curPlace.getAddress4())
                 .build();
 
         String websiteUrl = (curPlaceType == PlaceType.OBSERVATORY) ? curPlace.getWebAddress() : "None";

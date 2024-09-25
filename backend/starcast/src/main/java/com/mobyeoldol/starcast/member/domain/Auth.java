@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 public class Auth extends BaseTimeEntity {
 
     @Id
-    @Column(name = "auth_uid")
+    @Column(name = "auth_uid", length = 36, nullable = false)
     private String authId;
 
-    @Column(name = "kakao_uid", nullable = false)
+    @Column(name = "kakao_uid", unique = true, nullable = false)
     private int kakaoUid;
 }

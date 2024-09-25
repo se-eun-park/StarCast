@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class MySpot extends BaseTimeEntity {
 
     @Id
-    @Column(name = "my_spot_uid")
+    @Column(name = "my_spot_uid", length = 36, nullable = false)
     private String mySpotUid;
 
     @ManyToOne

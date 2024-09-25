@@ -21,7 +21,7 @@ import java.util.List;
 public class Profile extends BaseTimeEntity {
 
     @Id
-    @Column(name = "profile_uid")
+    @Column(name = "profile_uid", length = 36, nullable = false)
     private String profileUid;
 
     @OneToOne
@@ -29,25 +29,25 @@ public class Profile extends BaseTimeEntity {
     private Auth auth;
 
     @ManyToOne
-    @JoinColumn(name = "rank_uid")
+    @JoinColumn(name = "rank_uid", nullable = false)
     private Rank rank;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 320, nullable = false)
     private String email;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 20, nullable = false)
     private String name;
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", length = 14, nullable = false)
     private String nickname;
 
-    @Column(name = "profile_image_num")
+    @Column(name = "profile_image_num", length = 20, nullable = false)
     private String profileImgNum;
 
-    @Column(name = "exp")
+    @Column(name = "exp", nullable = false)
     private int exp;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
     @OneToMany(mappedBy = "profile")

@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 public class Rank {
 
     @Id
-    @Column(name = "rank_uid", nullable = false)
+    @Column(name = "rank_uid", length = 36, nullable = false)
     private String rankUid;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 10, nullable = false)
     private String name;
 }

@@ -23,7 +23,7 @@ import java.util.List;
 public class Community extends BaseTimeEntity {
 
     @Id
-    @Column(name = "community_uid")
+    @Column(name = "community_uid", length = 36, nullable = false)
     private String communityUid;
 
     @ManyToOne
@@ -34,17 +34,17 @@ public class Community extends BaseTimeEntity {
     @JoinColumn(name = "place_uid", unique = true)
     private Place place;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 200, nullable = false)
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 500, nullable = false)
     private String content;
 
     @OneToOne
     @JoinColumn(name = "plan_uid", unique = true)
     private Plan plan;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
     @OneToMany(mappedBy = "community")
