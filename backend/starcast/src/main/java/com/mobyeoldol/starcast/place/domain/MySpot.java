@@ -25,7 +25,4 @@ public class MySpot extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "place_uid")
     private Place place;
-
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
 }
