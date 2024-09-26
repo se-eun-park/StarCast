@@ -60,6 +60,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateMyNickname(String profileUid, String nickname) {
+        profileUid = "profile1"; // 테스트
         log.info("[나의 정보 수정 (닉네임) API] 1. profile 조회");
         Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
         if(optionalProfile.isEmpty()) {
@@ -84,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
         Profile profile = optionalProfile.get();
 
         log.info("[나의 정보 수정 (캐스타이미지) API] 2. 캐스타이미지 수정 및 저장");
-        profile.setNickname(image);
+        profile.setProfileImgNum(image);
         profileRepository.save(profile);
     }
 
