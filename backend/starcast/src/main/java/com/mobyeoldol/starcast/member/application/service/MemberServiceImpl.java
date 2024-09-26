@@ -1,5 +1,7 @@
 package com.mobyeoldol.starcast.member.application.service;
 
+import com.mobyeoldol.starcast.community.domain.Community;
+import com.mobyeoldol.starcast.community.domain.repository.CommunityRepository;
 import com.mobyeoldol.starcast.member.application.dto.AddressDto;
 import com.mobyeoldol.starcast.member.application.dto.AuthorDto;
 import com.mobyeoldol.starcast.member.domain.*;

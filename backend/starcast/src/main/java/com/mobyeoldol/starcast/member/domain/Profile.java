@@ -1,5 +1,7 @@
 package com.mobyeoldol.starcast.member.domain;
 
+import com.mobyeoldol.starcast.auth.domain.Auth;
+import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

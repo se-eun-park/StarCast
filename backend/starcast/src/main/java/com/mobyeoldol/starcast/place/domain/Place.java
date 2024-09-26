@@ -1,6 +1,6 @@
 package com.mobyeoldol.starcast.place.domain;
 
-import com.mobyeoldol.starcast.member.domain.Community;
+import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

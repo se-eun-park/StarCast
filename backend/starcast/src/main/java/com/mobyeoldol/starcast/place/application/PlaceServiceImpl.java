@@ -1,9 +1,9 @@
 package com.mobyeoldol.starcast.place.application;
 
-import com.mobyeoldol.starcast.member.domain.Community;
-import com.mobyeoldol.starcast.member.domain.CommunityImage;
-import com.mobyeoldol.starcast.member.domain.repository.CommunityRepository;
-import com.mobyeoldol.starcast.member.domain.repository.ReactionRepository;
+import com.mobyeoldol.starcast.community.domain.Community;
+import com.mobyeoldol.starcast.community.domain.CommunityImage;
+import com.mobyeoldol.starcast.community.domain.repository.CommunityRepository;
+import com.mobyeoldol.starcast.community.domain.repository.ReactionRepository;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;

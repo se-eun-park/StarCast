@@ -1,4 +1,4 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.community.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
