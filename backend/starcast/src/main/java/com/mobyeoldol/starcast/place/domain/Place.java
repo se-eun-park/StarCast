@@ -46,6 +46,7 @@ public class Place {
     @Column(name = "image", length = 2000)
     private String image;
 
+    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Community> communities = new ArrayList<>();
 }

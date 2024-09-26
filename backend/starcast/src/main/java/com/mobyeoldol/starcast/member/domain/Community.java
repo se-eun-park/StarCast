@@ -47,6 +47,7 @@ public class Community extends BaseTimeEntity {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "community")
     private List<CommunityImage> communityImages = new ArrayList<CommunityImage>();
 

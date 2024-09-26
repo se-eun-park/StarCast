@@ -50,6 +50,7 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "profile")
     private List<Community> communities = new ArrayList<Community>();
 
