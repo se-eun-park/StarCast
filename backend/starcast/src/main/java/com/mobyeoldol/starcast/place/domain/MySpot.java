@@ -3,13 +3,11 @@ package com.mobyeoldol.starcast.place.domain;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import com.mobyeoldol.starcast.member.domain.Profile;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,11 +19,11 @@ public class MySpot extends BaseTimeEntity {
     private String mySpotUid;
 
     @ManyToOne
-    @JoinColumn(name = "profile_uid", unique = true)
+    @JoinColumn(name = "profile_uid")
     private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "place_uid", unique = true)
+    @JoinColumn(name = "place_uid")
     private Place place;
 
     @Column(name = "is_deleted")
