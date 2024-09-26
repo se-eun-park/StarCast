@@ -42,10 +42,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/update-nickname")
+    @PatchMapping("/update-nickname/{nickname}")
     public ResponseEntity<?> updateMyNickname(
             @RequestHeader("Authorization") String bearerToken,
-            @RequestBody String nickname)
+            @PathVariable String nickname)
     {
         log.info("[나의 정보 수정 (닉네임) API] PATCH /api/v1/place/update-nickname");
 
@@ -61,10 +61,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/update-profile-image")
+    @PatchMapping("/update-profile-image/{image}")
     public ResponseEntity<?> updateMyProfileImage(
             @RequestHeader("Authorization") String bearerToken,
-            @RequestBody String image)
+            @PathVariable String image)
     {
         log.info("[나의 정보 수정 (캐스타이미지) API] PATCH /api/v1/member/update-profile-image");
 
