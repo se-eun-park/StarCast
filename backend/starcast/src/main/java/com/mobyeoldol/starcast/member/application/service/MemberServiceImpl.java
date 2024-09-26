@@ -60,7 +60,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateMyNickname(String profileUid, String nickname) {
-        profileUid = "profile1"; // 테스트
         log.info("[나의 정보 수정 (닉네임) API] 1. profile 조회");
         Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
         if(optionalProfile.isEmpty()) {
@@ -69,7 +68,20 @@ public class MemberServiceImpl implements MemberService {
         }
         Profile profile = optionalProfile.get();
 
-        log.info("[나의 정보 수정 (닉네임) API] 2. 닉네임 수정 및 저장");
+        log.info("[나의 정보 수정 (닉네임) API] 2. 자신이 동일한 닉네임을 다시 설정하려고 하는지 확인");
+        if (profile.getNickname().equals(nickname)) {
+            log.error("[나의 정보 수정 (닉네임) API] 2-1. 같은 닉네임을 사용 중입니다.");
+            throw new IllegalArgumentException("같은 닉네임을 사용 중입니다.");
+        }
+
+        log.info("[나의 정보 수정 (닉네임) API] 3. 닉네임 중복 검사");
+        Optional<Profile> existingProfile = profileRepository.findByNickname(nickname);
+        if (existingProfile.isPresent()) {
+            log.error("[나의 정보 수정 (닉네임) API] 2-2. 사용 중인 닉네임입니다.");
+            throw new IllegalArgumentException("사용 중인 닉네임입니다.");
+        }
+
+        log.info("[나의 정보 수정 (닉네임) API] 3. 닉네임 수정 및 저장");
         profile.setNickname(nickname);
         profileRepository.save(profile);
     }
