@@ -6,10 +6,12 @@ import com.mobyeoldol.starcast.member.application.dto.AddressDto;
 import com.mobyeoldol.starcast.member.application.dto.AuthorDto;
 import com.mobyeoldol.starcast.member.domain.*;
 import com.mobyeoldol.starcast.member.domain.repository.*;
-import com.mobyeoldol.starcast.member.presentation.response.CommunityByMemberResponse;
-import com.mobyeoldol.starcast.member.presentation.response.MyInfoResponse;
+import com.mobyeoldol.starcast.member.presentation.request.UpdateMySpotRequest;
+import com.mobyeoldol.starcast.member.presentation.response.*;
+import com.mobyeoldol.starcast.place.domain.MySpot;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.repository.MySpotRepository;
+import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,65 @@ public class MemberServiceImpl implements MemberService {
     private final RankRepository rankRepository;
     private final CommunityRepository communityRepository;
     private final MySpotRepository mySpotRepository;
+    private final PlaceRepository placeRepository;
+
+    @Override
+    public void updateMySpot(String profileUid, UpdateMySpotRequest request) {
+        log.info("[나의 정보 수정 (내 주소) API] 1. 주소1, 주소2, 주소3, 주소4 정보를 통해 Place 테이블에서 해당 장소를 찾기");
+        Optional<Place> optionalPlace = placeRepository.findByAddress1AndAddress2AndAddress3AndAddress4(
+                request.getAddress1(), request.getAddress2(), request.getAddress3(), request.getAddress4()
+        );
+
+        if (optionalPlace.isEmpty()) {
+            log.error("[나의 정보 수정 (내 주소) API] 1-1. 해당하는 장소를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("해당하는 장소를 찾을 수 없습니다.");
+        }
+        Place place = optionalPlace.get();
+
+        log.info("[나의 정보 수정 (내 주소) API] 2. profileUid 확인 후, MySpot 테이블의 place_uid 업데이트");
+        Optional<MySpot> optionalMySpot = mySpotRepository.findByProfile_ProfileUid(profileUid);
+
+        if (optionalMySpot.isEmpty()) {
+            log.error("[나의 정보 수정 (내 주소) API] 2-2. 해당 프로필에 대한 장소 정보를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("해당 프로필에 대한 장소 정보를 찾을 수 없습니다.");
+        }
+        MySpot mySpot = optionalMySpot.get();
+
+        log.info("[나의 정보 수정 (내 주소) API] 3. MySpot의 장소 아이디를 업데이트");
+        mySpot.setPlace(place);
+        mySpotRepository.save(mySpot);
+    }
+
+    @Override
+    public void updateMyNickname(String profileUid, String nickname) {
+        log.info("[나의 정보 수정 (닉네임) API] 1. profile 조회");
+        Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
+        if(optionalProfile.isEmpty()) {
+            log.error("[나의 정보 수정 (닉네임) API] 1-2. 해당 프로필 정보를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("해당 프로필 정보를 찾을 수 없습니다.");
+        }
+        Profile profile = optionalProfile.get();
+
+        log.info("[나의 정보 수정 (닉네임) API] 2. 닉네임 수정 및 저장");
+        profile.setNickname(nickname);
+        profileRepository.save(profile);
+    }
+
+    @Override
+    public void updateMyProfileImage(String profileUid, String image) {
+        log.info("[나의 정보 수정 (캐스타이미지) API] 1. profile 조회");
+        Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
+        if(optionalProfile.isEmpty()) {
+            log.error("[나의 정보 수정 (캐스타이미지) API] 1-2. 해당 프로필 정보를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("해당 프로필 정보를 찾을 수 없습니다.");
+        }
+        Profile profile = optionalProfile.get();
+
+        log.info("[나의 정보 수정 (캐스타이미지) API] 2. 캐스타이미지 수정 및 저장");
+        profile.setNickname(image);
+        profileRepository.save(profile);
+    }
+
 
     @Override
     public MyInfoResponse getMemberInfo(String profileUid) {

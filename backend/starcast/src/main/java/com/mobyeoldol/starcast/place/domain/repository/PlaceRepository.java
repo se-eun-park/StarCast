@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface PlaceRepository  extends JpaRepository<Place, String> {
     Optional<Place> findByPlaceUid(String placeUid);
+
+    Optional<Place> findByAddress1AndAddress2AndAddress3AndAddress4(String address1, String address2, String address3, String address4);
 }
