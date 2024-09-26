@@ -7,10 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,7 +17,7 @@ import java.time.LocalDateTime;
 public class MySpot extends BaseTimeEntity {
 
     @Id
-    @Column(name = "my_spot_uid")
+    @Column(name = "my_spot_uid", length = 36, nullable = false)
     private String mySpotUid;
 
     @ManyToOne

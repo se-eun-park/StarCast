@@ -37,6 +37,9 @@ public class Place {
     @Column(name = "address3", length = 20, nullable = false)
     private String address3;
 
+    @Column(name = "address4", length = 20, nullable = false)
+    private String address4;
+
     @Column(name = "phone_num", length = 20)
     private String phoneNum;
 
