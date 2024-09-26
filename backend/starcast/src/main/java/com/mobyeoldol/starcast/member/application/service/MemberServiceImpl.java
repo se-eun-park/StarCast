@@ -33,40 +33,47 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateMySpot(String profileUid, UpdateMySpotRequest request) {
-        log.info("[나의 정보 수정 (내 주소) API] 1. 주소1, 주소2, 주소3, 주소4 정보를 통해 Place 테이블에서 해당 장소를 찾기");
+        log.info("[나의 정보 수정 (내 주소) API]  1. profile 조회");
+        Profile profile = getProfileInfo(profileUid);
+
+        log.info("[나의 정보 수정 (내 주소) API] 2. 주소1, 주소2, 주소3, 주소4 정보를 통해 Place 테이블에서 해당 장소를 찾기");
         Optional<Place> optionalPlace = placeRepository.findByAddress1AndAddress2AndAddress3AndAddress4(
                 request.getAddress1(), request.getAddress2(), request.getAddress3(), request.getAddress4()
         );
 
         if (optionalPlace.isEmpty()) {
-            log.error("[나의 정보 수정 (내 주소) API] 1-1. 해당하는 장소를 찾을 수 없습니다.");
+            log.error("[나의 정보 수정 (내 주소) API] 2-1. 해당하는 장소를 찾을 수 없습니다.");
             throw new IllegalArgumentException("해당하는 장소를 찾을 수 없습니다.");
         }
         Place place = optionalPlace.get();
 
-        log.info("[나의 정보 수정 (내 주소) API] 2. profileUid 확인 후, MySpot 테이블의 place_uid 업데이트");
+        log.info("[나의 정보 수정 (내 주소) API] 3. profileUid 확인 후, MySpot 테이블의 place_uid 업데이트");
         Optional<MySpot> optionalMySpot = mySpotRepository.findByProfile_ProfileUid(profileUid);
 
-        if (optionalMySpot.isEmpty()) {
-            log.error("[나의 정보 수정 (내 주소) API] 2-2. 해당 프로필에 대한 장소 정보를 찾을 수 없습니다.");
-            throw new IllegalArgumentException("해당 프로필에 대한 장소 정보를 찾을 수 없습니다.");
-        }
-        MySpot mySpot = optionalMySpot.get();
+        MySpot mySpot;
+        if (optionalMySpot.isPresent()) {
+            log.info("[나의 정보 수정 (내 주소) API] 4-1. 전에 장소를 저장한 적이 있었음");
+            mySpot = optionalMySpot.get();
 
-        log.info("[나의 정보 수정 (내 주소) API] 3. MySpot의 장소 아이디를 업데이트");
-        mySpot.setPlace(place);
+            log.info("[나의 정보 수정 (내 주소) API] MySpot의 장소 아이디를 업데이트");
+            mySpot.setPlace(place);
+            mySpotRepository.save(mySpot);
+            return;
+        }
+        log.info("[나의 정보 수정 (내 주소) API] 4-2. 내 주소를 새롭게 저장함");
+        mySpot = MySpot.builder()
+                .profile(profile)
+                .place(place)
+                .build();
+
+        log.info("[나의 정보 수정 (내 주소) API] MySpot의 장소 아이디를 업데이트");
         mySpotRepository.save(mySpot);
     }
 
     @Override
     public void updateMyNickname(String profileUid, String nickname) {
         log.info("[나의 정보 수정 (닉네임) API] 1. profile 조회");
-        Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
-        if(optionalProfile.isEmpty()) {
-            log.error("[나의 정보 수정 (닉네임) API] 1-2. 해당 프로필 정보를 찾을 수 없습니다.");
-            throw new IllegalArgumentException("해당 프로필 정보를 찾을 수 없습니다.");
-        }
-        Profile profile = optionalProfile.get();
+        Profile profile = getProfileInfo(profileUid);
 
         log.info("[나의 정보 수정 (닉네임) API] 2. 자신이 동일한 닉네임을 다시 설정하려고 하는지 확인");
         if (profile.getNickname().equals(nickname)) {
@@ -89,12 +96,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateMyProfileImage(String profileUid, String image) {
         log.info("[나의 정보 수정 (캐스타이미지) API] 1. profile 조회");
-        Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
-        if(optionalProfile.isEmpty()) {
-            log.error("[나의 정보 수정 (캐스타이미지) API] 1-2. 해당 프로필 정보를 찾을 수 없습니다.");
-            throw new IllegalArgumentException("해당 프로필 정보를 찾을 수 없습니다.");
-        }
-        Profile profile = optionalProfile.get();
+        Profile profile = getProfileInfo(profileUid);
 
         log.info("[나의 정보 수정 (캐스타이미지) API] 2. 캐스타이미지 수정 및 저장");
         profile.setProfileImgNum(image);
@@ -104,13 +106,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MyInfoResponse getMemberInfo(String profileUid) {
-
         log.info("[내 정보 가져오기 API] 1. 유저 정보 인증");
-        Optional<Profile> profile = profileRepository.findById(profileUid);
-        if (profile.isEmpty()) throw new RuntimeException("존재하지 않는 유저입니다.");
+        Profile profile = getProfileInfo(profileUid);
 
         log.info("[내 정보 가져오기 API] 2. 유저 랭크 확인");
-        Optional<Rank> rank = rankRepository.findById(profile.get().getRank().getRankUid());
+        Optional<Rank> rank = rankRepository.findById(profile.getRank().getRankUid());
         if (rank.isEmpty()) throw new RuntimeException("존재하지 않는 랭크입니다.");
 
         log.info("[내 정보 가져오기 API] 3. 유저의 내 장소 확인");
@@ -121,18 +121,17 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("[내 정보 가져오기 API] 4. 내 정보 리턴");
         return MyInfoResponse.builder()
-                .name(profile.get().getName())
-                .nickname(profile.get().getNickname())
-                .email(profile.get().getEmail())
-                .profileImage(profile.get().getProfileImgNum())
+                .name(profile.getName())
+                .nickname(profile.getNickname())
+                .email(profile.getEmail())
+                .profileImage(profile.getProfileImgNum())
                 .address(placeAddress)
-                .myCurExp(profile.get().getExp())
+                .myCurExp(profile.getExp())
                 .rank(rank.get().getName())
                 .build();
     }
 
     public List<CommunityByMemberResponse> getCommunityListByMember(String profileUid) {
-
         log.info("[내가 작성한 글 리스트 가져오기 API] 1. 내가 작성한 글 리스트 가져오기");
         Optional<List<Community>> communityList = communityRepository.findByProfileIdAndIsDeleted(profileUid);
         if (communityList.isEmpty()) throw new RuntimeException("글 리스트가 존재하지 않습니다.");
@@ -168,5 +167,14 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("[내가 작성한 글 리스트 가져오기 API] 3. 글 리스트를 응답 형식으로 가공 후 리턴");
         return communities;
+    }
+
+    private Profile getProfileInfo(String profileUid){
+        Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
+        if(optionalProfile.isEmpty()) {
+            log.error("[getProfileInfo 메서드] 1-2. 해당 프로필 정보를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("해당 프로필 정보를 찾을 수 없습니다.");
+        }
+        return optionalProfile.get();
     }
 }
