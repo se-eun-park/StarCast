@@ -12,9 +12,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: 'true'
-        use_sql_comments: 'true'
-        show_sql: 'true'
+        format_sql: "true"
+        use_sql_comments: "true"
+        show_sql: "true"
     hibernate:
       ddl-auto: validate
   redis:
@@ -34,4 +34,4 @@ kakao:
 
 base:
   profile-image: ${BASE_PROFILE_IMAGE}
-  server-domain : ${SERVER_DOMAIN}
+  server-domain: ${SERVER_DOMAIN}

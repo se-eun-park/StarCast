@@ -1,16 +1,15 @@
 package com.mobyeoldol.starcast.place.application;
 
-import com.mobyeoldol.starcast.place.domain.Community;
-import com.mobyeoldol.starcast.place.domain.CommunityImage;
+import com.mobyeoldol.starcast.member.domain.Community;
+import com.mobyeoldol.starcast.member.domain.CommunityImage;
+import com.mobyeoldol.starcast.member.domain.repository.CommunityRepository;
+import com.mobyeoldol.starcast.member.domain.repository.ReactionRepository;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import com.mobyeoldol.starcast.place.domain.enums.ReactionType;
-import com.mobyeoldol.starcast.place.domain.enums.SpotType;
-import com.mobyeoldol.starcast.place.domain.repository.CommunityRepository;
 import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
 import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
-import com.mobyeoldol.starcast.place.domain.repository.ReactionRepository;
 import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +43,8 @@ public class PlaceServiceImpl implements PlaceService {
                 .spotUid(UUID.randomUUID().toString())
                 .placeUid(placeUid)
                 .profileUid(profileUid)
-                .spotType(SpotType.FAVOURITE)
-                .castarPoint(-1)
+//                .spotType(SpotType.FAVOURITE)
+//                .castarPoint(-1)
                 .isDeleted(false)
                 .build();
 

@@ -31,7 +31,9 @@
       "@pages/*": ["pages/*"],
       "@queries/*": ["queries/*"],
       "@routers/*": ["routers/*"],
-      "@stores/*": ["stores/*"]
+      "@stores/*": ["stores/*"],
+      "@types/*": ["types/*"],
+      "@dummy/*": ["dummy/*"]
     }
   },
   "include": ["src", "**/*.ts", "**/*.tsx", "tsconfig.node.json", "postcss.config.js"]
