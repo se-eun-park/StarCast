@@ -1,6 +1,7 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.community.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.Plan;
 import jakarta.persistence.*;
@@ -23,11 +24,11 @@ public class Community extends BaseTimeEntity {
     private String communityUid;
 
     @ManyToOne
-    @JoinColumn(name = "profile_uid", unique = true)
+    @JoinColumn(name = "profile_uid", nullable = false)
     private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "place_uid", unique = true)
+    @JoinColumn(name = "place_uid", nullable = false)
     private Place place;
 
     @Column(name = "title", length = 200, nullable = false)
