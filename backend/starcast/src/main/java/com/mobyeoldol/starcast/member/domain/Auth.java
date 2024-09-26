@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "auth")
 public class Auth extends BaseTimeEntity {
 
     @Id

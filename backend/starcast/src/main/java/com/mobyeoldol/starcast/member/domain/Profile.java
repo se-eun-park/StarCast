@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "profile")
 public class Profile extends BaseTimeEntity {
 
     @Id

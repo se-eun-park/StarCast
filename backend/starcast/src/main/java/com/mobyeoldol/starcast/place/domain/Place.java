@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "place")
 public class Place {
     @Id
     @Column(name = "place_uid", length = 36, nullable = false)
