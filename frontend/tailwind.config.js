@@ -12,6 +12,15 @@ export default {
         teritory: '#9e9e9e',
       },
 
+      btn: {
+        text: '#000814',
+        secondarytext: '#8DBFF4',
+        disabledtext: '#336599',
+        primarybg: '#fafa33',
+        secondarybg: '#002254',
+        teritorybg: '##001A3F',
+      },
+
       bg: {
         50: '#B2D8FF',
         100: '#0064CC',

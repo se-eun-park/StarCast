@@ -61,7 +61,7 @@ function A2HSModal() {
             <button
               onClick={installApp}
               type='button'
-              className='text-sm px-[8.0625rem] py-[.625rem] flex items-center justify-center bg-primary rounded-full font-bold'
+              className='text-sm px-[8.0625rem] py-[.625rem] flex items-center justify-center bg-primary rounded-full font-bold text-bg-900'
             >
               당연하죠!
             </button>
