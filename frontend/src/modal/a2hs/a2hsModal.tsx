@@ -40,17 +40,17 @@ function A2HSModal() {
 
   return (
     <div
-      className={`${a2hs ? '' : 'hidden'} z-[10] w-full h-[100dvh] fixed left-0 top-0 flex items-end justify-center bg-[#4C4C4C] bg-opacity-80`}
+      className={`${a2hs ? '' : 'hidden'} z-10 w-full h-[100dvh] fixed left-0 top-0 flex items-end justify-center bg-black bg-opacity-70`}
     >
-      <div className='w-full max-w-[600px] px-7 py-4 flex flex-col justify-center items-center rounded-t-3xl bg-white bottom-0 z-30 max-h-[400px]'>
+      <div className='w-full px-5 py-6 flex flex-col justify-center items-center rounded-t-xl bg-bg-800 bottom-0 z-30'>
         <div className='w-full text-xl'>
-          <p className='text-3xl py-8 text-center'>스타캐스트 바로가기를 추가하시겠어요?</p>
+          <p className='text-xl py-3 text-center'>스타캐스트</p>
 
-          <div className='gap-x-5 flex justify-between items-center'>
+          <div className='gap-5 px-5 flex justify-between items-center'>
             <button
               onClick={() => setA2hs(undefined)}
               type='button'
-              className='py-6 flex-1 flex items-center justify-center bg-[#E5E5ED] rounded-xl text-[#6B6E78]'
+              className='py-2 flex-1 flex items-center justify-center bg-[#E5E5ED] rounded-xl text-[#6B6E78]'
             >
               취소
             </button>
@@ -58,7 +58,7 @@ function A2HSModal() {
             <button
               onClick={installApp}
               type='button'
-              className='py-6 flex-1 flex items-center justify-center bg-primary rounded-xl'
+              className='py-2 flex-1 flex items-center justify-center bg-primary rounded-xl'
             >
               추가하기
             </button>
