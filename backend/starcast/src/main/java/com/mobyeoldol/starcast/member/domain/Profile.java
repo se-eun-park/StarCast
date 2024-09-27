@@ -1,19 +1,23 @@
 package com.mobyeoldol.starcast.member.domain;
 
+import com.mobyeoldol.starcast.auth.domain.Auth;
+import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.notice.domain.Consent;
+import com.mobyeoldol.starcast.notice.domain.Notice;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "profile")
 public class Profile extends BaseTimeEntity {
 
     @Id
@@ -46,8 +50,15 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "profile")
-    private List<Community> communities = new ArrayList<Community>();
+    private List<Community> communities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile")
+    private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile")
+    private List<Consent> consents = new ArrayList<>();
 
     public void addCommunity(Community community) {
         this.communities.add(community);

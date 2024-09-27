@@ -1,4 +1,4 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.community.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -20,7 +20,7 @@ public class CommunityImage extends BaseTimeEntity {
     private String imageUid;
 
     @ManyToOne
-    @JoinColumn(name = "community_uid", unique = true)
+    @JoinColumn(name = "community_uid", nullable = false)
     private Community community;
 
     @Column(name = "url", length = 2000, nullable = false)

@@ -12,4 +12,6 @@ public interface MySpotRepository extends JpaRepository<MySpot, String> {
 
     @Query("SELECT place FROM MySpot WHERE profile.profileUid = :profileUid")
     Optional<Place> findByProfileIdAndSpotType(@Param("profileUid") String profileUid);
+
+    Optional<MySpot> findByProfile_ProfileUid(String profileUid);
 }

@@ -1,6 +1,7 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.community.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.place.domain.enums.ReactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "reaction")
 public class Reaction extends BaseTimeEntity {
 
     @Id

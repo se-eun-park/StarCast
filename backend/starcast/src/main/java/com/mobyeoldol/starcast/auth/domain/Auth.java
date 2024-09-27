@@ -1,4 +1,4 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.auth.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "auth")
 public class Auth extends BaseTimeEntity {
 
     @Id

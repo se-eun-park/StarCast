@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "plan")
 public class Plan extends BaseTimeEntity {
 
     @Id
