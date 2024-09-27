@@ -41,6 +41,12 @@ public class Place {
     @Column(name = "address4", length = 20, nullable = false)
     private String address4;
 
+    @Column(name = "nx")
+    private Integer nx;
+
+    @Column(name = "ny")
+    private Integer ny;
+
     @Column(name = "phone_num", length = 20)
     private String phoneNum;
 
