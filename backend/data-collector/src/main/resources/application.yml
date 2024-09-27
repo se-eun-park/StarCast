@@ -3,5 +3,14 @@ spring:
     name: data-collector
   config:
     import: optional:file:.env[.properties]
+  timezone: Asia/Seoul
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
 server:
   port: ${SERVER_PORT}
+
+api:
+  key: ${MY_SERVICE_KEY}
