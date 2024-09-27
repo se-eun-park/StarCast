@@ -1,5 +1,8 @@
+export { default as Svg404CastarIcon } from './404CastarIcon'
+export { default as CloseIcon } from './CloseIcon'
 export { default as CloudIcon } from './CloudIcon'
 export { default as FullMoonIcon } from './FullMoonIcon'
+export { default as HomeIcon } from './HomeIcon'
 export { default as LightMaxIcon } from './LightMaxIcon'
 export { default as LightOffIcon } from './LightOffIcon'
 export { default as LightOnIcon } from './LightOnIcon'
