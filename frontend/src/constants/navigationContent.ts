@@ -1,4 +1,3 @@
-import SvgCalendarIcon from '@assets/svg/calendar/CalendarIcon'
 import SvgEditIcon from '@assets/svg/review/EditIcon'
 
 interface MyComponent {
@@ -17,10 +16,11 @@ interface PathToNavContent {
 }
 
 const pathToNavContent: PathToNavContent = {
-  '/calendar': { label: '캘린더', Component: SvgCalendarIcon, navigate: '/home' },
+  '/calendar': { label: '캘린더' },
   '/observing-spot': { label: '관측지' },
   '/mypage': { label: 'MY' },
-  '/review': { label: '후기', Component: SvgEditIcon, navigate: '/home' },
+  '/review': { label: '후기', Component: SvgEditIcon, navigate: '/review/new' },
+  '/review/new': { label: '후기 작성' },
 }
 
 export { pathToNavContent }
