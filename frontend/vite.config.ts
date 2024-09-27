@@ -30,4 +30,7 @@ export default defineConfig({
       { find: '@modal', replacement: '/src/modal' },
     ],
   },
+  server: {
+    port: 3000,
+  },
 })

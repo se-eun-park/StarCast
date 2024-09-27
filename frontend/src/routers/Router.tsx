@@ -5,11 +5,13 @@ import HomePage from '@pages/HomePage'
 import CalendarPage from '@pages/CalendarPage'
 import ObservingSpotPage from '@pages/ObservingSpotPage'
 import Mypage from '@pages/Mypage'
+import Layout from '@components/ui/Layout'
 
 const Router = () => {
   const routes: RouteObject[] = [
     {
       path: '/',
+      element: <Layout />,
       errorElement: <NotFoundPage />,
       children: [
         {
