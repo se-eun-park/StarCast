@@ -27,4 +27,7 @@ export default defineConfig({
       { find: '@dummy', replacement: '/src/dummy' },
     ],
   },
+  server: {
+    port: 3000,
+  },
 })
