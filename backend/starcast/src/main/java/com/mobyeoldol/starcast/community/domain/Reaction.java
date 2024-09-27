@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "reaction")
 public class Reaction extends BaseTimeEntity {
 
     @Id

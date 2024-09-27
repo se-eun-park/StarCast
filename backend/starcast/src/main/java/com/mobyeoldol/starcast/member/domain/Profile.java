@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "profile")
 public class Profile extends BaseTimeEntity {
 
     @Id
@@ -47,6 +48,7 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "profile")
     private List<Community> communities = new ArrayList<Community>();
 

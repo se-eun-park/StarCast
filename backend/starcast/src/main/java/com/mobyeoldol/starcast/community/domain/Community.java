@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "community")
 public class Community extends BaseTimeEntity {
 
     @Id
@@ -44,6 +45,7 @@ public class Community extends BaseTimeEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "community")
     private List<CommunityImage> communityImages = new ArrayList<CommunityImage>();
 
