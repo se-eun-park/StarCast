@@ -18,6 +18,7 @@ export default defineConfig({
       { find: '@apis', replacement: '/src/apis' },
       { find: '@assets', replacement: '/src/assets' },
       { find: '@components', replacement: '/src/components' },
+      { find: '@constants', replacement: '/src/constants' },
       { find: '@hooks', replacement: '/src/hooks' },
       { find: '@pages', replacement: '/src/pages' },
       { find: '@queries', replacement: '/src/queries' },

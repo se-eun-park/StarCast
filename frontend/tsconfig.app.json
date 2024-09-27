@@ -27,6 +27,7 @@
       "@apis/*": ["apis/*"],
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
+      "@constants/*": ["constants/*"],
       "@hooks/*": ["hooks/*"],
       "@pages/*": ["pages/*"],
       "@queries/*": ["queries/*"],
