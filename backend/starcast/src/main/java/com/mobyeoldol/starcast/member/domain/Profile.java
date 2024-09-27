@@ -3,6 +3,8 @@ package com.mobyeoldol.starcast.member.domain;
 import com.mobyeoldol.starcast.auth.domain.Auth;
 import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.notice.domain.Consent;
+import com.mobyeoldol.starcast.notice.domain.Notice;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -50,7 +52,13 @@ public class Profile extends BaseTimeEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "profile")
-    private List<Community> communities = new ArrayList<Community>();
+    private List<Community> communities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile")
+    private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile")
+    private List<Consent> consents = new ArrayList<>();
 
     public void addCommunity(Community community) {
         this.communities.add(community);
