@@ -27,6 +27,7 @@ export default defineConfig({
       { find: '@stores', replacement: '/src/stores' },
       { find: '@types', replacement: '/src/types' },
       { find: '@dummy', replacement: '/src/dummy' },
+      { find: '@modal', replacement: '/src/modal' },
     ],
   },
 })

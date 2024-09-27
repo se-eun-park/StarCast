@@ -1,4 +1,4 @@
-import A2HSModal from '@components/a2hs/index.tsx'
+import A2HSModal from '@modal/a2hs/a2hsModal'
 
 const HomePage = () => {
   return (

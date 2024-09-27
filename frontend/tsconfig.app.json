@@ -33,7 +33,8 @@
       "@routers/*": ["routers/*"],
       "@stores/*": ["stores/*"],
       "@types/*": ["types/*"],
-      "@dummy/*": ["dummy/*"]
+      "@dummy/*": ["dummy/*"],
+      "@modal/*": ["modal/*"]
     }
   },
   "include": ["src", "**/*.ts", "**/*.tsx", "tsconfig.node.json", "postcss.config.js"]
