@@ -1,12 +1,15 @@
 import { Outlet } from 'react-router-dom'
-import Navbar from '@components/navbar'
-
-export default function Layout() {
+import NavbarWithLabel from '@components/navbar/NavbarWithLabel'
+import { PropsWithChildren } from 'react'
+export default function Layout({ children }: PropsWithChildren) {
   return (
-    <div className='w-full h-dvh bg-gradient'>
-      <div className='w-[37.5rem] mx-auto h-full border-l border-r border-white'>
-        <Navbar />
-        <Outlet />
+    <div className='w-full h-full bg-gradient'>
+      <div className='w-full min-h-dvh'>
+        <div className='sm:w-[37.5rem] w-full mx-auto min-h-dvh border-l border-r border-white'>
+          <NavbarWithLabel />
+          <Outlet />
+          {children}
+        </div>
       </div>
     </div>
   )

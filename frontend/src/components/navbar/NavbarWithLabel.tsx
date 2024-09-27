@@ -5,7 +5,7 @@ import RouteBack from '@components/navbar/RouteBack'
 import { pathToNavContent } from '@constants/navigationContent.ts'
 import { useLocation } from 'react-router-dom'
 
-export default function Navbar() {
+export default function NavbarWithLabel() {
   const { pathname } = useLocation()
 
   if (!pathToNavContent.hasOwnProperty(pathname)) {
@@ -13,7 +13,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className='flex items-center justify-between w-full px-5 h-14'>
+    <div className='sticky top-0 flex items-center justify-between w-full px-5 h-14 bg-bg-900'>
       <RouteBack />
       <NavbarContent />
     </div>

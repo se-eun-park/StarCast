@@ -4,18 +4,18 @@ import { useLocation, useNavigate } from 'react-router-dom'
 export default function NavbarContent() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const excatNavContent = pathToNavContent[pathname]
+  const exactNavContent = pathToNavContent[pathname]
 
   return (
     <>
-      <div className='text-white'>{excatNavContent?.label ?? ''}</div>
-      {excatNavContent?.Component ? (
-        <excatNavContent.Component
+      <div className='text-white'>{exactNavContent?.label ?? ''}</div>
+      {exactNavContent?.Component ? (
+        <exactNavContent.Component
           className='w-6 h-6 cursor-pointer'
-          onClick={() => navigate(excatNavContent.navigate ?? '')}
+          onClick={() => navigate(exactNavContent.navigate ?? '')}
         />
       ) : (
-        <div></div>
+        <div className='w-9' />
       )}
     </>
   )
