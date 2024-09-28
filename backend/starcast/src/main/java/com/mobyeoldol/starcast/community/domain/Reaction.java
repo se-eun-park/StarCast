@@ -1,6 +1,7 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.community.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.place.domain.enums.ReactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,14 +22,14 @@ public class Reaction extends BaseTimeEntity {
     private String reactionUid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_uid")
+    @JoinColumn(name = "profile_uid", nullable = false)
     private Profile profile;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_uid")
+    @JoinColumn(name = "community_uid", nullable = false)
     private Community community;
 
-    @Column(name = "reaction_type")
+    @Column(name = "reaction_type", length = 20, nullable = false)
     @Enumerated(EnumType.STRING)
     private ReactionType reactionType;
 }

@@ -1,9 +1,9 @@
 package com.mobyeoldol.starcast.place.application;
 
-import com.mobyeoldol.starcast.member.domain.Community;
-import com.mobyeoldol.starcast.member.domain.CommunityImage;
-import com.mobyeoldol.starcast.member.domain.repository.CommunityRepository;
-import com.mobyeoldol.starcast.member.domain.repository.ReactionRepository;
+import com.mobyeoldol.starcast.community.domain.Community;
+import com.mobyeoldol.starcast.community.domain.CommunityImage;
+import com.mobyeoldol.starcast.community.domain.repository.CommunityRepository;
+import com.mobyeoldol.starcast.community.domain.repository.ReactionRepository;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
@@ -41,10 +41,8 @@ public class PlaceServiceImpl implements PlaceService {
         log.info("[즐겨찾기 등록 API] 2. 유효한 profile_uid와 입력받은 place_uid로 FavouriteSpot 테이블에 새로운 즐겨찾기 항목 생성");
         FavouriteSpot favouriteSpot = FavouriteSpot.builder()
                 .spotUid(UUID.randomUUID().toString())
-                .placeUid(placeUid)
                 .profileUid(profileUid)
-//                .spotType(SpotType.FAVOURITE)
-//                .castarPoint(-1)
+                .placeUid(placeUid)
                 .isDeleted(false)
                 .build();
 
@@ -82,6 +80,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .address1(curPlace.getAddress1())
                 .address2(curPlace.getAddress2())
                 .address3(curPlace.getAddress3())
+                .address4(curPlace.getAddress4()==null?"":curPlace.getAddress4())
                 .build();
 
         String websiteUrl = (curPlaceType == PlaceType.OBSERVATORY) ? curPlace.getWebAddress() : "None";

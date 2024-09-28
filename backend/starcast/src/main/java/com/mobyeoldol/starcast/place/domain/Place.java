@@ -1,6 +1,6 @@
 package com.mobyeoldol.starcast.place.domain;
 
-import com.mobyeoldol.starcast.member.domain.Community;
+import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,6 +37,15 @@ public class Place {
 
     @Column(name = "address3", length = 20, nullable = false)
     private String address3;
+
+    @Column(name = "address4", length = 20, nullable = false)
+    private String address4;
+
+    @Column(name = "nx")
+    private Integer nx;
+
+    @Column(name = "ny")
+    private Integer ny;
 
     @Column(name = "phone_num", length = 20)
     private String phoneNum;
