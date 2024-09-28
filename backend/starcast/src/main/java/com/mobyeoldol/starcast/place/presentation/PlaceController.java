@@ -28,7 +28,7 @@ public class PlaceController {
             @PathVariable(value = "place_uid") String placeUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ){
-        log.info("[즐겨찾기 등록 API] POST /api/v1/place/{place_uid}/favourite");
+        log.info("[즐겨찾기 등록 API] POST /api/v1/place/{}/favourite", placeUid);
         String profileUid = ""; // authenticateMember(bearerToken);
 
         try {
@@ -39,7 +39,7 @@ public class PlaceController {
             FavouriteSpotResponse responseDto = new FavouriteSpotResponse(favouriteSpot.getSpotUid());
             return ResponseEntity.status(201).body(responseDto);
         } catch (IllegalStateException e) {
-            log.info("[즐겨찾기 등록 API] 즐겨찾기가 이미 등록되어 409 반환");
+            log.error("[즐겨찾기 등록 API] 즐겨찾기가 이미 등록되어 409 반환");
             return ResponseEntity.status(409).body(e.getMessage());
         }
 
@@ -50,7 +50,7 @@ public class PlaceController {
             @PathVariable(value = "spot_uid") String spotUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ){
-        log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{spot_uid}");
+        log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{}", spotUid);
         String profileUid = ""; // authenticateMember(bearerToken);
 
         try {
@@ -58,7 +58,7 @@ public class PlaceController {
             placeService.deleteFavourite(spotUid);
             return ResponseEntity.ok().body("즐겨찾기가 성공적으로 삭제되었습니다.");
         } catch (IllegalArgumentException e) {
-            log.info("[즐겨찾기 삭제 API] 즐겨찾기 항목을 찾을 수 없는 경우 404 반환");
+            log.error("[즐겨찾기 삭제 API] 즐겨찾기 항목을 찾을 수 없는 경우 404 반환");
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
@@ -69,7 +69,7 @@ public class PlaceController {
             @PathVariable(value = "place_uid") String placeUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ){
-        log.info("[장소 하나 자세히 보기 API] GET /api/v1/place/{place_uid}");
+        log.info("[장소 하나 자세히 보기 API] GET /api/v1/place/{}", placeUid);
         String profileUid = ""; // authenticateMember(bearerToken);
 
         try {
@@ -77,7 +77,7 @@ public class PlaceController {
             PlaceDetailsResponse placeDetailsResponse = placeService.getPlaceDetails(placeUid);
             return ResponseEntity.ok().body(placeDetailsResponse);
         } catch (IllegalArgumentException e) {
-            log.info("[장소 하나 자세히 보기 API] 장소를 찾을 수 없는 경우 404 반환");
+            log.error("[장소 하나 자세히 보기 API] 장소를 찾을 수 없는 경우 404 반환");
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
