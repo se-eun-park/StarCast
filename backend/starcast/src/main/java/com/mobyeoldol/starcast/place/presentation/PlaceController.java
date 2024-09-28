@@ -2,6 +2,7 @@ package com.mobyeoldol.starcast.place.presentation;
 
 import com.mobyeoldol.starcast.place.application.PlaceServiceImpl;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
+import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import com.mobyeoldol.starcast.place.presentation.response.FavouriteSpotResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
 import lombok.RequiredArgsConstructor;
@@ -74,5 +75,20 @@ public class PlaceController {
             log.info("[장소 하나 자세히 보기 API] 장소를 찾을 수 없는 경우 404 반환");
             return ResponseEntity.status(404).body(e.getMessage());
         }
+    }
+
+
+    @PatchMapping("/update-action/{place_type}")
+    public ResponseEntity<?> updateFavourite(
+            @PathVariable(value = "place_type") MainPlace mainPlace,
+            @RequestHeader(value = "Authorization") String bearerToken)
+    {
+        log.info("[메인 장소 유형 업데이트 API] PATCH /api/v1/place/update-action/{}", mainPlace);
+        String profileUid = ""; // authenticateMember(bearerToken);
+
+        log.info("[메인 장소 유형 업데이트 API] Service 로직 수행");
+        placeService.updateActionPlaceType(profileUid, mainPlace);
+
+        return ResponseEntity.ok().build();
     }
 }

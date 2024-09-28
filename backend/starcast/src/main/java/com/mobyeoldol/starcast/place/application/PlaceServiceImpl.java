@@ -4,8 +4,11 @@ import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.community.domain.CommunityImage;
 import com.mobyeoldol.starcast.community.domain.repository.CommunityRepository;
 import com.mobyeoldol.starcast.community.domain.repository.ReactionRepository;
+import com.mobyeoldol.starcast.member.domain.Profile;
+import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.Place;
+import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import com.mobyeoldol.starcast.place.domain.enums.ReactionType;
 import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
@@ -27,6 +30,7 @@ public class PlaceServiceImpl implements PlaceService {
     private final FavouriteSpotRepository favouriteSpotRepository;
     private final CommunityRepository communityRepository;
     private final ReactionRepository reactionRepository;
+    private final ProfileRepository profileRepository;
 
     @Override
     public FavouriteSpot createFavourite(String placeUid, String profileUid) {
@@ -104,6 +108,18 @@ public class PlaceServiceImpl implements PlaceService {
                 .reviewCount(reviewCount)
                 .topReviews(curTopReviews)
                 .build();
+    }
+
+    @Override
+    public void updateActionPlaceType(String profileUid, MainPlace mainPlace) {
+        profileUid = "profile1";
+        log.info("[메인 장소 유형 업데이트 Service] 1. 프로필 조회");
+        Profile profile = profileRepository.findById(profileUid)
+                .orElseThrow(() -> new IllegalArgumentException("해당 프로필 정보를 찾을 수 없습니다."));
+
+        log.info("[메인 장소 유형 업데이트 Service] 2. 메인 클릭한 장소 유형 업데이트");
+        profile.setActionPlaceType(mainPlace.name());
+        profileRepository.save(profile);
     }
 
     private Map<ReactionType, List<PlaceDetailsResponse.Review>> findTopReviewsByPlace(Place curPlace) {
