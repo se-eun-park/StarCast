@@ -1,6 +1,7 @@
 package com.mobyeoldol.starcast.place.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.member.domain.Profile;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +23,13 @@ public class FavouriteSpot extends BaseTimeEntity {
     @Column(name = "favourite_spot_uid", length = 36, nullable = false)
     private String spotUid;
 
-    @Column(name = "profile_uid", length = 36, nullable = false)
-    private String profileUid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_uid", nullable = false)
+    private Profile profile;
 
-    @Column(name = "place_uid", length = 36, nullable = false)
-    private String placeUid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "place_uid", nullable = false)
+    private Place place;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

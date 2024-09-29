@@ -3,14 +3,13 @@ package com.mobyeoldol.starcast.place.domain;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import com.mobyeoldol.starcast.member.domain.Profile;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
