@@ -48,6 +48,31 @@
     url('@assets/fonts/Pretendard/Pretendard-Bold.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'Paperlogy';
+  font-weight: 500;
+  src:
+    url('@assets/fonts/Paperlogy/Paperlogy-Medium.woff') format('woff'),
+    url('@assets/fonts/Paperlogy/Paperlogy-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Paperlogy';
+  font-weight: 600;
+  src:
+    url('@assets/fonts/Paperlogy/Paperlogy-SemiBold.woff') format('woff'),
+    url('@assets/fonts/Paperlogy/Paperlogy-SemiBold.woff2') format('woff2');
+}
+
 .bg-gradient {
   background: linear-gradient(180deg, #00122a 0%, #000814 100%);
+}
+
+@layer components {
+  .btn-primary-full {
+    @apply w-full px-6 py-2.5 rounded-full bg-btn-primary-bg text-btn-primary-text text-md font-paperlogy font-semibold; 
+  }
+  .btn-secondary-full {
+    @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-secondary-text text-md font-paperlogy font-semibold; 
+  }
 }

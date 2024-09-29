@@ -2,23 +2,51 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      paperlogy: ['Paperlogy', 'sans-serif'],
+      pretendard: ['Pretendard', 'sans-serif'],
+    },
+    fontSize: {
+      '3xl': '1.5rem',
+      '2xl': '1.375rem',
+      'xl': '1.25rem',
+      'lg': '1.125rem',
+      'md': '1rem',
+      'sm': '0.875rem',
+      'xs': '0.75rem',
+      '2xs': '0.6875rem',
+    },
     colors: {
       white: '#FFFFFF',
       black: '#000000',
 
       text: {
         primary: '#FFFFFF',
-        secondary: '#e0e0e0',
-        teritory: '#9e9e9e',
+        secondary: '#CCCCCC',
+        tertiary: '#999999',
       },
 
       btn: {
-        text: '#000814',
-        secondarytext: '#8DBFF4',
-        disabledtext: '#336599',
-        primarybg: '#fafa33',
-        secondarybg: '#002254',
-        teritorybg: '##001A3F',
+        primary: {
+          text: '#000814',
+          bg: '#FAFA33',
+        },
+        secondary: {
+          text: '#FAFA33',
+          bg: '#002254',
+        },
+        tertiary: {
+          text: '#B2D8FF',
+          bg: '#002254',
+        },
+        outline: {
+          text: '#FAFA33',
+          bg: '#000814',
+        },
+        disabled: {
+          text: '#336599',
+          bg: '#001A3F',
+        },
       },
 
       bg: {
