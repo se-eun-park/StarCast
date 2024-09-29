@@ -148,8 +148,8 @@ public class MemberServiceImpl implements MemberService {
 
                     return new MyReactionResponse.Reaction(
                             reaction.getReactionUid(),
-                            reaction.getReactionType().name(),  // Enum에서 String으로 변환
-                            reaction.getCreatedDate().toString(),  // 반응 등록 시간을 문자열로 변환
+                            reaction.getReactionType().name(),
+                            reaction.getCreatedDate().toString(),
                             relatedCommunity
                     );
                 })
