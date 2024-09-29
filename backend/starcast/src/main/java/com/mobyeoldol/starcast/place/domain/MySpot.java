@@ -18,8 +18,8 @@ public class MySpot extends BaseTimeEntity {
     @Column(name = "my_spot_uid", length = 36, nullable = false)
     private String mySpotUid;
 
-    @ManyToOne
-    @JoinColumn(name = "profile_uid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_uid", nullable = false)
     private Profile profile;
 
     @ManyToOne
