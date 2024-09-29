@@ -7,14 +7,14 @@ export default {
       pretendard: ['Pretendard', 'sans-serif'],
     },
     fontSize: {
-      '3xl': '1.5rem',
-      '2xl': '1.375rem',
-      'xl': '1.25rem',
-      'lg': '1.125rem',
-      'md': '1rem',
-      'sm': '0.875rem',
-      'xs': '0.75rem',
-      '2xs': '0.6875rem',
+      '3xl': ['1.5rem', { lineHeight: '2rem' }], 
+      '2xl': ['1.375rem', { lineHeight: '1.875rem' }], 
+      'xl': ['1.25rem', { lineHeight: '1.75rem' }], 
+      'lg': ['1.125rem', { lineHeight: '1.5rem' }],  
+      'md': ['1rem', { lineHeight: '1.5rem' }],      
+      'sm': ['0.875rem', { lineHeight: '1.25rem' }], 
+      'xs': ['0.75rem', { lineHeight: '1rem' }],     
+      '2xs': ['0.6875rem', { lineHeight: '0.875rem' }],
     },
     colors: {
       white: '#FFFFFF',
@@ -39,9 +39,8 @@ export default {
           text: '#B2D8FF',
           bg: '#002254',
         },
-        outline: {
+        outlined: {
           text: '#FAFA33',
-          bg: '#000814',
         },
         disabled: {
           text: '#336599',
