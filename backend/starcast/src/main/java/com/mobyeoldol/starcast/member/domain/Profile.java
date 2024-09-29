@@ -54,6 +54,9 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
+    @Column(name = "action_place_type")
+    private String actionPlaceType;
+
     @Builder.Default
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private List<Community> communities = new ArrayList<>();

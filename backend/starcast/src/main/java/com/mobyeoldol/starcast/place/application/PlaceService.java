@@ -1,6 +1,7 @@
 package com.mobyeoldol.starcast.place.application;
 
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
+import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import com.mobyeoldol.starcast.place.presentation.request.CreatePlanRequest;
 import com.mobyeoldol.starcast.place.presentation.request.ModifyPlanRequest;
 import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
@@ -16,4 +17,6 @@ public interface PlaceService {
     public PlanDetailsResponse getPlanDetails(String planUid, String profileUid);
     public PlanDetailsResponse changePlan(ModifyPlanRequest request, String profileUid);
     public void deletePlan(String planUid, String profileUid);
+
+    void updateActionPlaceType(String profileUid, MainPlace mainPlace);
 }
