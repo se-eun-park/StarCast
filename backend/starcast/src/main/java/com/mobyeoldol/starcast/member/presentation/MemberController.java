@@ -4,6 +4,7 @@ import com.mobyeoldol.starcast.member.application.service.MemberService;
 import com.mobyeoldol.starcast.member.presentation.request.UpdateMySpotRequest;
 import com.mobyeoldol.starcast.member.presentation.response.CommunityByMemberResponse;
 import com.mobyeoldol.starcast.member.presentation.response.MyInfoResponse;
+import com.mobyeoldol.starcast.member.presentation.response.MyReactionResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,7 +84,7 @@ public class MemberController {
 
     @GetMapping("/info")
     public ResponseEntity<MyInfoResponse> getMyInfo(@RequestHeader("Authorization") String bearerToken) {
-        log.info("[내 정보 가져오기 API] GET/api/v1/member/info");
+        log.info("[내 정보 가져오기 API] GET /api/v1/member/info");
 //        String profileUid = authenticateMember(bearerToken);
         String profileUid = "profile-uid-01";
 
@@ -95,7 +96,7 @@ public class MemberController {
 
     @GetMapping("/my-community-list")
     public ResponseEntity<?> getCommunityListByMember(@RequestHeader("Authorization") String bearerToken) {
-        log.info("[내가 작성한 글 리스트 가져오기 API] GET/api/v1/member/my-community-list");
+        log.info("[내가 작성한 글 리스트 가져오기 API] GET /api/v1/member/my-community-list");
 //        String profileUid = authenticateMember(bearerToken);
         String profileUid = "profile-uid-01";
 
@@ -103,5 +104,14 @@ public class MemberController {
         List<CommunityByMemberResponse> communities = memberService.getCommunityListByMember(profileUid);
 
         return ResponseEntity.status(HttpStatus.OK).body(communities);
+    }
+
+    @GetMapping("/my-reaction")
+    public ResponseEntity<MyReactionResponse> getMyReactions(@RequestHeader("Authorization") String bearerToken) {
+        log.info("[작성한 나의 반응 API] GET /api/v1/member/my-reaction");
+        String profileUid = ""; // authenticateMember(bearerToken);
+
+        log.info("[작성한 나의 반응 API] Service 로직 수행");
+        return ResponseEntity.ok().body(memberService.getMyReactions(profileUid));
     }
 }
