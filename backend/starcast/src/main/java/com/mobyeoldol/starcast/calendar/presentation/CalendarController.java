@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.calendar.presentation;
 
+import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import com.mobyeoldol.starcast.calendar.application.CalendarService;
 import com.mobyeoldol.starcast.calendar.presentation.request.MonthlyAstronomicalRequest;
 import com.mobyeoldol.starcast.calendar.presentation.response.MonthlyAstronomicalResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class CalendarController {
 
     private final CalendarService calendarService;
+    private final AuthService authService;
 
     @GetMapping("/astronomical-events")
     public ResponseEntity<MonthlyAstronomicalResponse> getMonthlyAstronomicalEvents(
@@ -31,7 +33,7 @@ public class CalendarController {
             throw new IllegalArgumentException("[월별 천문현상 조회 API] 날짜는 필수입니다. [양식 : yyyy-MM]");
         }
 
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[월별 천문현상 조회 API] Service 로직 수행");
         return ResponseEntity.ok().body(calendarService.getMonthlyAstronomicalEvents(request));
