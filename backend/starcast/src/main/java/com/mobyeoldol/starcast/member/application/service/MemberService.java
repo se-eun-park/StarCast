@@ -13,4 +13,6 @@ public interface MemberService {
     void updateMySpot(String profileUid, @Valid UpdateMySpotRequest request);
     void updateMyNickname(String profileUid, String nickname);
     void updateMyProfileImage(String profileUid, String image);
+
+    MyReactionResponse getMyReactions(String profileUid);
 }

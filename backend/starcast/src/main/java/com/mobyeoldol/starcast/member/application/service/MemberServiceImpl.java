@@ -1,7 +1,9 @@
 package com.mobyeoldol.starcast.member.application.service;
 
 import com.mobyeoldol.starcast.community.domain.Community;
+import com.mobyeoldol.starcast.community.domain.Reaction;
 import com.mobyeoldol.starcast.community.domain.repository.CommunityRepository;
+import com.mobyeoldol.starcast.community.domain.repository.ReactionRepository;
 import com.mobyeoldol.starcast.member.application.dto.AddressDto;
 import com.mobyeoldol.starcast.member.application.dto.AuthorDto;
 import com.mobyeoldol.starcast.member.domain.*;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
     private final CommunityRepository communityRepository;
     private final MySpotRepository mySpotRepository;
     private final PlaceRepository placeRepository;
+    private final ReactionRepository reactionRepository;
 
     @Override
     public void updateMySpot(String profileUid, UpdateMySpotRequest request) {
@@ -101,6 +105,57 @@ public class MemberServiceImpl implements MemberService {
         log.info("[나의 정보 수정 (캐스타이미지) API] 2. 캐스타이미지 수정 및 저장");
         profile.setProfileImgNum(image);
         profileRepository.save(profile);
+    }
+
+    @Override
+    public MyReactionResponse getMyReactions(String profileUid) {
+        log.info("[작성한 나의 반응 API] 1. 반응 목록 조회");
+        List<Reaction> reactions = reactionRepository.findByProfile_ProfileUid(profileUid);
+
+        log.info("[작성한 나의 반응 API] 2. 조회된 반응 목록을 MyReactionResponse 형식으로 변환");
+        List<MyReactionResponse.Reaction> reactionList = reactions.stream()
+                .map(reaction -> {
+                    Community community = reaction.getCommunity();
+
+                    Place place = community.getPlace();
+
+                    MyReactionResponse.Address address = new MyReactionResponse.Address(
+                            place.getAddress1(),
+                            place.getAddress2(),
+                            place.getAddress3(),
+                            place.getAddress4()
+                    );
+
+                    MyReactionResponse.Place responsePlace = new MyReactionResponse.Place(
+                            place.getPlaceUid(),
+                            place.getName(),
+                            place.getType().toString(),
+                            place.getImage() != null ? place.getImage() : null,
+                            address
+                    );
+
+                    MyReactionResponse.Community responseCommunity = new MyReactionResponse.Community(
+                            community.getCommunityUid(),
+                            community.getTitle(),
+                            community.getContent(),
+                            community.getCreatedDate().toString()  // 작성 시간을 문자열로 변환
+                    );
+
+                    MyReactionResponse.RelatedCommunity relatedCommunity = new MyReactionResponse.RelatedCommunity(
+                            responseCommunity,
+                            responsePlace
+                    );
+
+                    return new MyReactionResponse.Reaction(
+                            reaction.getReactionUid(),
+                            reaction.getReactionType().name(),
+                            reaction.getCreatedDate().toString(),
+                            relatedCommunity
+                    );
+                })
+                .collect(Collectors.toList());
+
+        return new MyReactionResponse(reactionList);
     }
 
 
