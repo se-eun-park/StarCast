@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface FavouriteSpotRepository extends JpaRepository<FavouriteSpot, String> {
-    Optional<FavouriteSpot> findByPlaceUidAndProfileUid(String placeUid, String profileUid);
+    Optional<FavouriteSpot> findByPlace_PlaceUidAndProfile_ProfileUid(String placeUid, String profileUid);
 }
