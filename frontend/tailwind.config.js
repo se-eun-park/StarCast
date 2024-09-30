@@ -32,6 +32,7 @@ export default {
         700: '#001A3F',
         800: '#00122A',
         900: '#000814',
+        transparent: 'transparent',
       },
 
       primary: {
@@ -63,6 +64,9 @@ export default {
       borderRadius: {
         '2xl': '1.25rem',
         '3xl': '1.875rem',
+      },
+      screens: {
+        sm: '600px',
       },
     },
   },
