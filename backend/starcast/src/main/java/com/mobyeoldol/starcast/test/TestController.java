@@ -19,6 +19,6 @@ public class TestController {
     public ResponseEntity<String> test() {
 
         log.info("[server test api] GET /api/v1/test");
-        return ResponseEntity.status(HttpStatus.OK).body("It works!!!");
+        return ResponseEntity.ok("Server is running!");
     }
 }
