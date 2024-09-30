@@ -1,6 +1,6 @@
 import SvgEditIcon from '@assets/svg/review/EditIcon'
 
-interface MyComponent {
+type MyComponent = {
   className?: string
   onClick?: () => void
 }
@@ -11,7 +11,7 @@ type NavContent = {
   navigate?: string
 }
 
-interface PathToNavContent {
+type PathToNavContent = {
   [key: string]: NavContent
 }
 
