@@ -9,7 +9,23 @@ interface ProviderProps {
 }
 
 const Provider: FC<ProviderProps> = ({ children }) => {
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 2,
+        staleTime: 5000,
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
+        refetchOnReconnect: true,
+        refetchInterval: 5000,
+        refetchIntervalInBackground: false,
+      },
+      mutations: {
+        retry: 2,
+        retryDelay: (attemptIndex) => attemptIndex * 1000,
+      },
+    },
+  })
 
   return (
     <QueryClientProvider client={queryClient}>
