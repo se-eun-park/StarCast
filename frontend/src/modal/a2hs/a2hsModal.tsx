@@ -74,7 +74,8 @@ function A2HSModal() {
             <button
               onClick={() => setA2hs(undefined)}
               type='button'
-              className='text-xs px-5 py-2 flex items-center justify-center rounded-full text-btn-tertiary-text font-semibold'
+              // className='text-xs px-5 py-2 flex items-center justify-center rounded-full text-btn-tertiary-text font-semibold'
+              className='btn-text-full'
             >
               조금 더 친해진 뒤에 할게요
             </button>
