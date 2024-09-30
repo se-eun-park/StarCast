@@ -1,5 +1,7 @@
 package com.mobyeoldol.starcast.member.presentation;
 
+import com.mobyeoldol.starcast.calendar.presentation.response.MonthlyAstronomicalResponse;
+import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
 import com.mobyeoldol.starcast.member.application.service.MemberService;
 import com.mobyeoldol.starcast.member.presentation.request.UpdateMySpotRequest;
 import com.mobyeoldol.starcast.member.presentation.response.CommunityByMemberResponse;
@@ -24,7 +26,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PatchMapping("/update-address")
-    public ResponseEntity<?> updateMySpot(
+    public ResponseEntity<BaseResponseTemplate<?>> updateMySpot(
             @RequestHeader("Authorization") String bearerToken,
             @Valid @RequestBody UpdateMySpotRequest request,
             BindingResult bindingResult)
@@ -32,58 +34,67 @@ public class MemberController {
         log.info("[나의 정보 수정 (내 주소) API] PATCH /api/v1/member/update-address");
 
         if (bindingResult.hasErrors()) {
-            log.info("[나의 정보 수정 (내 주소) API] 입력값인 주소를 찾을 수 없는 경우 400 반환");
-            throw new IllegalArgumentException("주소1, 주소2, 주소4는 필수 항목입니다.");
+            BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(400, "주소1, 주소2, 주소4는 필수 항목입니다.");
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         String profileUid = ""; // authenticateMember(bearerToken);
 
         log.info("[나의 정보 수정 (내 주소) API] 내 주소 수정 Service 로직 수행");
         memberService.updateMySpot(profileUid, request);
-        return ResponseEntity.status(HttpStatus.OK).build();
+
+        log.info("[나의 정보 수정 (내 주소) API] 응답 반환");
+        BaseResponseTemplate<?> result = BaseResponseTemplate.success(null);
+        return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/update-nickname/{nickname}")
-    public ResponseEntity<?> updateMyNickname(
+    public ResponseEntity<BaseResponseTemplate<?>> updateMyNickname(
             @RequestHeader("Authorization") String bearerToken,
             @PathVariable String nickname)
     {
         log.info("[나의 정보 수정 (닉네임) API] PATCH /api/v1/place/update-nickname");
 
         if (nickname == null || nickname.trim().isEmpty()) {
-            log.info("[나의 정보 수정 (닉네임) API] 입력값인 닉네임을 찾을 수 없는 경우 400 반환");
-            throw new IllegalArgumentException("닉네임을 입력해주세요.");
+            BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(400, "닉네임을 입력해주세요.");
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         String profileUid = ""; // authenticateMember(bearerToken);
 
         log.info("[나의 정보 수정 (닉네임) API] 닉네임 수정 Service 로직 수행");
         memberService.updateMyNickname(profileUid, nickname);
-        return ResponseEntity.status(HttpStatus.OK).build();
+
+        log.info("[나의 정보 수정 (닉네임) API] 응답 반환");
+        BaseResponseTemplate<?> result = BaseResponseTemplate.success(null);
+        return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/update-profile-image/{image}")
-    public ResponseEntity<?> updateMyProfileImage(
+    public ResponseEntity<BaseResponseTemplate<?>> updateMyProfileImage(
             @RequestHeader("Authorization") String bearerToken,
             @PathVariable String image)
     {
         log.info("[나의 정보 수정 (캐스타이미지) API] PATCH /api/v1/member/update-profile-image");
 
         if (image == null || image.trim().isEmpty()) {
-            log.info("[나의 정보 수정 (캐스타이미지) API] 입력값인 이미지를 찾을 수 없는 경우 400 반환");
-            throw new IllegalArgumentException("이미지를 입력해주세요.");
+            BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(400, "이미지를 입력해주세요.");
+            return ResponseEntity.status(400).body(errorResponse);
         }
 
         String profileUid = ""; // authenticateMember(bearerToken);
 
         log.info("[나의 정보 수정 (캐스타이미지) API] 캐스타이미지 수정 Service 로직 수행");
         memberService.updateMyProfileImage(profileUid, image);
-        return ResponseEntity.status(HttpStatus.OK).build();
+
+        log.info("[나의 정보 수정 (캐스타이미지) API] 응답 반환");
+        BaseResponseTemplate<?> result = BaseResponseTemplate.success(null);
+        return ResponseEntity.ok(result);
     }
 
 
     @GetMapping("/info")
-    public ResponseEntity<MyInfoResponse> getMyInfo(@RequestHeader("Authorization") String bearerToken) {
+    public ResponseEntity<BaseResponseTemplate<?>> getMyInfo(@RequestHeader("Authorization") String bearerToken) {
         log.info("[내 정보 가져오기 API] GET /api/v1/member/info");
 //        String profileUid = authenticateMember(bearerToken);
         String profileUid = "profile-uid-01";
@@ -91,7 +102,9 @@ public class MemberController {
         log.info("[내 정보 가져오기 API] 내 정보 가져오기 Service 로직 수행");
         MyInfoResponse myInfo = memberService.getMemberInfo(profileUid);
 
-        return ResponseEntity.status(HttpStatus.OK).body(myInfo);
+        log.info("[내 정보 가져오기 API] 응답 반환");
+        BaseResponseTemplate<?> result = BaseResponseTemplate.success(myInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/my-community-list")
@@ -103,15 +116,21 @@ public class MemberController {
         log.info("[내가 작성한 글 리스트 가져오기 API] 글 리스트 가져오기 Service 로직 수행");
         List<CommunityByMemberResponse> communities = memberService.getCommunityListByMember(profileUid);
 
-        return ResponseEntity.status(HttpStatus.OK).body(communities);
+        log.info("[내가 작성한 글 리스트 가져오기 API] 응답 반환");
+        BaseResponseTemplate<?> result = BaseResponseTemplate.success(communities);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/my-reaction")
-    public ResponseEntity<MyReactionResponse> getMyReactions(@RequestHeader("Authorization") String bearerToken) {
+    public ResponseEntity<BaseResponseTemplate<?>> getMyReactions(@RequestHeader("Authorization") String bearerToken) {
         log.info("[작성한 나의 반응 API] GET /api/v1/member/my-reaction");
         String profileUid = ""; // authenticateMember(bearerToken);
 
         log.info("[작성한 나의 반응 API] Service 로직 수행");
-        return ResponseEntity.ok().body(memberService.getMyReactions(profileUid));
+        MyReactionResponse myReactionResponse = memberService.getMyReactions(profileUid);
+
+        log.info("[작성한 나의 반응 API] 응답 반환");
+        BaseResponseTemplate<?> result = BaseResponseTemplate.success(myReactionResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
