@@ -44,15 +44,15 @@ function A2HSModal() {
     <div
       className={`${a2hs ? '' : 'hidden'} z-10 w-full h-full fixed left-0 bottom-0 flex items-end justify-center bg-black bg-opacity-70`}
     >
-      <div className='w-[37.375rem] pt-8 pb-4 py-6 flex flex-col justify-center items-center rounded-t-3xl bg-bg-800 bottom-0 z-30 '>
-        <div className='w-full flex flex-col justify-center items-center gap-8'>
+      <div className='w-full max-w-[37.375rem] pt-8 pb-4 py-6 flex flex-col justify-center items-center rounded-t-3xl bg-bg-800 bottom-0 z-30 '>
+        <div className='w-full max-w-[22.5rem] flex flex-col justify-center items-center gap-8'>
           <div className='w-[17.75rem] h-[13.3125rem] flex flex-col items-center bottom-8 gap-4'>
             <SvgCastar3DIcon className='w-[6.25rem] h-[7.1875rem]' />
             <div>
-              <p className='text-2xl text-center font-medium text-primary-light'>
+              <p className='text-2xl text-center text-primary-light font-paperlogy font-medium'>
                 똑똑, 스타캐스트에요.
               </p>
-              <p className='text-2xl text-center font-medium text-white'>
+              <p className='text-[22px] text-center font-medium text-white font-paperlogy'>
                 홈 화면에 들어가도 될까요?
               </p>
               <p className='text-xs text-center py-1 text-text-secondary'>
@@ -61,11 +61,12 @@ function A2HSModal() {
             </div>
           </div>
 
-          <div className='gap-2 px-5 flex flex-col justify-center items-center'>
+          <div className='w-full gap-2 px-5 flex flex-col justify-center items-center'>
             <button
               onClick={installApp}
               type='button'
-              className='text-sm px-[8.0625rem] py-[.625rem] flex items-center justify-center bg-btn-primarybg rounded-full font-bold text-btn-text'
+              // className='text-sm px-[8.0625rem] py-[.625rem] flex items-center justify-center bg-btn-primary-bg rounded-full font-bold text-btn-primary-text'
+              className='btn-primary-full'
             >
               당연하죠!
             </button>
@@ -73,7 +74,8 @@ function A2HSModal() {
             <button
               onClick={() => setA2hs(undefined)}
               type='button'
-              className='text-xs px-5 py-2 flex items-center justify-center rounded-full text-btn-secondarytext font-bold'
+              // className='text-xs px-5 py-2 flex items-center justify-center rounded-full text-btn-tertiary-text font-semibold'
+              className='btn-text-full'
             >
               조금 더 친해진 뒤에 할게요
             </button>
