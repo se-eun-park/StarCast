@@ -1,7 +1,6 @@
 package com.mobyeoldol.starcast.member.presentation;
 
 import com.mobyeoldol.starcast.auth.application.service.AuthService;
-import com.mobyeoldol.starcast.calendar.presentation.response.MonthlyAstronomicalResponse;
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
 import com.mobyeoldol.starcast.member.application.service.MemberService;
 import com.mobyeoldol.starcast.member.presentation.request.UpdateMySpotRequest;
