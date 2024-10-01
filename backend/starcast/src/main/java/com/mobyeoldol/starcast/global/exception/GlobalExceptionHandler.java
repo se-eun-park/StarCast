@@ -20,12 +20,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
-    // IllegalArgumentException 등 특정 예외 처리
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<BaseResponseTemplate<?>> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
         BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(
                 HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<BaseResponseTemplate<?>> handleIllegalStateException(IllegalStateException ex, WebRequest request) {
+        BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(
+                HttpStatus.CONFLICT.value(), ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 }
