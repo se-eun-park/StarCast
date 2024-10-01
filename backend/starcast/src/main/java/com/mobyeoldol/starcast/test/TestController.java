@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.test;
 
+import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping()
-    public ResponseEntity<String> test() {
+    public ResponseEntity<BaseResponseTemplate<String>> test() {
 
         log.info("[server test api] GET /api/v1/test");
-        return ResponseEntity.ok("Server is running!");
+
+        BaseResponseTemplate<String> successResponse = BaseResponseTemplate.success("Server is running!");
+        return ResponseEntity.ok(successResponse);
     }
 }
+

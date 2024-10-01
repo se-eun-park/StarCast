@@ -155,7 +155,7 @@ public class PlaceServiceImpl implements PlaceService {
         Plan plan = planRepository.findById(planUid)
                 .orElseThrow(() -> new IllegalStateException("[장소 찜 조회 API] 1-1. 해당 찜을 찾을 수 없습니다."));
 
-        log.info("[찜 조회] 비교 : "+profileUid+", "+plan.getProfile().getProfileUid());
+        log.info("[장소 찜 조회 API] 비교 : "+profileUid+", "+plan.getProfile().getProfileUid());
 
         log.info("[장소 찜 조회 API] 2. Profile 일치 여부 확인");
         if (!profileUid.equals(plan.getProfile().getProfileUid())) {
