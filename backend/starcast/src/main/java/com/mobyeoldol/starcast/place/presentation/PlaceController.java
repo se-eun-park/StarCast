@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.place.presentation;
 
+import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import com.mobyeoldol.starcast.place.application.PlaceServiceImpl;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class PlaceController {
 
     private final PlaceServiceImpl placeService;
+    private final AuthService authService;
 
     @PostMapping("/{place_uid}/favourite")
     public ResponseEntity<?> createFavourite(
@@ -30,7 +32,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken
     ){
         log.info("[즐겨찾기 등록 API] POST /api/v1/place/{}/favourite", placeUid);
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         try {
             log.info("[즐겨찾기 등록 API] 즐겨찾기 등록 Service 로직 수행");
@@ -52,7 +54,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken
     ){
         log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{}", spotUid);
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         try {
             log.info("[즐겨찾기 삭제 API] 즐겨찾기 삭제 Service 로직 수행");
@@ -71,7 +73,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken
     ){
         log.info("[장소 하나 자세히 보기 API] GET /api/v1/place/{}", placeUid);
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         try {
             log.info("[장소 하나 자세히 보기 API] 장소 조회 Service 로직 수행");
@@ -90,7 +92,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken)
     {
         log.info("[메인 장소 유형 업데이트 API] PATCH /api/v1/place/update-action/{}", mainPlace);
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[메인 장소 유형 업데이트 API] Service 로직 수행");
         placeService.updateActionPlaceType(profileUid, mainPlace);
@@ -112,7 +114,7 @@ public class PlaceController {
             throw new IllegalArgumentException("[장소 찜 생성 API] 장소 아이디와 날짜는 필수입니다. [날짜형식 : yyyy-MM-dd'T'HH:mm:ss]");
         }
 
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[장소 찜 생성 API] Service 로직 수행");
         return ResponseEntity.status(201).body(placeService.makePlan(request, profileUid));
@@ -125,7 +127,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken)
     {
         log.info("[장소 찜 조회 API] GET /api/v1/place/plan/{}", planUid);
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[장소 찜 조회 API] Service 로직 수행");
         return ResponseEntity.ok().body(placeService.getPlanDetails(planUid, profileUid));
@@ -144,7 +146,7 @@ public class PlaceController {
             throw new IllegalArgumentException("[장소 찜 수정 API] 찜 아이디는 필수입니다.");
         }
 
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[장소 찜 수정 API] placeUid와 dateTime이 둘 다 null이면 예외 처리");
         if(request.getDateTime() == null && request.getPlaceUid() == null) {
@@ -161,7 +163,7 @@ public class PlaceController {
             @RequestHeader(value = "Authorization") String bearerToken)
     {
         log.info("[장소 찜 삭제 API] DELETE /api/v1/place/plan/{}", planUid);
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[장소 찜 삭제 API] Service 로직 수행");
         placeService.deletePlan(planUid, profileUid);

@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.member.presentation;
 
+import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import com.mobyeoldol.starcast.member.application.service.MemberService;
 import com.mobyeoldol.starcast.member.presentation.request.UpdateMySpotRequest;
 import com.mobyeoldol.starcast.member.presentation.response.CommunityByMemberResponse;
@@ -22,6 +23,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AuthService authService;
 
     @PatchMapping("/update-address")
     public ResponseEntity<?> updateMySpot(
@@ -36,7 +38,7 @@ public class MemberController {
             throw new IllegalArgumentException("주소1, 주소2, 주소4는 필수 항목입니다.");
         }
 
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[나의 정보 수정 (내 주소) API] 내 주소 수정 Service 로직 수행");
         memberService.updateMySpot(profileUid, request);
@@ -55,7 +57,7 @@ public class MemberController {
             throw new IllegalArgumentException("닉네임을 입력해주세요.");
         }
 
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[나의 정보 수정 (닉네임) API] 닉네임 수정 Service 로직 수행");
         memberService.updateMyNickname(profileUid, nickname);
@@ -74,7 +76,7 @@ public class MemberController {
             throw new IllegalArgumentException("이미지를 입력해주세요.");
         }
 
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[나의 정보 수정 (캐스타이미지) API] 캐스타이미지 수정 Service 로직 수행");
         memberService.updateMyProfileImage(profileUid, image);
@@ -84,9 +86,9 @@ public class MemberController {
 
     @GetMapping("/info")
     public ResponseEntity<MyInfoResponse> getMyInfo(@RequestHeader("Authorization") String bearerToken) {
+
         log.info("[내 정보 가져오기 API] GET /api/v1/member/info");
-//        String profileUid = authenticateMember(bearerToken);
-        String profileUid = "profile-uid-01";
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[내 정보 가져오기 API] 내 정보 가져오기 Service 로직 수행");
         MyInfoResponse myInfo = memberService.getMemberInfo(profileUid);
@@ -96,9 +98,9 @@ public class MemberController {
 
     @GetMapping("/my-community-list")
     public ResponseEntity<?> getCommunityListByMember(@RequestHeader("Authorization") String bearerToken) {
+
         log.info("[내가 작성한 글 리스트 가져오기 API] GET /api/v1/member/my-community-list");
-//        String profileUid = authenticateMember(bearerToken);
-        String profileUid = "profile-uid-01";
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[내가 작성한 글 리스트 가져오기 API] 글 리스트 가져오기 Service 로직 수행");
         List<CommunityByMemberResponse> communities = memberService.getCommunityListByMember(profileUid);
@@ -108,8 +110,9 @@ public class MemberController {
 
     @GetMapping("/my-reaction")
     public ResponseEntity<MyReactionResponse> getMyReactions(@RequestHeader("Authorization") String bearerToken) {
+
         log.info("[작성한 나의 반응 API] GET /api/v1/member/my-reaction");
-        String profileUid = ""; // authenticateMember(bearerToken);
+        String profileUid = authService.authenticateMember(bearerToken);
 
         log.info("[작성한 나의 반응 API] Service 로직 수행");
         return ResponseEntity.ok().body(memberService.getMyReactions(profileUid));
