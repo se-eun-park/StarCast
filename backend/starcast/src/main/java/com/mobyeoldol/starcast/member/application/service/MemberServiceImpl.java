@@ -180,9 +180,14 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("[내 정보 가져오기 API] 3. 유저의 내 장소 확인");
         Optional<Place> place = mySpotRepository.findByProfileIdAndSpotType(profileUid);
-        if (place.isEmpty()) throw new RuntimeException("존재하지 않는 장소입니다.");
 
-        String placeAddress = place.get().getAddress1() + " " + place.get().getAddress2() + " " + place.get().getAddress3();
+        log.info("[내 정보 가져오기 API] \t3-1. mySpot이 있으면 주소 정보를 설정, 없으면 null");
+        MyInfoResponse.Address address = place.map(p -> new MyInfoResponse.Address(
+                p.getAddress1(),
+                p.getAddress2(),
+                p.getAddress3(),
+                p.getAddress4()
+        )).orElse(null);
 
         log.info("[내 정보 가져오기 API] 4. 내 정보 리턴");
         return MyInfoResponse.builder()
@@ -190,7 +195,7 @@ public class MemberServiceImpl implements MemberService {
                 .nickname(profile.getNickname())
                 .email(profile.getEmail())
                 .profileImage(profile.getProfileImgNum())
-                .address(placeAddress)
+                .address(address)
                 .myCurExp(profile.getExp())
                 .rank(rank.get().getName())
                 .build();
