@@ -1,9 +1,10 @@
 import A2HSModal from '@modal/a2hs/a2hsModal'
+import SkyBackground from '@components/home/SkyBackground'
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>홈 페이지</h1>
+    <div className='relative w-full h-screen'>
+      <SkyBackground />
       <A2HSModal />
     </div>
   )
