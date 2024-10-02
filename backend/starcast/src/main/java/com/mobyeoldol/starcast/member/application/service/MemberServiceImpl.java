@@ -40,9 +40,14 @@ public class MemberServiceImpl implements MemberService {
         log.info("[나의 정보 수정 (내 주소) API]  1. profile 조회");
         Profile profile = getProfileInfo(profileUid);
 
+        String address1 = sanitizeAddress(request.getAddress1());
+        String address2 = sanitizeAddress(request.getAddress2());
+        String address3 = sanitizeAddress(request.getAddress3());
+        String address4 = sanitizeAddress(request.getAddress4());
+
         log.info("[나의 정보 수정 (내 주소) API] 2. 주소1, 주소2, 주소3, 주소4 정보를 통해 Place 테이블에서 해당 장소를 찾기");
         Optional<Place> optionalPlace = placeRepository.findByAddress1AndAddress2AndAddress3AndAddress4(
-                request.getAddress1(), request.getAddress2(), request.getAddress3(), request.getAddress4()
+                address1, address2, address3, address4
         );
 
         if (optionalPlace.isEmpty()) {
@@ -73,6 +78,11 @@ public class MemberServiceImpl implements MemberService {
         log.info("[나의 정보 수정 (내 주소) API] MySpot의 장소 아이디를 업데이트");
         mySpotRepository.save(mySpot);
     }
+
+    private String sanitizeAddress(String address) {
+        return (address == null || address.trim().isEmpty()) ? null : address;
+    }
+
 
     @Override
     public void updateMyNickname(String profileUid, String nickname) {
