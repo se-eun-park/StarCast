@@ -220,6 +220,7 @@ public class MemberServiceImpl implements MemberService {
                     .address1(community.getPlace().getAddress1())
                     .address2(community.getPlace().getAddress2())
                     .address3(community.getPlace().getAddress3())
+                    .address4(community.getPlace().getAddress4())
                     .build();
 
             CommunityByMemberResponse response = CommunityByMemberResponse.builder()
