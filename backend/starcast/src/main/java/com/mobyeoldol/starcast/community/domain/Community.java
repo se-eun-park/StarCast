@@ -1,6 +1,7 @@
-package com.mobyeoldol.starcast.member.domain;
+package com.mobyeoldol.starcast.community.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.Plan;
 import jakarta.persistence.*;
@@ -8,10 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,28 +21,28 @@ import java.util.List;
 public class Community extends BaseTimeEntity {
 
     @Id
-    @Column(name = "community_uid")
+    @Column(name = "community_uid", length = 36, nullable = false)
     private String communityUid;
 
     @ManyToOne
-    @JoinColumn(name = "profile_uid", unique = true)
+    @JoinColumn(name = "profile_uid", nullable = false)
     private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "place_uid", unique = true)
+    @JoinColumn(name = "place_uid", nullable = false)
     private Place place;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 200, nullable = false)
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 500, nullable = false)
     private String content;
 
     @OneToOne
     @JoinColumn(name = "plan_uid", unique = true)
     private Plan plan;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
     @Builder.Default
