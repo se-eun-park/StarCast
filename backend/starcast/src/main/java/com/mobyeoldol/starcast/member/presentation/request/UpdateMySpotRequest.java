@@ -13,7 +13,6 @@ public class UpdateMySpotRequest {
     @NotBlank
     private String address1;
 
-    @NotBlank
     private String address2;
 
     private String address3;
