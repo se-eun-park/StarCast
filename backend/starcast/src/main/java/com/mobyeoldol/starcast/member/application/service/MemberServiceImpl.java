@@ -148,7 +148,7 @@ public class MemberServiceImpl implements MemberService {
                             community.getCommunityUid(),
                             community.getTitle(),
                             community.getContent(),
-                            community.getCreatedDate().toString()  // 작성 시간을 문자열로 변환
+                            community.getCreatedDate().toString()
                     );
 
                     MyReactionResponse.RelatedCommunity relatedCommunity = new MyReactionResponse.RelatedCommunity(
@@ -176,7 +176,7 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("[내 정보 가져오기 API] 2. 유저 랭크 확인");
         Optional<Rank> rank = rankRepository.findById(profile.getRank().getRankUid());
-        if (rank.isEmpty()) throw new RuntimeException("존재하지 않는 랭크입니다.");
+        if (rank.isEmpty()) throw new IllegalArgumentException("존재하지 않는 랭크입니다.");
 
         log.info("[내 정보 가져오기 API] 3. 유저의 내 장소 확인");
         Optional<Place> place = mySpotRepository.findByProfileIdAndSpotType(profileUid);
