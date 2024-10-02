@@ -2,13 +2,10 @@
 
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { FC } from 'react'
+import { PropsWithChildren } from 'react'
+import { CookiesProvider } from 'react-cookie'
 
-interface ProviderProps {
-  children: React.ReactNode
-}
-
-const Provider: FC<ProviderProps> = ({ children }) => {
+const Provider = ({ children }: PropsWithChildren) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -29,7 +26,7 @@ const Provider: FC<ProviderProps> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <CookiesProvider>{children}</CookiesProvider>
       <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   )
