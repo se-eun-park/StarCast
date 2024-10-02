@@ -17,6 +17,7 @@ import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class MemberServiceImpl implements MemberService {
     private final PlaceRepository placeRepository;
     private final ReactionRepository reactionRepository;
 
+    @Transactional
     @Override
     public void updateMySpot(String profileUid, UpdateMySpotRequest request) {
         log.info("[나의 정보 수정 (내 주소) API]  1. profile 조회");
@@ -74,6 +76,7 @@ public class MemberServiceImpl implements MemberService {
         mySpotRepository.save(mySpot);
     }
 
+    @Transactional
     @Override
     public void updateMyNickname(String profileUid, String nickname) {
         log.info("[나의 정보 수정 (닉네임) API] 1. profile 조회");
@@ -97,6 +100,7 @@ public class MemberServiceImpl implements MemberService {
         profileRepository.save(profile);
     }
 
+    @Transactional
     @Override
     public void updateMyProfileImage(String profileUid, String image) {
         log.info("[나의 정보 수정 (캐스타이미지) API] 1. profile 조회");
@@ -107,6 +111,7 @@ public class MemberServiceImpl implements MemberService {
         profileRepository.save(profile);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MyReactionResponse getMyReactions(String profileUid) {
         log.info("[작성한 나의 반응 API] 1. 반응 목록 조회");
@@ -158,7 +163,7 @@ public class MemberServiceImpl implements MemberService {
         return new MyReactionResponse(reactionList);
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public MyInfoResponse getMemberInfo(String profileUid) {
         log.info("[내 정보 가져오기 API] 1. 유저 정보 인증");
