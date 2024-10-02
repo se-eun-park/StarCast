@@ -96,9 +96,9 @@ public class PlaceServiceImpl implements PlaceService {
         log.info("[장소 하나 자세히 보기 API] 2. 이름, 장소유형, 주소 조회 / 천문대라면 전화번호, 웹사이트 URL, 이미지 조회 [현재 : " + curPlaceType.getKoreanName() + "]");
         PlaceDetailsResponse.Address curAddress = PlaceDetailsResponse.Address.builder()
                 .address1(curPlace.getAddress1())
-                .address2(curPlace.getAddress2())
-                .address3(curPlace.getAddress3())
-                .address4(curPlace.getAddress4()==null?"":curPlace.getAddress4())
+                .address2(curPlace.getAddress2()==null?"":curPlace.getAddress2())
+                .address3(curPlace.getAddress3()==null?"":curPlace.getAddress3())
+                .address4(curPlace.getAddress4())
                 .build();
 
         String websiteUrl = (curPlaceType == PlaceType.OBSERVATORY) ? curPlace.getWebAddress() : "None";
@@ -160,7 +160,7 @@ public class PlaceServiceImpl implements PlaceService {
 
         log.info("[장소 찜 생성 API] 2. 입력받은 장소 아이디가 유효한지 확인");
         Place curPlace = placeRepository.findByPlaceUid(request.getPlaceUid())
-                .orElseThrow(() -> new IllegalStateException("[장소 찜 생성 API] 2-1. 해당 장소를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("[장소 찜 생성 API] 2-1. 해당 장소를 찾을 수 없습니다."));
 
         log.info("[장소 찜 생성 API] 3. 이미 존재하는 찜 삭제");
         planRepository.findByPlace_PlaceUidAndProfile_ProfileUid(request.getPlaceUid(), profileUid)
@@ -235,7 +235,7 @@ public class PlaceServiceImpl implements PlaceService {
         Plan plan = planRepository.findById(planUid)
                 .orElseThrow(() -> new IllegalStateException("[장소 찜 삭제 API] 1-1. 해당 찜을 찾을 수 없습니다."));
 
-        log.info("[찜 삭제] 비교 : "+profileUid+", "+plan.getProfile().getProfileUid());
+        log.info("[장소 찜 삭제 API] 비교 : "+profileUid+", "+plan.getProfile().getProfileUid());
 
         log.info("[장소 찜 삭제 API] 2. Profile 일치 여부 확인");
         if (!profileUid.equals(plan.getProfile().getProfileUid())) {
@@ -255,7 +255,6 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public void updateActionPlaceType(String profileUid, MainPlace mainPlace) {
-        profileUid = "profile1";
         log.info("[메인 장소 유형 업데이트 API] 1. 프로필 조회");
         Profile profile = profileRepository.findById(profileUid)
                 .orElseThrow(() -> new IllegalArgumentException("[메인 장소 유형 업데이트 API] 1-1. 해당 프로필 정보를 찾을 수 없습니다."));

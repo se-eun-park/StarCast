@@ -62,7 +62,7 @@ public class PlaceController {
             log.info("[즐겨찾기 삭제 API] 즐겨찾기 삭제 Service 로직 수행");
             placeService.deleteFavourite(spotUid);
 
-            BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success("즐겨찾기가 성공적으로 삭제되었습니다.");
+            BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success(null);
             return ResponseEntity.ok().body(successResponse);
         } catch (IllegalArgumentException e) {
             log.error("[즐겨찾기 삭제 API] 즐겨찾기 항목을 찾을 수 없는 경우 404 반환");
