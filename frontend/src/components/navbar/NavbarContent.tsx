@@ -8,7 +8,7 @@ export default function NavbarContent() {
 
   return (
     <>
-      <div className='text-white'>{exactNavContent?.label ?? ''}</div>
+      <div className='text-white font-paperlogy'>{exactNavContent?.label ?? ''}</div>
       {exactNavContent?.Component ? (
         <exactNavContent.Component
           className='w-6 h-6 cursor-pointer'
