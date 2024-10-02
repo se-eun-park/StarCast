@@ -9,7 +9,6 @@ import com.mobyeoldol.starcast.place.presentation.response.GetPlaceListResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlanDetailsResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlanUidResponse;
-import jakarta.validation.Valid;
 
 public interface PlaceService {
     public FavouriteSpot createFavourite(String placeUid, String profileUid);
