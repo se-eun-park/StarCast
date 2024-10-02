@@ -6,11 +6,9 @@ import com.mobyeoldol.starcast.place.application.PlaceServiceImpl;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import com.mobyeoldol.starcast.place.presentation.request.CreatePlanRequest;
+import com.mobyeoldol.starcast.place.presentation.request.GetPlaceListRequest;
 import com.mobyeoldol.starcast.place.presentation.request.ModifyPlanRequest;
-import com.mobyeoldol.starcast.place.presentation.response.FavouriteSpotResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlanDetailsResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlanUidResponse;
+import com.mobyeoldol.starcast.place.presentation.response.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +71,6 @@ public class PlaceController {
         }
     }
 
-
     @GetMapping("/{place_uid}")
     public ResponseEntity<BaseResponseTemplate<?>> getPlaceDetails(
             @PathVariable(value = "place_uid") String placeUid,
@@ -95,6 +92,26 @@ public class PlaceController {
         }
     }
 
+    @GetMapping()
+    public ResponseEntity<BaseResponseTemplate<?>> getPlaceList(
+            @Valid @RequestBody GetPlaceListRequest request,
+            BindingResult bindingResult,
+            @RequestHeader(value = "Authorization") String bearerToken
+    ){
+        log.info("[관측지 리스트 보기 API] GET /api/v1/place");
+        if (bindingResult.hasErrors()) {
+            log.error("[관측지 리스트 보기 API] 유효성 검사 실패: {}", bindingResult.getFieldError().getDefaultMessage());
+            BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(400, "[관측지 리스트 보기 API] placeType과 sortBy는 필수입니다.");
+            return ResponseEntity.status(400).body(errorResponse);
+        }
+        String profileUid = authService.authenticateMember(bearerToken);
+
+        log.info("[관측지 리스트 보기 API] Service 로직 수행");
+        GetPlaceListResponse response = placeService.getPlaceList(request);
+
+        BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success(response);
+        return ResponseEntity.ok().body(successResponse);
+    }
 
     @PatchMapping("/update-action/{place_type}")
     public ResponseEntity<BaseResponseTemplate<?>> updateFavourite(

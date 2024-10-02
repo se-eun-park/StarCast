@@ -16,17 +16,21 @@ import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
 import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
 import com.mobyeoldol.starcast.place.domain.repository.PlanRepository;
 import com.mobyeoldol.starcast.place.presentation.request.CreatePlanRequest;
+import com.mobyeoldol.starcast.place.presentation.request.GetPlaceListRequest;
 import com.mobyeoldol.starcast.place.presentation.request.ModifyPlanRequest;
+import com.mobyeoldol.starcast.place.presentation.response.GetPlaceListResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlanDetailsResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlanUidResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -39,6 +43,8 @@ public class PlaceServiceImpl implements PlaceService {
     private final CommunityRepository communityRepository;
     private final ReactionRepository reactionRepository;
     private final ProfileRepository profileRepository;
+
+    private final LevenshteinDistance levenshtein = new LevenshteinDistance();
 
     @Transactional
     @Override
@@ -116,6 +122,33 @@ public class PlaceServiceImpl implements PlaceService {
                 .reviewCount(reviewCount)
                 .topReviews(curTopReviews)
                 .build();
+    }
+
+    @Override
+    public GetPlaceListResponse getPlaceList(GetPlaceListRequest request) {
+
+        log.info("[관측지 리스트 보기 API] 1. 검색어 입력 확인");
+        if (request.getSearch() != null && !request.getSearch().isEmpty()) {
+            log.info("[관측지 리스트 보기 API] \t1-1. 검색어가 있는 경우, 유사도 알고리즘 사용");
+            return searchWithSimilarityAlgorithm(request);
+        }
+
+        log.info("[관측지 리스트 보기 API] 2. 정렬 기준에 따라 처리");
+        List<Place> places = placeRepository.findByType(request.getPlaceType());
+
+        log.info("[관측지 리스트 보기 API] \t2-1. 이름 순 정렬");
+        if (request.getSortBy() == GetPlaceListRequest.SortBy.NAME) {
+            places.sort(Comparator.comparing(Place::getName));
+        }
+
+        log.info("[관측지 리스트 보기 API] \t2-1. 리뷰 순 정렬");
+        if (request.getSortBy() == GetPlaceListRequest.SortBy.REVIEW) {
+            places.sort(Comparator.comparingInt(place -> place.getCommunities().size()));
+        }
+
+        log.info("[관측지 리스트 보기 API] 3. 응답 데이터 생성");
+        List<GetPlaceListResponse.Data> dataList = places.stream().map(this::mapPlaceToData).collect(Collectors.toList());
+        return new GetPlaceListResponse(dataList);
     }
 
     @Transactional
@@ -294,6 +327,55 @@ public class PlaceServiceImpl implements PlaceService {
                 .isDeleted(plan.getIsDeleted())
                 .build();
     }
+
+
+    private GetPlaceListResponse searchWithSimilarityAlgorithm(GetPlaceListRequest request) {
+        String keyword = request.getSearch();
+        PlaceType type = request.getPlaceType();
+
+        log.info("[관측지 리스트 보기 API] 공백만 있거나 특수문자가 포함된 경우 검색결과는 빈 리스트");
+        if (keyword == null || keyword.trim().isEmpty() || keyword.matches("[\\p{Punct}\\s]*")) {
+            return new GetPlaceListResponse(Collections.emptyList());
+        }
+
+        List<Place> allPlaces = placeRepository.findByType(type);
+
+        log.info("[관측지 리스트 보기 API] Levenshtein 거리 계산");
+        List<Place> similarPlaces = allPlaces.stream()
+                .filter(place -> {
+                    double similarity = calculateSimilarity(place, keyword);
+                    return similarity > 0.95;
+                })
+                .sorted(Comparator.comparingDouble(place -> calculateSimilarity(place, keyword)))
+                .toList();
+
+        log.info("[관측지 리스트 보기 API] 응답 데이터 생성");
+        List<GetPlaceListResponse.Data> dataList = similarPlaces.stream().map(this::mapPlaceToData).collect(Collectors.toList());
+        return new GetPlaceListResponse(dataList);
+    }
+
+    private double calculateSimilarity(Place place, String keyword) {
+        log.info("[관측지 리스트 보기 API] 장소 이름과 주소들에 대해 유사도 계산");
+        String combinedString = String.join(" ", place.getName(), place.getAddress1(), place.getAddress2(), place.getAddress3(), place.getAddress4(), place.getPhoneNum());
+
+        log.info("[관측지 리스트 보기 API] Levenshtein 거리 계산");
+        return levenshtein.apply(combinedString, keyword);
+    }
+
+    private GetPlaceListResponse.Data mapPlaceToData(Place place) {
+        log.info("[관측지 리스트 보기 API] Place를 GetPlaceListResponse.Data로 변환");
+        return new GetPlaceListResponse.Data(
+                place.getPlaceUid(),
+                place.getImage(),
+                place.getName(),
+                new GetPlaceListResponse.Address(
+                        place.getAddress1(),
+                        place.getAddress2(),
+                        place.getAddress3(),
+                        place.getAddress4()
+                ),
+                placeRepository.countCommunitiesByPlace(place)
+        );
+    }
+
 }
-
-
