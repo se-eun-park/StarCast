@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { GetPlaceWeatherResponse } from '../../types/apis'
+import type { GetPlaceWeatherResponse } from '../../types/apis'
 import AstronomyInfoWidget from '@components/common/AstronomyInfoWidget'
 import { ArrowIcon, LocationIcon, PlusIcon } from '@assets/svg/calendar'
 
