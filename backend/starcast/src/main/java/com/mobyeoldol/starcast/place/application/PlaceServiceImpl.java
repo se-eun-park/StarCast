@@ -45,7 +45,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Transactional
     @Override
-    public FavouriteSpot createFavourite(String placeUid, String profileUid) {
+    public FavouriteSpot createFavouriteSpot(String placeUid, String profileUid) {
         log.info("[즐겨찾기 등록 API] 1. 기존 즐겨찾기 등록 여부 확인");
         Optional<FavouriteSpot> existingFavourite = favouriteSpotRepository.findByPlace_PlaceUidAndProfile_ProfileUid(placeUid, profileUid);
 
@@ -71,9 +71,67 @@ public class PlaceServiceImpl implements PlaceService {
         return favouriteSpotRepository.save(favouriteSpot);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public FavouriteSpotResponse getFavouriteSpot(String favouriteSpotUid, String profileUid) {
+        log.info("[즐겨찾기 하나 조회 API] 1. 즐겨찾기 유효성 검사");
+        FavouriteSpot favouriteSpot = favouriteSpotRepository.findById(favouriteSpotUid)
+                .orElseThrow(() -> new IllegalStateException("[즐겨찾기 하나 조회 API] 1-1. 해당 즐겨찾기 항목을 찾을 수 없습니다."));
+
+        log.info("[즐겨찾기 하나 조회 API] 2. ProfileUid가 일치하는지 확인");
+        if (!favouriteSpot.getProfile().getProfileUid().equals(profileUid)) {
+            throw new IllegalStateException("[즐겨찾기 하나 조회 API] 2-1. 권한이 없습니다.");
+        }
+
+        log.info("[즐겨찾기 하나 조회 API] 3. FavouriteSpotResponse로 응답 반환");
+        return FavouriteSpotResponse.builder()
+                .favouriteSpotId(favouriteSpot.getSpotUid())
+                .place(FavouriteSpotResponse.Place.builder()
+                        .placeUid(favouriteSpot.getPlace().getPlaceUid())
+                        .name(favouriteSpot.getPlace().getName())
+                        .type(favouriteSpot.getPlace().getType())
+                        .image(favouriteSpot.getPlace().getImage())
+                        .address(FavouriteSpotResponse.Address.builder()
+                                .address1(favouriteSpot.getPlace().getAddress1())
+                                .address2(favouriteSpot.getPlace().getAddress2())
+                                .address3(favouriteSpot.getPlace().getAddress3())
+                                .address4(favouriteSpot.getPlace().getAddress4())
+                                .build())
+                        .build())
+                .date(favouriteSpot.getCreatedDate())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<FavouriteSpotResponse> getFavouriteSpots(String profileUid) {
+        log.info("[즐겨찾기 모두 조회 API] 1. 로그인한 사용자가 작성한 즐겨찾기 조회");
+        List<FavouriteSpot> favouriteSpots = favouriteSpotRepository.findByProfile_ProfileUid(profileUid);
+
+        log.info("[즐겨찾기 모두 조회 API] 2. 응답 반환");
+        return favouriteSpots.stream()
+                .map(favouriteSpot -> FavouriteSpotResponse.builder()
+                        .favouriteSpotId(favouriteSpot.getSpotUid())
+                        .place(FavouriteSpotResponse.Place.builder()
+                                .placeUid(favouriteSpot.getPlace().getPlaceUid())
+                                .name(favouriteSpot.getPlace().getName())
+                                .type(favouriteSpot.getPlace().getType())
+                                .image(favouriteSpot.getPlace().getImage())
+                                .address(FavouriteSpotResponse.Address.builder()
+                                        .address1(favouriteSpot.getPlace().getAddress1())
+                                        .address2(favouriteSpot.getPlace().getAddress2())
+                                        .address3(favouriteSpot.getPlace().getAddress3())
+                                        .address4(favouriteSpot.getPlace().getAddress4())
+                                        .build())
+                                .build())
+                        .date(favouriteSpot.getCreatedDate())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     @Override
-    public void deleteFavourite(String favouriteSpotUid) {
+    public void deleteFavouriteSpot(String favouriteSpotUid) {
         log.info("[즐겨찾기 삭제 API] 1. 기존 즐겨찾기 등록 여부 확인");
         FavouriteSpot favouriteSpot = favouriteSpotRepository.findById(favouriteSpotUid)
                 .orElseThrow(() -> new IllegalStateException("[즐겨찾기 삭제 API] 1-1. 해당 즐겨찾기 항목을 찾을 수 없습니다."));

@@ -7,12 +7,16 @@ import com.mobyeoldol.starcast.place.presentation.request.GetPlaceListRequest;
 import com.mobyeoldol.starcast.place.presentation.request.ModifyPlanRequest;
 import com.mobyeoldol.starcast.place.presentation.response.*;
 
+import java.util.List;
+
 public interface PlaceService {
-    FavouriteSpot createFavourite(String placeUid, String profileUid);
-    void deleteFavourite(String spotUid);
+    FavouriteSpot createFavouriteSpot(String placeUid, String profileUid);
+    FavouriteSpotResponse getFavouriteSpot(String favouriteSpotUid, String profileUid);
+    List<FavouriteSpotResponse> getFavouriteSpots(String profileUid);
+    void deleteFavouriteSpot(String spotUid);
+
     PlaceDetailsResponse getPlaceDetails(String placeUid);
     GetPlaceListResponse getPlaceList(GetPlaceListRequest request);
-
     PlanUidResponse makePlan(CreatePlanRequest request, String profileUid);
     PlanListResponse getPlanList(String profileUid);
     PlanDetailsResponse getPlanDetails(String planUid, String profileUid);
@@ -20,5 +24,4 @@ public interface PlaceService {
     void deletePlan(String planUid, String profileUid);
 
     void updateActionPlaceType(String profileUid, MainPlace mainPlace);
-
 }
