@@ -76,13 +76,13 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Transactional
     @Override
-    public void deleteFavourite(String spotUid) {
+    public void deleteFavourite(String favouriteSpotUid) {
         log.info("[즐겨찾기 삭제 API] 1. 기존 즐겨찾기 등록 여부 확인");
-        FavouriteSpot favouriteSpot = favouriteSpotRepository.findById(spotUid)
+        FavouriteSpot favouriteSpot = favouriteSpotRepository.findById(favouriteSpotUid)
                 .orElseThrow(() -> new IllegalStateException("[즐겨찾기 삭제 API] 1-1. 해당 즐겨찾기 항목을 찾을 수 없습니다."));
 
         log.info("[즐겨찾기 삭제 API] 2. 즐겨찾기 삭제");
-        favouriteSpotRepository.deleteById(spotUid);
+        favouriteSpotRepository.deleteById(favouriteSpotUid);
     }
 
     @Transactional(readOnly = true)

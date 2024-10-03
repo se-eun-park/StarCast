@@ -2,7 +2,7 @@ package com.mobyeoldol.starcast.place.presentation;
 
 import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
-import com.mobyeoldol.starcast.place.application.PlaceServiceImpl;
+import com.mobyeoldol.starcast.place.application.PlaceService;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import com.mobyeoldol.starcast.place.presentation.request.CreatePlanRequest;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/place")
 public class PlaceController {
 
-    private final PlaceServiceImpl placeService;
+    private final PlaceService placeService;
     private final AuthService authService;
 
     @PostMapping("/{place_uid}/favourite")
@@ -50,17 +50,17 @@ public class PlaceController {
 
     }
 
-    @DeleteMapping("/favourite/{spot_uid}")
+    @DeleteMapping("/favourite/{favourite_spot_uid}")
     public ResponseEntity<BaseResponseTemplate<?>> deleteFavourite(
-            @PathVariable(value = "spot_uid") String spotUid,
+            @PathVariable(value = "favourite_spot_uid") String favouriteSpotUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ) {
-        log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{}", spotUid);
+        log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{}", favouriteSpotUid);
         String profileUid = authService.authenticateMember(bearerToken);
 
         try {
             log.info("[즐겨찾기 삭제 API] 즐겨찾기 삭제 Service 로직 수행");
-            placeService.deleteFavourite(spotUid);
+            placeService.deleteFavourite(favouriteSpotUid);
 
             BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success(null);
             return ResponseEntity.ok().body(successResponse);
