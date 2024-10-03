@@ -179,6 +179,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .build();
     }
 
+    @Transactional
     @Override
     public GetPlaceListResponse getPlaceList(GetPlaceListRequest request) {
 
@@ -358,7 +359,7 @@ public class PlaceServiceImpl implements PlaceService {
         planRepository.save(plan);
     }
 
-
+    @Transactional
     @Override
     public void updateActionPlaceType(String profileUid, MainPlace mainPlace) {
         log.info("[메인 장소 유형 업데이트 API] 1. 프로필 조회");
