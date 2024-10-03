@@ -4,7 +4,6 @@ import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
