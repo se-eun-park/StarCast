@@ -250,6 +250,10 @@ public class PlaceServiceImpl implements PlaceService {
         Plan plan = planRepository.findById(request.getPlanUid())
                 .orElseThrow(() -> new IllegalStateException("[장소 찜 수정 API] 1-1. 해당 찜을 찾을 수 없습니다."));
 
+        if (plan.getIsDeleted()) {
+            throw new IllegalStateException("[장소 찜 수정 API] 1-2. 삭제된 찜은 수정할 수 없습니다.");
+        }
+
         log.info("[장소 찜 수정 API] 2. Profile 일치 여부 확인");
         if (!profileUid.equals(plan.getProfile().getProfileUid())) {
             throw new IllegalStateException("[장소 찜 수정 API] 2-1. 찜을 수정할 권한이 없습니다.");
