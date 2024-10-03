@@ -11,15 +11,15 @@ import com.mobyeoldol.starcast.place.presentation.response.PlanDetailsResponse;
 import com.mobyeoldol.starcast.place.presentation.response.PlanUidResponse;
 
 public interface PlaceService {
-    public FavouriteSpot createFavourite(String placeUid, String profileUid);
-    public void deleteFavourite(String spotUid);
-    public PlaceDetailsResponse getPlaceDetails(String placeUid);
-    public GetPlaceListResponse getPlaceList(GetPlaceListRequest request);
+    FavouriteSpot createFavourite(String placeUid, String profileUid);
+    void deleteFavourite(String spotUid);
+    PlaceDetailsResponse getPlaceDetails(String placeUid);
+    GetPlaceListResponse getPlaceList(GetPlaceListRequest request);
 
-    public PlanUidResponse makePlan(CreatePlanRequest request, String profileUid);
-    public PlanDetailsResponse getPlanDetails(String planUid, String profileUid);
-    public PlanDetailsResponse changePlan(ModifyPlanRequest request, String profileUid);
-    public void deletePlan(String planUid, String profileUid);
+    PlanUidResponse makePlan(CreatePlanRequest request, String profileUid);
+    PlanDetailsResponse getPlanDetails(String planUid, String profileUid);
+    PlanDetailsResponse changePlan(ModifyPlanRequest request, String profileUid);
+    void deletePlan(String planUid, String profileUid);
 
     void updateActionPlaceType(String profileUid, MainPlace mainPlace);
 
