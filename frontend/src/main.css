@@ -9,6 +9,12 @@
   }
 }
 
+@layer components {
+  .effect-blur {
+    backdrop-filter: blur(0.625rem);
+  }
+}
+
 @font-face {
   font-family: 'Pretendard';
   font-weight: 300;
@@ -65,16 +71,12 @@
     url('@assets/fonts/Paperlogy/Paperlogy-SemiBold.woff2') format('woff2');
 }
 
-.bg-gradient {
-  background: linear-gradient(180deg, #00122a 0%, #000814 100%);
-}
-
 @layer components {
   .btn-primary-full {
-    @apply w-full px-6 py-2.5 rounded-full bg-btn-primary-bg text-btn-primary-text text-md font-paperlogy font-semibold; 
+    @apply w-full px-6 py-2.5 rounded-full bg-btn-primary-bg text-btn-primary-text text-md font-paperlogy font-semibold;
   }
   .btn-secondary-full {
-    @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-secondary-text text-md font-paperlogy font-semibold; 
+    @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-secondary-text text-md font-paperlogy font-semibold;
   }
   .btn-tertiary-full {
     @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-tertiary-text text-md font-paperlogy font-semibold;
