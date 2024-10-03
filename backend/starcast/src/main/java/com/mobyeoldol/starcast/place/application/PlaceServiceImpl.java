@@ -162,9 +162,14 @@ public class PlaceServiceImpl implements PlaceService {
         Place curPlace = placeRepository.findByPlaceUid(request.getPlaceUid())
                 .orElseThrow(() -> new IllegalArgumentException("[장소 찜 생성 API] 2-1. 해당 장소를 찾을 수 없습니다."));
 
-        log.info("[장소 찜 생성 API] 3. 이미 존재하는 찜 삭제");
-        planRepository.findByPlace_PlaceUidAndProfile_ProfileUid(request.getPlaceUid(), profileUid)
-                .ifPresent(planRepository::delete);
+        log.info("[장소 찜 생성 API] 3. 이미 존재하는 찜 여부 확인");
+        List<Plan> existingPlans = planRepository.findByProfile_ProfileUidAndIsDeletedFalse(profileUid);  // profile_uid로 조회하여 isDeleted가 false인 Plan들 조회
+
+        existingPlans.forEach(plan -> {
+            log.info("[장소 찜 생성 API] 3-1. isDeleted가 false인 기존 찜을 삭제 처리: {}", plan.getPlanUid());
+            plan.setIsDeleted(true);
+            planRepository.save(plan);
+        });
 
         log.info("[장소 찜 생성 API] 4. 새로운 찜 엔티티 생성 및 저장");
         Plan plan = Plan.builder()
