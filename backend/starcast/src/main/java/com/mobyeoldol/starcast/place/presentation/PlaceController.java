@@ -129,7 +129,7 @@ public class PlaceController {
     }
 
 
-    @PostMapping("/plan/makePlan")
+    @PostMapping("/plan/make-plan")
     public ResponseEntity<BaseResponseTemplate<?>> makePlan(
             @Valid @RequestBody CreatePlanRequest request,
             BindingResult bindingResult,
@@ -181,7 +181,7 @@ public class PlaceController {
         return ResponseEntity.ok().body(successResponse);
     }
 
-    @PatchMapping("plan/changePlan")
+    @PatchMapping("plan/change-plan")
     public ResponseEntity<BaseResponseTemplate<?>> changePlan(
             @Valid @RequestBody ModifyPlanRequest request,
             BindingResult bindingResult,
@@ -220,7 +220,7 @@ public class PlaceController {
         log.info("[장소 찜 삭제 API] Service 로직 수행");
         placeService.deletePlan(planUid, profileUid);
 
-        BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success("장소 찜이 성공적으로 삭제되었습니다.");
+        BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success(null);
         return ResponseEntity.ok().body(successResponse);
     }
 }
