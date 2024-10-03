@@ -18,10 +18,7 @@ import com.mobyeoldol.starcast.place.domain.repository.PlanRepository;
 import com.mobyeoldol.starcast.place.presentation.request.CreatePlanRequest;
 import com.mobyeoldol.starcast.place.presentation.request.GetPlaceListRequest;
 import com.mobyeoldol.starcast.place.presentation.request.ModifyPlanRequest;
-import com.mobyeoldol.starcast.place.presentation.response.GetPlaceListResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlanDetailsResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlanUidResponse;
+import com.mobyeoldol.starcast.place.presentation.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -186,6 +183,48 @@ public class PlaceServiceImpl implements PlaceService {
         return new PlanUidResponse(plan.getPlanUid());
     }
 
+    @Override
+    public PlanListResponse getPlanList(String profileUid) {
+        log.info("[장소 찜 이력 모두 조회 API] 1. profileUid로 관련된 모든 Plan을 조회");
+        List<Plan> plans = planRepository.findByProfile_ProfileUid(profileUid);
+
+        log.info("[장소 찜 이력 모두 조회 API] 2. 응답 PlanDetailsResponse 반환");
+        List<PlanListResponse.PlanDetail> activePlans = new ArrayList<>();
+        List<PlanListResponse.PlanDetail> deletedPlans = new ArrayList<>();
+
+        for (Plan plan : plans) {
+            PlanListResponse.PlanDetail planDetail = PlanListResponse.PlanDetail.builder()
+                    .planUid(plan.getPlanUid())
+                    .place(PlanListResponse.Place.builder()
+                            .placeUid(plan.getPlace().getPlaceUid())
+                            .name(plan.getPlace().getName())
+                            .type(plan.getPlace().getType())
+                            .image(plan.getPlace().getImage())
+                            .address(PlanListResponse.Address.builder()
+                                    .address1(plan.getPlace().getAddress1())
+                                    .address2(plan.getPlace().getAddress2())
+                                    .address3(plan.getPlace().getAddress3())
+                                    .address4(plan.getPlace().getAddress4())
+                                    .build())
+                            .build())
+                    .dateTime(plan.getDateTime())
+                    .castarPoint(plan.getCastarPoint())
+                    .isDeleted(plan.getIsDeleted())
+                    .build();
+
+            if (plan.getIsDeleted()) {
+                deletedPlans.add(planDetail);
+            } else {
+                activePlans.add(planDetail);
+            }
+        }
+
+        return PlanListResponse.builder()
+                .deletedPlans(deletedPlans)
+                .activePlans(activePlans)
+                .build();
+    }
+
     @Transactional
     @Override
     public PlanDetailsResponse getPlanDetails(String planUid, String profileUid) {
@@ -201,7 +240,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         log.info("[장소 찜 조회 API] 3. 응답 생성 및 반환");
-        return makePlanDetailsResponse(plan.getPlace(), plan);
+        return makePlanDetailsResponse(plan);
     }
 
     @Transactional
@@ -230,7 +269,7 @@ public class PlaceServiceImpl implements PlaceService {
 
         log.info("[장소 찜 수정 API] 4. 최종 저장 및 응답 반환");
         planRepository.save(plan);
-        return makePlanDetailsResponse(plan.getPlace(), plan);
+        return makePlanDetailsResponse(plan);
     }
 
     @Transactional
@@ -307,7 +346,9 @@ public class PlaceServiceImpl implements PlaceService {
         return topReviewsMap;
     }
 
-    private PlanDetailsResponse makePlanDetailsResponse(Place curPlace, Plan plan) {
+    private PlanDetailsResponse makePlanDetailsResponse(Plan plan) {
+        Place curPlace = plan.getPlace();
+
         PlanDetailsResponse.Address address = PlanDetailsResponse.Address.builder()
                 .address1(curPlace.getAddress1())
                 .address2(curPlace.getAddress2())

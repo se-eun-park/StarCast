@@ -152,16 +152,29 @@ public class PlaceController {
         return ResponseEntity.status(201).body(successResponse);
     }
 
+    @GetMapping("/plan")
+    public ResponseEntity<BaseResponseTemplate<?>> getPlanDetails(
+            @RequestHeader(value = "Authorization") String bearerToken
+    ) {
+        log.info("[장소 찜 이력 모두 조회 API] GET /api/v1/place/plan");
+        String profileUid = authService.authenticateMember(bearerToken);
+
+        log.info("[장소 찜 이력 모두 조회 API] Service 로직 수행");
+        PlanListResponse response = placeService.getPlanList(profileUid);
+
+        BaseResponseTemplate<PlanListResponse> successResponse = BaseResponseTemplate.success(response);
+        return ResponseEntity.ok().body(successResponse);
+    }
 
     @GetMapping("/plan/{plan_uid}")
     public ResponseEntity<BaseResponseTemplate<?>> getPlanDetails(
             @PathVariable(value = "plan_uid") String planUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ) {
-        log.info("[장소 찜 조회 API] GET /api/v1/place/plan/{}", planUid);
+        log.info("[장소 찜 하나 조회 API] GET /api/v1/place/plan/{}", planUid);
         String profileUid = authService.authenticateMember(bearerToken);
 
-        log.info("[장소 찜 조회 API] Service 로직 수행");
+        log.info("[장소 찜 하나 조회 API] Service 로직 수행");
         PlanDetailsResponse response = placeService.getPlanDetails(planUid, profileUid);
 
         BaseResponseTemplate<PlanDetailsResponse> successResponse = BaseResponseTemplate.success(response);

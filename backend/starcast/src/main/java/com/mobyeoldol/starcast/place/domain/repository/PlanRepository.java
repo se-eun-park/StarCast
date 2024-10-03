@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface PlanRepository extends JpaRepository<Plan, String> {
     List<Plan> findByProfile_ProfileUidAndIsDeletedFalse(String profileUid);
+    List<Plan> findByProfile_ProfileUid(String profileUid);
 }
