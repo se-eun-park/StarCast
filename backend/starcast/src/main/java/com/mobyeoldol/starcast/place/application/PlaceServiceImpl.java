@@ -96,8 +96,8 @@ public class PlaceServiceImpl implements PlaceService {
         log.info("[장소 하나 자세히 보기 API] 2. 이름, 장소유형, 주소 조회 / 천문대라면 전화번호, 웹사이트 URL, 이미지 조회 [현재 : " + curPlaceType.getKoreanName() + "]");
         PlaceDetailsResponse.Address curAddress = PlaceDetailsResponse.Address.builder()
                 .address1(curPlace.getAddress1())
-                .address2(curPlace.getAddress2()==null?"":curPlace.getAddress2())
-                .address3(curPlace.getAddress3()==null?"":curPlace.getAddress3())
+                .address2(curPlace.getAddress2())
+                .address3(curPlace.getAddress3())
                 .address4(curPlace.getAddress4())
                 .build();
 
