@@ -9,6 +9,12 @@
   }
 }
 
+@layer components {
+  .effect-blur {
+    backdrop-filter: blur(0.625rem);
+  }
+}
+
 @font-face {
   font-family: 'Pretendard';
   font-weight: 300;
@@ -63,10 +69,6 @@
   src:
     url('@assets/fonts/Paperlogy/Paperlogy-SemiBold.woff') format('woff'),
     url('@assets/fonts/Paperlogy/Paperlogy-SemiBold.woff2') format('woff2');
-}
-
-.bg-gradient {
-  background: linear-gradient(180deg, #00122a 0%, #000814 100%);
 }
 
 @layer components {

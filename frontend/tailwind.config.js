@@ -95,6 +95,35 @@ export default {
       screens: {
         sm: '600px',
       },
+      opacity: {
+        7: '0.07',
+      },
+      backgroundImage: {
+        gradient900to700: 'linear-gradient(#000814, #001A3F)',
+        bgGradient: 'linear-gradient(180deg, #00122a 0%, #000814 100%)',
+      },
+      keyframes: {
+        slideRight: {
+          '0%': {
+            transform: 'translateX(0px)',
+          },
+          '100%': {
+            transform: 'translateX(450px)',
+          },
+        },
+        pulse: {
+          '0%, 100%': {
+            opacity: '1',
+          },
+          '50%': {
+            opacity: '.3',
+          },
+        },
+      },
+      animation: {
+        slideRight: 'slideRight 40s linear infinite',
+        'pulse-delay': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite var(--delay)',
+      },
     },
   },
   plugins: [],
