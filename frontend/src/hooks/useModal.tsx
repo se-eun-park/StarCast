@@ -1,11 +1,8 @@
 import { useCallback, useState } from 'react'
-import Modal from '@components/common/Modal'
+import { PropsWithStrictChildren } from '../types/propsWithStrictChildren'
+import ModalComponent from '@components/common/Modal'
 
-type UseModalProps = {
-  children: React.ReactNode
-}
-
-const useModal = ({ useBlur = true } = {}) => {
+const useModal = ({ isBlurBackground = true } = {}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const open = useCallback(() => {
@@ -16,15 +13,15 @@ const useModal = ({ useBlur = true } = {}) => {
     setIsOpen(() => false)
   }, [])
 
+  const Modal = ({ children }: PropsWithStrictChildren) => {
+    if (!isOpen) return null
+    return <ModalComponent onClose={isBlurBackground ? close : () => {}}>{children}</ModalComponent>
+  }
+
   return {
-    Modal: isOpen
-      ? ({ children }: UseModalProps) => (
-          <Modal onClose={useBlur ? close : () => {}}>{children}</Modal>
-        )
-      : () => null,
+    Modal,
     open,
     close,
-    isOpen,
   }
 }
 

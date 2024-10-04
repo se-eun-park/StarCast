@@ -1,11 +1,15 @@
 import { ModalPortal } from '@components/common/ModalPotal'
+import { PropsWithStrictChildren } from '../../types/propsWithStrictChildren'
 
 type ModalProps = {
   onClose: () => void
-  children: React.ReactNode
 }
 
-const Modal = ({ onClose, children }: ModalProps) => {
+const Modal = ({ onClose, children }: PropsWithStrictChildren<ModalProps>) => {
+  const handleModalClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+  }
+
   return (
     <ModalPortal>
       <div className='flex items-center justify-center w-full h-full'>
@@ -13,7 +17,7 @@ const Modal = ({ onClose, children }: ModalProps) => {
           onClick={onClose}
           className='fixed top-0 w-[37.5rem] min-h-dvh overflow-hidden text-center bg-black bg-opacity-70 z-50'
         >
-          <div onClick={(e) => e.stopPropagation()}>{children}</div>
+          <div onClick={handleModalClick}>{children}</div>
         </div>
       </div>
     </ModalPortal>

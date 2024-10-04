@@ -1,10 +1,7 @@
 import ReactDom from 'react-dom'
+import { PropsWithStrictChildren } from '../../types/propsWithStrictChildren'
 
-type ModalPortalProps = {
-  children: React.ReactNode
-}
-
-export const ModalPortal = ({ children }: ModalPortalProps) => {
+export const ModalPortal = ({ children }: PropsWithStrictChildren) => {
   const modalRoot = document.getElementById('modal-root') as HTMLElement
 
   return ReactDom.createPortal(children, modalRoot)
