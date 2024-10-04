@@ -10,6 +10,7 @@ import ReviewListPage from '@pages/review/ReviewListPage'
 import ReviewDetailPage from '@pages/review/ReviewDetailPage'
 import ReviewDetailLayout from '@components/ui/ReviewDetailLayout'
 import CreateReviewPage from '@pages/review/CreateReviewPage'
+import NotificationPage from '@pages/NotificationPage'
 
 const Router = () => {
   const routes: RouteObject[] = [
@@ -19,27 +20,31 @@ const Router = () => {
       errorElement: <NotFoundPage />,
       children: [
         {
-          path: '/login',
+          path: 'login',
           element: <LoginPage />,
         },
         {
-          path: '/home',
+          path: 'home',
           element: <HomePage />,
         },
         {
-          path: '/calendar',
+          path: 'calendar',
           element: <CalendarPage />,
         },
         {
-          path: '/observing-spot',
+          path: 'observing-spot',
           element: <ObservingSpotPage />,
         },
         {
-          path: '/mypage',
+          path: 'mypage',
           element: <Mypage />,
         },
         {
-          path: '/review',
+          path: 'notification',
+          element: <NotificationPage />,
+        },
+        {
+          path: 'review',
           children: [
             {
               index: true,
