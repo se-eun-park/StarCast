@@ -71,10 +71,10 @@
 
 @layer components {
   .btn-primary-full {
-    @apply w-full px-6 py-2.5 rounded-full bg-btn-primary-bg text-btn-primary-text text-md font-paperlogy font-semibold; 
+    @apply w-full px-6 py-2.5 rounded-full bg-btn-primary-bg text-btn-primary-text text-md font-paperlogy font-semibold;
   }
   .btn-secondary-full {
-    @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-secondary-text text-md font-paperlogy font-semibold; 
+    @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-secondary-text text-md font-paperlogy font-semibold;
   }
   .btn-tertiary-full {
     @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-tertiary-text text-md font-paperlogy font-semibold;
@@ -93,5 +93,11 @@
   }
   .chip-selected {
     @apply px-3 py-1 rounded-full bg-bg-50 text-bg-900 text-xs font-medium;
+  }
+}
+
+@layer components {
+  .strong-blur {
+    backdrop-filter: blur(4px);
   }
 }
