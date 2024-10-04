@@ -37,7 +37,7 @@ const LoginCarousel: React.FC<PropType> = (props) => {
       </div>
 
       {/* 도트 버튼을 login button 위에 위치시키기 위한 수정 */}
-      <div className='embla__dots flex justify-center space-x-2 absolute bottom-20 left-1/2 transform -translate-x-1/2'>
+      <div className='embla__dots flex justify-center space-x-2 absolute bottom-20 left-1/2 transform -translate-x-1/2 my-4'>
         {scrollSnaps.map((_, index) => (
           <DotButton
             key={index}
