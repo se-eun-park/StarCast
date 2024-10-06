@@ -118,7 +118,7 @@ const PlaceWeatherCard = ({
           className={`absolute bottom-5 transition-all duration-100 ease-in-out ${istoggled ? 'opacity-100 delay-150' : 'opacity-0 scale-95 pointer-events-none'}`}
         >
           <AstronomyInfoWidget
-            bgColor='bg-black bg-opacity-30'
+            buttonBgColor='bg-black bg-opacity-30'
             refresh={refresh}
             details={astronomyInfo.details}
             hour={astronomyInfo.hour}
