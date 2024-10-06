@@ -103,3 +103,9 @@
     @apply px-3 py-1 rounded-full bg-bg-50 text-bg-900 text-xs font-medium;
   }
 }
+
+@layer components {
+  .strong-blur {
+    backdrop-filter: blur(4px);
+  }
+}

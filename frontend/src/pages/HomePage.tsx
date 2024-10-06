@@ -1,3 +1,5 @@
+import Menubar from '@components/home/menubar/index.tsx'
+import TopbarController from '@components/home/topbar-controller'
 import A2HSModal from '@modal/a2hs/a2hsModal'
 import SkyBackground from '@components/home/SkyBackground'
 import HomeContentsLayout from '@components/layout/HomeContentsLayout'
@@ -9,6 +11,7 @@ import PlannedWidget from '@components/home/PlannedWidget'
 const HomePage = () => {
   return (
     <div className='relative w-full h-full overflow-hidden overflow-y-auto scrollbar-hide'>
+      <TopbarController />
       <SkyBackground />
       <div className='mt-80'>
         <HomeContentsLayout>
@@ -34,6 +37,7 @@ const HomePage = () => {
             <PlannedWidget />
           </div>
         </HomeContentsLayout>
+        <Menubar />
       </div>
       <A2HSModal />
     </div>

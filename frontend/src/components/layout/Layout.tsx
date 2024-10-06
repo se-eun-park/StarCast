@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import NavbarWithLabel from '@components/navbar/NavbarWithLabel'
 import { PropsWithChildren } from 'react'
-import Menubar from '@components/menubar'
 export default function Layout({ children }: PropsWithChildren) {
   return (
     <div className='w-full h-full bg-bgGradient'>
@@ -10,7 +9,6 @@ export default function Layout({ children }: PropsWithChildren) {
           <NavbarWithLabel />
           <Outlet />
           {children}
-          <Menubar />
         </div>
       </div>
     </div>
