@@ -8,7 +8,7 @@ const CastaScoreGauge = () => {
 
   return (
     <>
-      <div className='flex flex-col'>
+      <div className='relative flex flex-col'>
         <div className='flex items-center justify-center'>
           <GaugeIcon className='relative w-[6.25rem] opacity-30 z-0' d={gaugeIconPathD[100]} />
           <GaugeIcon
