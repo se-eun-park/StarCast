@@ -11,7 +11,7 @@ export default function UseController() {
 
   return (
     <div
-      className={`absolute top-0 right-0  p-4 h-fit transition-all duration-500 ease-in-out  ${isWelcomeMessageShown ? 'w-[7.25rem]' : 'w-[37.375rem]'}`}
+      className={`absolute top-0 right-0  p-4 h-fit transition-all duration-500 ease-in-out  ${isWelcomeMessageShown ? 'w-[7.25rem]' : 'w-full sm:w-[37.375rem]'}`}
     >
       <div className='p-[5px] flex items-center justify-between space-x-[10px] bg-bg-50/25 rounded-full'>
         <Link to='/mypage'>
