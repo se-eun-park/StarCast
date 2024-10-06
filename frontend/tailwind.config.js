@@ -100,6 +100,7 @@ export default {
       },
       backgroundImage: {
         gradient900to700: 'linear-gradient(#000814, #001A3F)',
+        gradient900to800: 'linear-gradient(#000814, #00122A)',
         bgGradient: 'linear-gradient(180deg, #00122a 0%, #000814 100%)',
       },
       keyframes: {
@@ -109,6 +110,22 @@ export default {
           },
           '100%': {
             transform: 'translateX(450px)',
+          },
+        },
+        slideUp: {
+          '0%': {
+            transform: 'translateY(100%)',
+          },
+          '100%': {
+            transform: 'translateY(0%)',
+          },
+        },
+        slideDown: {
+          '0%': {
+            transform: 'translateY(0%)',
+          },
+          '100%': {
+            transform: 'translateY(100%)',
           },
         },
         pulse: {
@@ -123,8 +140,10 @@ export default {
       animation: {
         slideRight: 'slideRight 40s linear infinite',
         'pulse-delay': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite var(--delay)',
+        slideUp: 'slideUp 0.3s ease-in-out',
+        slideDown: 'slideDown 0.3s ease-in-out',
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 }

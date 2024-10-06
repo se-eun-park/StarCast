@@ -15,7 +15,7 @@ const Modal = ({ onClose, children }: PropsWithStrictChildren<ModalProps>) => {
       <div className='flex items-center justify-center w-full h-full'>
         <div
           onClick={onClose}
-          className='fixed top-0 w-[37.5rem] min-h-dvh overflow-hidden text-center bg-black bg-opacity-70 z-50'
+          className='fixed top-0 max-w-[37.5rem] w-full min-h-dvh overflow-hidden text-center bg-black bg-opacity-70 z-50'
         >
           <div onClick={handleModalClick}>{children}</div>
         </div>

@@ -1,5 +1,5 @@
 import Svg404CastarIcon from '@assets/svg/404CastarIcon'
-import ReviewDetailLayout from '@components/ui/ReviewDetailLayout'
+import ReviewDetailLayout from '@components/layout/ReviewDetailLayout'
 
 const NotFoundPage = () => {
   return (

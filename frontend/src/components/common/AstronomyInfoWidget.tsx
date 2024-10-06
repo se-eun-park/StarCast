@@ -12,7 +12,9 @@ import {
 import { useEffect, useState } from 'react'
 
 type AstronomyInfoWidgetProps = {
-  bgColor: string
+  bgColor?: string
+  buttonBgColor: string
+  textAlign?: string
   refresh?: boolean
   details: string
   hour: string
@@ -33,6 +35,8 @@ type ContentMapProps = {
 
 const AstronomyInfoWidget = ({
   bgColor,
+  buttonBgColor,
+  textAlign,
   refresh = false,
   details,
   hour,
@@ -113,11 +117,11 @@ const AstronomyInfoWidget = ({
   }
 
   return (
-    <div className='flex flex-col'>
-      <div className='grid grid-cols-3 gap-x-5'>
+    <div className='flex flex-col '>
+      <div className={`grid grid-cols-3 gap-x-5 p-1.5 rounded-2xl ${bgColor}`}>
         <button
           onClick={() => handleOnClickButton('달')}
-          className={`flex flex-col items-center px-5 py-1.5 rounded-2xl ${selectedButton === '달' && bgColor}`}
+          className={`flex flex-col items-center px-5 py-1.5 rounded-2xl ${selectedButton === '달' && buttonBgColor}`}
         >
           {contentsMap['달'].img}
           <span className='mt-1 text-xs text-white text-opacity-60'>달</span>
@@ -126,7 +130,7 @@ const AstronomyInfoWidget = ({
 
         <button
           onClick={() => handleOnClickButton('구름')}
-          className={`flex flex-col items-center px-3 py-1.5 rounded-2xl ${selectedButton === '구름' && bgColor}`}
+          className={`flex flex-col items-center px-3 py-1.5 rounded-2xl ${selectedButton === '구름' && buttonBgColor}`}
         >
           {contentsMap['구름'].img}
           <span className='mt-1 text-xs text-white text-opacity-60'>구름</span>
@@ -135,14 +139,14 @@ const AstronomyInfoWidget = ({
 
         <button
           onClick={() => handleOnClickButton('광공해')}
-          className={`flex flex-col items-center px-3 py-1.5 rounded-2xl ${selectedButton === '광공해' && bgColor}`}
+          className={`flex flex-col items-center px-3 py-1.5 rounded-2xl ${selectedButton === '광공해' && buttonBgColor}`}
         >
           {contentsMap['광공해'].img}
           <span className='mt-1 text-xs text-white text-opacity-60'>광공해</span>
           <span className='mt-0.5 text-xs text-white'>{lightPollutionStatus}</span>
         </button>
       </div>
-      <div className='flex flex-col pl-2 mt-2.5'>
+      <div className={`flex flex-col pl-2 mt-2.5 ${textAlign}`}>
         <p className='text-xs text-white'>{contentsMap[selectedButton].description}</p>
         <p className='text-xs text-white'>{contentsMap[selectedButton].content}</p>
       </div>
