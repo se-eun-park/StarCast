@@ -12,13 +12,14 @@ export default function RouteBack() {
 
   const isReviewDetailPath = /\/review\/\d+/.test(pathname)
   const isCreateReviewPath = /\/review\/new/.test(pathname)
+  const isNotificationPath = /\/notification/.test(pathname)
 
   return (
     <div
       className={`flex items-center justify-center rounded-full cursor-pointer ${isReviewDetailPath ? 'bg-bg-800' : 'bg-bg-900'} w-9 h-9`}
       onClick={routeBack}
     >
-      {isCreateReviewPath ? (
+      {isCreateReviewPath || isNotificationPath ? (
         <SvgCloseIcon className='w-6 h-6' />
       ) : (
         <SvgArrowBackIcon className='w-6 h-6' />

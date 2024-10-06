@@ -9,6 +9,7 @@ type NavContent = {
   label: string
   Component?: React.ComponentType<MyComponent>
   navigate?: string
+  text?: string
 }
 
 type PathToNavContent = {
@@ -16,6 +17,10 @@ type PathToNavContent = {
 }
 
 const pathToNavContent: PathToNavContent = {
+  '/notification': {
+    label: '알림',
+    text: '모두 읽음',
+  },
   '/calendar': { label: '캘린더' },
   '/observing-spot': { label: '관측지' },
   '/mypage': { label: 'MY' },

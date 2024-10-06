@@ -14,6 +14,8 @@ export default function NavbarContent() {
           className='w-6 h-6 cursor-pointer'
           onClick={() => navigate(exactNavContent.navigate ?? '')}
         />
+      ) : exactNavContent?.text ? (
+        <div className='text-xs text-white'>{exactNavContent.text}</div>
       ) : (
         <div className='w-9' />
       )}
