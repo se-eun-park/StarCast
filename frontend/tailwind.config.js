@@ -111,6 +111,22 @@ export default {
             transform: 'translateX(450px)',
           },
         },
+        slideUp: {
+          '0%': {
+            transform: 'translateY(100%)',
+          },
+          '100%': {
+            transform: 'translateY(0%)',
+          },
+        },
+        slideDown: {
+          '0%': {
+            transform: 'translateY(0%)',
+          },
+          '100%': {
+            transform: 'translateY(100%)',
+          },
+        },
         pulse: {
           '0%, 100%': {
             opacity: '1',
@@ -123,6 +139,8 @@ export default {
       animation: {
         slideRight: 'slideRight 40s linear infinite',
         'pulse-delay': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite var(--delay)',
+        slideUp: 'slideUp 0.3s ease-in-out',
+        slideDown: 'slideDown 0.3s ease-in-out',
       },
     },
   },
