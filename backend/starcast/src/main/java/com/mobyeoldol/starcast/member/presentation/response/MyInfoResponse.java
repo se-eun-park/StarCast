@@ -15,7 +15,18 @@ public class MyInfoResponse {
     private String nickname;
     private String email;
     private String profileImage;
-    private String address;
     private int myCurExp;
     private String rank;
+    private Address address;
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Address {
+        private String address1;
+        private String address2;
+        private String address3;
+        private String address4;
+    }
 }

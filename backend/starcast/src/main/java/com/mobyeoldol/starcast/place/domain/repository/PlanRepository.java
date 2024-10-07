@@ -4,9 +4,10 @@ import com.mobyeoldol.starcast.place.domain.Plan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface PlanRepository extends JpaRepository<Plan, String> {
-    Optional<Plan> findByPlace_PlaceUidAndProfile_ProfileUid(String placeUid, String profileUid);
+    List<Plan> findByProfile_ProfileUidAndIsDeletedFalse(String profileUid);
+    List<Plan> findByProfile_ProfileUid(String profileUid);
 }

@@ -42,9 +42,14 @@ public class MemberServiceImpl implements MemberService {
         log.info("[나의 정보 수정 (내 주소) API]  1. profile 조회");
         Profile profile = getProfileInfo(profileUid);
 
+        String address1 = sanitizeAddress(request.getAddress1());
+        String address2 = sanitizeAddress(request.getAddress2());
+        String address3 = sanitizeAddress(request.getAddress3());
+        String address4 = sanitizeAddress(request.getAddress4());
+
         log.info("[나의 정보 수정 (내 주소) API] 2. 주소1, 주소2, 주소3, 주소4 정보를 통해 Place 테이블에서 해당 장소를 찾기");
         Optional<Place> optionalPlace = placeRepository.findByAddress1AndAddress2AndAddress3AndAddress4(
-                request.getAddress1(), request.getAddress2(), request.getAddress3(), request.getAddress4()
+                address1, address2, address3, address4
         );
 
         if (optionalPlace.isEmpty()) {
@@ -75,6 +80,11 @@ public class MemberServiceImpl implements MemberService {
         log.info("[나의 정보 수정 (내 주소) API] MySpot의 장소 아이디를 업데이트");
         mySpotRepository.save(mySpot);
     }
+
+    private String sanitizeAddress(String address) {
+        return (address == null || address.trim().isEmpty()) ? null : address;
+    }
+
 
     @Transactional
     @Override
@@ -143,7 +153,7 @@ public class MemberServiceImpl implements MemberService {
                             community.getCommunityUid(),
                             community.getTitle(),
                             community.getContent(),
-                            community.getCreatedDate().toString()  // 작성 시간을 문자열로 변환
+                            community.getCreatedDate().toString()
                     );
 
                     MyReactionResponse.RelatedCommunity relatedCommunity = new MyReactionResponse.RelatedCommunity(
@@ -171,13 +181,18 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("[내 정보 가져오기 API] 2. 유저 랭크 확인");
         Optional<Rank> rank = rankRepository.findById(profile.getRank().getRankUid());
-        if (rank.isEmpty()) throw new RuntimeException("존재하지 않는 랭크입니다.");
+        if (rank.isEmpty()) throw new IllegalArgumentException("존재하지 않는 랭크입니다.");
 
         log.info("[내 정보 가져오기 API] 3. 유저의 내 장소 확인");
         Optional<Place> place = mySpotRepository.findByProfileIdAndSpotType(profileUid);
-        if (place.isEmpty()) throw new RuntimeException("존재하지 않는 장소입니다.");
 
-        String placeAddress = place.get().getAddress1() + " " + place.get().getAddress2() + " " + place.get().getAddress3();
+        log.info("[내 정보 가져오기 API] \t3-1. mySpot이 있으면 주소 정보를 설정, 없으면 null");
+        MyInfoResponse.Address address = place.map(p -> new MyInfoResponse.Address(
+                p.getAddress1(),
+                p.getAddress2(),
+                p.getAddress3(),
+                p.getAddress4()
+        )).orElse(null);
 
         log.info("[내 정보 가져오기 API] 4. 내 정보 리턴");
         return MyInfoResponse.builder()
@@ -185,7 +200,7 @@ public class MemberServiceImpl implements MemberService {
                 .nickname(profile.getNickname())
                 .email(profile.getEmail())
                 .profileImage(profile.getProfileImgNum())
-                .address(placeAddress)
+                .address(address)
                 .myCurExp(profile.getExp())
                 .rank(rank.get().getName())
                 .build();
