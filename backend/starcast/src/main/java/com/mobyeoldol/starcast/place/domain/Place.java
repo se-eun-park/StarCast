@@ -1,5 +1,7 @@
 package com.mobyeoldol.starcast.place.domain;
 
+import com.mobyeoldol.starcast.calendar.domain.Forecast;
+import com.mobyeoldol.starcast.calendar.domain.MoonriseMoonsetTimes;
 import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import jakarta.persistence.*;
@@ -59,4 +61,12 @@ public class Place {
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Community> communities = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MoonriseMoonsetTimes> moonriseMoonsetTimesArrayList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Forecast> forecasts = new ArrayList<>();
 }
