@@ -1,8 +1,8 @@
 import { DefaultResponseType, ErrorType } from '@apis/axios/api.types'
 import { ApiError } from '@apis/axios/customApiError'
 import { privateApi } from '@apis/axios/index.ts'
-import { getCookie } from '@utils/cookie'
-import { getAccessToken } from '@utils/getAccessToken'
+import { getCookie } from '@utils/cookie.ts'
+import { getAccessToken } from '@utils/getAccessToken.ts'
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { redirect } from 'react-router-dom'
 
