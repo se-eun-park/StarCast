@@ -13,7 +13,7 @@ const HomePage = () => {
     <div className='relative w-full h-full overflow-hidden overflow-y-auto scrollbar-hide'>
       <TopbarController />
       <SkyBackground />
-      <div className='mt-80'>
+      <div className='mb-20 mt-80'>
         <HomeContentsLayout>
           <div className='relative flex items-end justify-center mr-5 space-x-2 -top-4'>
             <CastaScoreGauge />
