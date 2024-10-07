@@ -3,7 +3,6 @@ package com.mobyeoldol.starcast.auth.application.service;
 
 import com.mobyeoldol.starcast.auth.application.dto.KakaoTokenResponseDto;
 import com.mobyeoldol.starcast.auth.application.dto.KakaoUserInfoResponseDto;
-import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
 
