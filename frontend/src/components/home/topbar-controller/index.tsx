@@ -3,7 +3,7 @@ import UserController from '@components/home/topbar-controller/UserController.ts
 
 export default function TopbarController() {
   return (
-    <div className='fixed z-10 top-0 flex justify-between p-4 w-[37.5rem] strong-blur'>
+    <div className='fixed top-0 z-10 flex justify-between w-full p-4 sm:w-[37.5rem] strong-blur'>
       <LocationController />
       <UserController />
     </div>
