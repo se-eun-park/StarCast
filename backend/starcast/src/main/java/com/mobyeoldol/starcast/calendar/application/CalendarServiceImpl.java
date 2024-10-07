@@ -2,8 +2,15 @@ package com.mobyeoldol.starcast.calendar.application;
 
 import com.mobyeoldol.starcast.calendar.domain.CelestialEvents;
 import com.mobyeoldol.starcast.calendar.domain.repository.CalendarRepository;
+import com.mobyeoldol.starcast.calendar.presentation.request.CalendarMainRequest;
+import com.mobyeoldol.starcast.calendar.presentation.response.CalendarMainResponse;
 import com.mobyeoldol.starcast.calendar.presentation.response.MonthlyAstronomicalResponse;
 import com.mobyeoldol.starcast.calendar.presentation.request.MonthlyAstronomicalRequest;
+import com.mobyeoldol.starcast.member.domain.Profile;
+import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
+import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
+import com.mobyeoldol.starcast.place.domain.repository.MySpotRepository;
+import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,9 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,6 +29,10 @@ import java.util.stream.Collectors;
 public class CalendarServiceImpl implements CalendarService {
 
     private final CalendarRepository calendarRepository;
+    private final ProfileRepository profileRepository;
+    private final MySpotRepository mySpotRepository;
+    private final PlaceRepository placeRepository;
+    private final FavouriteSpotRepository favouriteSpotRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -70,5 +79,100 @@ public class CalendarServiceImpl implements CalendarService {
                 .month(month)
                 .eventsOfTheMonth(eventsOfTheMonth)
                 .build();
+    }
+
+    @Override
+    public CalendarMainResponse getCalendarMain(String profileUid, CalendarMainRequest request) {
+//        log.info("[캘린더 메인 페이지 API] 1. Member의 actionPlaceType 조회");
+//        Profile profile = getProfileInfo(profileUid);
+//
+//        CalendarMainResponse.CalendarMainResponseBuilder responseBuilder = CalendarMainResponse.builder();
+//        log.info("[캘린더 메인 페이지 API] 2. MY_SPOT인지 GPS인지 보기");
+//        if(profile.getActionPlaceType().equals(ActionPlaceType.MY_SPOT)){
+//            log.info("[캘린더 메인 페이지 API] 2-1-1. MY_SPOT 이면, 내 장소 테이블에서 장소 아이디를 가져오기");
+//
+//            Optional<MySpot> optionalMySpot = mySpotRepository.findByProfile_ProfileUid(profileUid);
+//            if (optionalMySpot.isPresent()) {
+//                MySpot mySpot = optionalMySpot.get();
+//                log.info("[캘린더 메인 페이지 API] 2-1-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
+//                /*
+//                위치별 출몰시각 테이블에서 월몰시 : 월몰분으로 묶어서 LocalTime 자료형인 어디에 담기
+//                단중기예보 테이블에서 장소아이디로 하나를 찾고 습도, SKY, PTY 넣기
+//
+//                 */
+//
+//                Optional<Place> optionalPlace = placeRepository.findByPlaceUid(mySpot.getPlace().getPlaceUid());
+//                if (optionalPlace.isPresent()) {
+//                    responseBuilder.mySpot(makePlaceResponse(optionalPlace.get()));
+//                }else{
+//                    throw new IllegalArgumentException("내 장소의 정보를 조회할 수 없습니다.");
+//                }
+//            }
+//        }else{
+//            log.info("[캘린더 메인 페이지 API] 2-2. GPS 이면, request열고 유효성 검사 -> address 1, 4 필수 / address 2 or 3은 값이 하나 있어야함");
+//            if(request.getGps()==null || request.getGps().getAddress1()==null || request.getGps().getAddress4()==null){
+//                throw new IllegalArgumentException("주소 정보가 명확하지 않습니다.");
+//            }
+//
+//            log.info("[캘린더 메인 페이지 API] 2-2-1. address1~4로 장소 아이디를 가져오기");
+//            Optional<Place> optionalPlace = placeRepository.findByAddress(
+//                    request.getGps().getAddress1(),
+//                    request.getGps().getAddress2(),
+//                    request.getGps().getAddress3(),
+//                    request.getGps().getAddress4()
+//            );
+//
+//            if (optionalPlace.isPresent()) {
+//                Place place = optionalPlace.get();
+//                log.info("[캘린더 메인 페이지 API] 2-2-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
+//
+//                // GPS 정보로 응답 세팅
+//                responseBuilder.myGPS(makePlaceResponse(place));
+//            } else {
+//                throw new IllegalArgumentException("GPS 유효성 검사 실패");
+//            }
+//
+//            log.info("[캘린더 메인 페이지 API] 2-2-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
+//        }
+//
+//        log.info("[캘린더 메인 페이지 API] 3. 즐겨찾기 리스트");
+//
+//        List<FavouriteSpot> favouriteSpots = favouriteSpotRepository.findByProfileUid(profileUid);
+//        List<CalendarMainResponse.FavouritePlace> favouritePlaces = new ArrayList<>();
+//
+//        log.info("[캘린더 메인 페이지 API] 3-1. 프로필 아이디로 모든 즐겨찾기 가져오기");
+//        for (FavouriteSpot favouriteSpot : favouriteSpots) {
+//            log.info("[캘린더 메인 페이지 API] 3-2. 즐겨찾기의 장소아이디로 각 장소가져오고 각 값 가져오기");
+//            Optional<Place> optionalPlace = placeRepository.findByPlaceUid(favouriteSpot.getPlace().getPlaceUid());
+//
+//            CalendarMainResponse.FavouritePlace favouritePlace = CalendarMainResponse.FavouritePlace.builder()
+//                    .placeUid(place.getPlaceUid())
+//                    .address(place.getAddress1()+" "+place.getAddress2()+" "+place.getAddress3()+" "+place.getAddress4())
+//                    .details(place.getAddress4())
+//                    .placeType(place.getType())
+//                    .weatherOfTheNight()
+//                    .best()
+//                    .moonSetTime()
+//                    .isPlanned()
+//                    .build();
+//
+//            favouritePlaces.add(makePlaceResponse(place));
+//        }
+//        responseBuilder.favouritePlaceList(favouritePlaces);
+//
+//        return responseBuilder.build();
+        return null;
+    }
+
+
+
+
+    private Profile getProfileInfo(String profileUid){
+        Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
+        if(optionalProfile.isEmpty()) {
+            log.error("[getProfileInfo 메서드] 1-2. 해당 프로필 정보를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("해당 프로필 정보를 찾을 수 없습니다.");
+        }
+        return optionalProfile.get();
     }
 }

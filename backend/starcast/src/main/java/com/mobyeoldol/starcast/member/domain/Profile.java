@@ -4,12 +4,12 @@ import com.mobyeoldol.starcast.auth.domain.Auth;
 import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.community.domain.Reaction;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
-import com.mobyeoldol.starcast.member.domain.enums.ActionPlaceType;
 import com.mobyeoldol.starcast.notice.domain.Consent;
 import com.mobyeoldol.starcast.notice.domain.Notice;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.MySpot;
 import com.mobyeoldol.starcast.place.domain.Plan;
+import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -56,7 +56,7 @@ public class Profile extends BaseTimeEntity {
     private Boolean isDeleted;
 
     @Column(name = "action_place_type")
-    private ActionPlaceType actionPlaceType;
+    private MainPlace actionPlaceType;
 
     @Builder.Default
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)

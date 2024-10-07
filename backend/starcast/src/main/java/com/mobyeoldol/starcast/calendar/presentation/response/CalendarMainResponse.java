@@ -5,15 +5,15 @@ import com.mobyeoldol.starcast.calendar.domain.enums.PrecipitationStatus;
 import com.mobyeoldol.starcast.calendar.domain.enums.WeatherStatus;
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalTime;
 import java.util.List;
 
 @Getter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CalendarMainResponse {
@@ -21,7 +21,11 @@ public class CalendarMainResponse {
     private MySpot mySpot;
     private List<FavouritePlace> favouritePlaceList;
 
-    static class Place {
+    @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Place {
         private String placeUid;
         private String address;
         private String details;
@@ -32,7 +36,11 @@ public class CalendarMainResponse {
         private IsPlanned isPlanned;
     }
 
-    static class WeatherOfTheNight {
+    @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class WeatherOfTheNight {
         private Hour hour21;
         private Hour hour22;
         private Hour hour23;
@@ -42,34 +50,51 @@ public class CalendarMainResponse {
         private Hour hour03;
     }
 
-    static class BestDay {
+    @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BestDay {
         private String hour;
         private MoonStatus moonPhase;
         private Double lightPollution;
         private Integer humidity;
     }
 
-    static class Hour {
+    @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Hour {
         private Double castarPoint;
         private WeatherStatus cloudCoverage;
         private PrecipitationStatus precipitation;
     }
 
-    static class IsPlanned {
+    @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class IsPlanned {
         private String isPlanned;
         private String hour;
     }
 
-
-    static class MyGPS extends Place{
-
-    }
-
-    static class MySpot extends Place{
+    @Getter
+    @SuperBuilder
+    public static class MyGPS extends Place {
 
     }
 
-    static class FavouritePlace extends Place{
+    @Getter
+    @SuperBuilder
+    public static class MySpot extends Place {
+
+    }
+
+    @Getter
+    @SuperBuilder
+    public static class FavouritePlace extends Place {
 
     }
 
