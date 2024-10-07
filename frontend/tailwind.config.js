@@ -136,12 +136,21 @@ export default {
             opacity: '.3',
           },
         },
+        fadeIn: {
+          '0%, 50%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1',
+          },
+        },
       },
       animation: {
         slideRight: 'slideRight 40s linear infinite',
         'pulse-delay': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite var(--delay)',
         slideUp: 'slideUp 0.3s ease-in-out',
         slideDown: 'slideDown 0.3s ease-in-out',
+        fadeIn: 'fadeIn 0.3s ease-in-out',
       },
     },
   },
