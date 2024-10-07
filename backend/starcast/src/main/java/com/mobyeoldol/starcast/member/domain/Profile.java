@@ -4,6 +4,7 @@ import com.mobyeoldol.starcast.auth.domain.Auth;
 import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.community.domain.Reaction;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.member.domain.enums.ActionPlaceType;
 import com.mobyeoldol.starcast.notice.domain.Consent;
 import com.mobyeoldol.starcast.notice.domain.Notice;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
@@ -55,7 +56,7 @@ public class Profile extends BaseTimeEntity {
     private Boolean isDeleted;
 
     @Column(name = "action_place_type")
-    private String actionPlaceType;
+    private ActionPlaceType actionPlaceType;
 
     @Builder.Default
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
