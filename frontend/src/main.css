@@ -57,6 +57,12 @@
 
 @font-face {
   font-family: 'Paperlogy';
+  font-weight: 400;
+  src: url('@assets/fonts/Paperlogy/Paperlogy-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Paperlogy';
   font-weight: 500;
   src:
     url('@assets/fonts/Paperlogy/Paperlogy-Medium.woff') format('woff'),
@@ -95,5 +101,11 @@
   }
   .chip-selected {
     @apply px-3 py-1 rounded-full bg-bg-50 text-bg-900 text-xs font-medium;
+  }
+}
+
+@layer components {
+  .strong-blur {
+    backdrop-filter: blur(4px);
   }
 }

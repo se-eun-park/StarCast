@@ -9,7 +9,7 @@ import {
 
 const SkyBackground = () => {
   return (
-    <div className='relative w-full overflow-hidden h-80 bg-gradient900to700'>
+    <div className='fixed w-[37.5rem] overflow-hidden h-80 bg-gradient900to700'>
       <div className='absolute z-0'>
         {LittleStarPositionList.map((littleStar, index) => (
           <AnimatedLittleStar

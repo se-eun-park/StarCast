@@ -3,14 +3,11 @@ import SvgCalendarIcon from '@assets/svg/menu/CalendarIcon'
 import SvgMypageIcon from '@assets/svg/menu/MypageIcon'
 import SvgObservingSpotIcon from '@assets/svg/menu/ObservingSpotIcon'
 import SvgReviewIcon from '@assets/svg/menu/ReviewIcon'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 export default function Menubar() {
-  const { pathname } = useLocation()
-  if (pathname !== '/home') return null
-
   return (
-    <div className='fixed bottom-0 left-1/2 transform -translate-x-1/2 z-10 flex justify-center w-[37.375rem] pb-2 bg-bg-900/50 backdrop-blur'>
+    <div className='fixed bottom-0 left-1/2 transform -translate-x-1/2 flex justify-center w-[37.375rem] pb-2 bg-bg-900/50 backdrop-blur z-40'>
       <div className='w-[21.25rem] bg-bg-50/25 px-8 flex justify-between py-2 rounded-3xl text-2xs '>
         <NavLink
           to='/observing-spot'

@@ -6,22 +6,12 @@ import HomePage from '@pages/HomePage'
 import CalendarPage from '@pages/CalendarPage'
 import ObservingSpotPage from '@pages/ObservingSpotPage'
 import Mypage from '@pages/Mypage'
-import Layout from '@components/ui/Layout'
+import Layout from '@components/layout/Layout'
 import ReviewListPage from '@pages/review/ReviewListPage'
 import ReviewDetailPage from '@pages/review/ReviewDetailPage'
-import ReviewDetailLayout from '@components/ui/ReviewDetailLayout'
+import ReviewDetailLayout from '@components/layout/ReviewDetailLayout'
 import CreateReviewPage from '@pages/review/CreateReviewPage'
-import { useNavigate } from 'react-router-dom'
-
-const RedirectToLogin = () => {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    navigate('/login') // 처음 실행 시 '/login'으로 리다이렉트
-  }, [navigate])
-
-  return null // 렌더링할 내용 없음
-}
+import NotificationPage from '@pages/NotificationPage'
 
 const Router = () => {
   const routes: RouteObject[] = [
@@ -31,31 +21,31 @@ const Router = () => {
       errorElement: <NotFoundPage />,
       children: [
         {
-          index: true, // 기본 경로에 대한 리다이렉트
-          element: <RedirectToLogin />,
-        },
-        {
-          path: '/login',
+          path: 'login',
           element: <LoginPage />,
         },
         {
-          path: '/home',
+          path: 'home',
           element: <HomePage />,
         },
         {
-          path: '/calendar',
+          path: 'calendar',
           element: <CalendarPage />,
         },
         {
-          path: '/observing-spot',
+          path: 'observing-spot',
           element: <ObservingSpotPage />,
         },
         {
-          path: '/mypage',
+          path: 'mypage',
           element: <Mypage />,
         },
         {
-          path: '/review',
+          path: 'notification',
+          element: <NotificationPage />,
+        },
+        {
+          path: 'review',
           children: [
             {
               index: true,
