@@ -5,32 +5,64 @@ import HomePage from '@pages/HomePage'
 import CalendarPage from '@pages/CalendarPage'
 import ObservingSpotPage from '@pages/ObservingSpotPage'
 import Mypage from '@pages/Mypage'
+import Layout from '@components/layout/Layout'
+import ReviewListPage from '@pages/review/ReviewListPage'
+import ReviewDetailPage from '@pages/review/ReviewDetailPage'
+import ReviewDetailLayout from '@components/layout/ReviewDetailLayout'
+import CreateReviewPage from '@pages/review/CreateReviewPage'
+import NotificationPage from '@pages/NotificationPage'
 
 const Router = () => {
   const routes: RouteObject[] = [
     {
       path: '/',
+      element: <Layout />,
       errorElement: <NotFoundPage />,
       children: [
         {
-          path: '/login',
+          path: 'login',
           element: <LoginPage />,
         },
         {
-          path: '/home',
+          path: 'home',
           element: <HomePage />,
         },
         {
-          path: '/calendar',
+          path: 'calendar',
           element: <CalendarPage />,
         },
         {
-          path: '/observing-spot',
+          path: 'observing-spot',
           element: <ObservingSpotPage />,
         },
         {
-          path: '/mypage',
+          path: 'mypage',
           element: <Mypage />,
+        },
+        {
+          path: 'notification',
+          element: <NotificationPage />,
+        },
+        {
+          path: 'review',
+          children: [
+            {
+              index: true,
+              element: <ReviewListPage />,
+            },
+            {
+              path: ':id',
+              element: (
+                <ReviewDetailLayout>
+                  <ReviewDetailPage />
+                </ReviewDetailLayout>
+              ),
+            },
+            {
+              path: 'new',
+              element: <CreateReviewPage />,
+            },
+          ],
         },
       ],
     },

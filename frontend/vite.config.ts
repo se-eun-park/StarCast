@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import svgr from 'vite-plugin-svgr'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,6 +12,7 @@ export default defineConfig({
         icon: true,
       },
     }),
+    VitePWA({ registerType: 'autoUpdate', injectRegister: 'auto' }),
   ],
   resolve: {
     alias: [
@@ -18,6 +20,7 @@ export default defineConfig({
       { find: '@apis', replacement: '/src/apis' },
       { find: '@assets', replacement: '/src/assets' },
       { find: '@components', replacement: '/src/components' },
+      { find: '@constants', replacement: '/src/constants' },
       { find: '@hooks', replacement: '/src/hooks' },
       { find: '@pages', replacement: '/src/pages' },
       { find: '@queries', replacement: '/src/queries' },
@@ -25,6 +28,8 @@ export default defineConfig({
       { find: '@stores', replacement: '/src/stores' },
       { find: '@types', replacement: '/src/types' },
       { find: '@dummy', replacement: '/src/dummy' },
+      { find: '@modal', replacement: '/src/modal' },
+      { find: '@utils', replacement: '/src/utils'},
     ],
   },
   server: {
