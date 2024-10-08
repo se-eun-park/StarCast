@@ -13,7 +13,7 @@ export default function NavbarWithLabel() {
   }
 
   return (
-    <div className='sticky top-0 flex items-center justify-between w-full px-5 h-14 bg-bg-900'>
+    <div className='sticky top-0 z-10 flex items-center justify-between w-full px-5 h-14 bg-bg-900'>
       <RouteBack />
       <NavbarContent />
     </div>
