@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CalendarMainRequest {
     @NotNull(message = "날짜 형식은 yyyy-MM-dd 이어야 합니다.")
-    private LocalDate localDate;
+    private LocalDate date;
     private GPS gps;
 
     @Getter

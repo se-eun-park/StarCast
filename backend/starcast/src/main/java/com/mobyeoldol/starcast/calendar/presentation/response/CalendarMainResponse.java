@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalTime;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -32,7 +32,7 @@ public class CalendarMainResponse {
         private PlaceType placeType;
         private WeatherOfTheNight weatherOfTheNight;
         private BestDay best;
-        private LocalTime moonSetTime;
+        private String moonSetTime;
         private IsPlanned isPlanned;
     }
 
@@ -47,7 +47,6 @@ public class CalendarMainResponse {
         private Hour hour00;
         private Hour hour01;
         private Hour hour02;
-        private Hour hour03;
     }
 
     @Getter
@@ -58,7 +57,6 @@ public class CalendarMainResponse {
         private String hour;
         private MoonStatus moonPhase;
         private Double lightPollution;
-        private Integer humidity;
     }
 
     @Getter
@@ -69,6 +67,7 @@ public class CalendarMainResponse {
         private Double castarPoint;
         private WeatherStatus cloudCoverage;
         private PrecipitationStatus precipitation;
+        private BigDecimal humidity;
     }
 
     @Getter
@@ -76,7 +75,7 @@ public class CalendarMainResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class IsPlanned {
-        private String isPlanned;
+        private String planUid;
         private String hour;
     }
 
