@@ -1,9 +1,9 @@
-import DefaultIamge2 from '@assets/image/default-review-image2.jpg'
 import SvgDefaultControllerProfileIcon from '@assets/svg/DefaultControllerProfileIcon.tsx'
 import SvgLocationIcon from '@assets/svg/calendar/LocationIcon'
 import SvgCastarCuteIcon from '@assets/svg/response/CastarCuteIcon'
 import SvgCastarHappyIcon from '@assets/svg/response/CastarHappyIcon'
 import SvgCastarSmartIcon from '@assets/svg/response/CastarSmartIcon'
+import ReviewCarousel from '@components/review/ReviewCarousel'
 import { useState } from 'react'
 
 const content = `
@@ -31,10 +31,18 @@ export default function ReviewDetailPage() {
 
   return (
     <div className='w-full divide-y divide-bg-50/10 '>
-      <img
+      <ReviewCarousel
+        SLIDES={[
+          '/review/default-review-image1.jpg',
+          '/review/default-review-image2.jpg',
+          '/review/default-review-image3.jpg',
+        ]}
+        OPTIONS={{ loop: false }}
+      />
+      {/* <img
         src={DefaultIamge2}
         className='w-[37.5rem] bg-white aspect-square object-cover object-center max-h-96'
-      />
+      /> */}
       <div className='relative z-50 flex justify-between w-full p-4 bg-bg-900'>
         <div className='flex items-center space-x-2'>
           <SvgDefaultControllerProfileIcon className='rounded-full w-9 h-9' />
