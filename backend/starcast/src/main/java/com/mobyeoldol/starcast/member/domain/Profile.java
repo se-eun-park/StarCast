@@ -56,6 +56,7 @@ public class Profile extends BaseTimeEntity {
     private Boolean isDeleted;
 
     @Column(name = "action_place_type")
+    @Enumerated(EnumType.STRING)
     private MainPlace actionPlaceType;
 
     @Builder.Default

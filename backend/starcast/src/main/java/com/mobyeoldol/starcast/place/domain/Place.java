@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,9 @@ public class Place {
 
     @Column(name = "image", length = 2000)
     private String image;
+
+    @Column(name="light_pollution", precision = 5, scale = 2)
+    private BigDecimal lightPollution;
 
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)

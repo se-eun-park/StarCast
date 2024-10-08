@@ -13,8 +13,8 @@ import lombok.*;
 @Table(name="moonrise_moonset_times")
 public class MoonriseMoonsetTimes {
     @Id
-    @Column(name = "moonrise_set_time_uid", length = 36)
-    private String moonriseSetTimeUid;
+    @Column(name = "moon_rise_set_time_uid", length = 36)
+    private String moonRiseSetTimeUid;
 
     @ManyToOne
     @JoinColumn(name = "place_uid", nullable = false)
