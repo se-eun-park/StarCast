@@ -29,11 +29,16 @@ export default defineConfig({
       { find: '@types', replacement: '/src/types' },
       { find: '@dummy', replacement: '/src/dummy' },
       { find: '@modal', replacement: '/src/modal' },
-      { find: '@utils', replacement: '/src/utils'},
+      { find: '@utils', replacement: '/src/utils' },
     ],
   },
   server: {
     host: '0.0.0.0',
     port: 3000,
+    hmr: {
+      protocol: 'wss', // WebSocket Secure 사용
+      host: 'j11a609.p.ssafy.io', // 실제 서버 도메인
+      port: 443, // HTTPS 포트
+    },
   },
 })
