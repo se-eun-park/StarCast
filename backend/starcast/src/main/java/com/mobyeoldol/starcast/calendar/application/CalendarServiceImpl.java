@@ -17,10 +17,12 @@ import com.mobyeoldol.starcast.calendar.presentation.response.MonthlyAstronomica
 import com.mobyeoldol.starcast.calendar.presentation.request.MonthlyAstronomicalRequest;
 import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
+import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.MySpot;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.Plan;
 import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
+import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
 import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
 import com.mobyeoldol.starcast.place.domain.repository.MySpotRepository;
 import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
@@ -108,7 +110,7 @@ public class CalendarServiceImpl implements CalendarService {
         log.info("[캘린더 메인 페이지 API] 1. Member의 actionPlaceType 조회");
         Profile profile = getProfileInfo(profileUid);
 
-        CalendarMainResponse.CalendarMainResponseBuilder responseBuilder = CalendarMainResponse.builder();
+        CalendarMainResponse.CalendarMainResponseBuilder<?, ?> responseBuilder = CalendarMainResponse.builder();
         log.info("[캘린더 메인 페이지 API] 2. MY_SPOT or GPS인지 보기 ["+profile.getActionPlaceType()+"]");
         if(profile.getActionPlaceType().equals(MainPlace.MY_SPOT)){
             log.info("[캘린더 메인 페이지 API] 2-1-1. MY_SPOT 이면, 내 장소 테이블에서 장소 아이디를 가져오기");
@@ -120,9 +122,10 @@ public class CalendarServiceImpl implements CalendarService {
                 log.info("[캘린더 메인 페이지 API] 2-1-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
 
                 String placeUid = mySpot.getPlace().getPlaceUid();
+
                 Optional<Place> optionalPlace = placeRepository.findByPlaceUid(placeUid);
                 if (optionalPlace.isPresent()) {
-                    log.info("[캘린더 메인 페이지 API] 2-1-2. OK");
+                    log.info("[캘린더 메인 페이지 API] OK");
                     Place place = optionalPlace.get();
 
                     CalendarMainResponse.WeatherOfTheNight weatherOfTheNight = getWeatherOfTheNight(placeUid, request.getDate());
@@ -146,9 +149,72 @@ public class CalendarServiceImpl implements CalendarService {
             log.info("[캘린더 메인 페이지 API] 2번 끗");
         }else if(profile.getActionPlaceType().equals(MainPlace.GPS)){
             log.info("[캘린더 메인 페이지 API] 2-2-1. GPS 이면, request열고 유효성 검사 -> address 1, 4 필수 / address 2 or 3은 값이 하나 있어야함");
+            if(request.getGps()==null || request.getGps().getAddress1()==null || request.getGps().getAddress4()==null){
+                throw new IllegalArgumentException("[캘린더 메인 페이지 API] 2-2-1. 주소 정보가 명확하지 않습니다.");
+            }
+
+            log.info("[캘린더 메인 페이지 API] 2-2-1. address1~4로 장소 아이디를 가져오기");
+            Optional<Place> optionalPlace = placeRepository.findByAddress1AndAddress2AndAddress3AndAddress4AndType(
+                    request.getGps().getAddress1(),
+                    request.getGps().getAddress2(),
+                    request.getGps().getAddress3(),
+                    request.getGps().getAddress4(),
+                    PlaceType.EUP_MYUN_DONG
+            );
+
+            if (optionalPlace.isEmpty()) {
+                log.warn("[캘린더 메인 페이지 API] 2-2-2. 장소 정보가 없습니다.");
+                return null;
+            }
+            Place place = optionalPlace.get();
+
+            String placeUid = place.getPlaceUid();
+            CalendarMainResponse.WeatherOfTheNight weatherOfTheNight = getWeatherOfTheNight(placeUid, request.getDate());
+
+            CalendarMainResponse.MyGPS curMyGPS = CalendarMainResponse.MyGPS.builder()
+                    .placeUid(placeUid)
+                    .address(makeAddress(place.getAddress1(), place.getAddress2(), place.getAddress3(), place.getAddress4()))
+                    .details(place.getAddress4())
+                    .placeType(place.getType())
+                    .weatherOfTheNight(weatherOfTheNight)
+                    .best(createBestDay(placeUid, request.getDate(), weatherOfTheNight))
+                    .moonSetTime(getMoonSetTime(request.getDate(), place))
+                    .isPlanned(checkIfPlanned(placeUid, request.getDate())) // placeUid 장소아이디에 대해 연결된 plan 테이블에 값이 있는지 확인하고 21시~00시 사에이 있다면 알려준다.
+                    .build();
+
+            responseBuilder.myGPS(curMyGPS);
         }
         log.info("[캘린더 메인 페이지 API] 3. 즐겨찾기 리스트");
+        List<FavouriteSpot> favouriteSpotList = favouriteSpotRepository.findByProfile_ProfileUidAndIsDeletedFalse(profileUid);
+        if(favouriteSpotList.isEmpty())
+            return responseBuilder.build();
 
+        List<CalendarMainResponse.FavouritePlace> favouritePlaceList = new ArrayList<>();
+        for(FavouriteSpot favouriteSpot : favouriteSpotList){
+            Optional<Place> optionalPlace = placeRepository.findByPlaceUid(favouriteSpot.getPlace().getPlaceUid());
+            if (optionalPlace.isEmpty()) {
+                log.warn("[캘린더 메인 페이지 API] 장소 정보가 없습니다.");
+                return null;
+            }
+            Place place = optionalPlace.get();
+
+            String placeUid = place.getPlaceUid();
+            CalendarMainResponse.WeatherOfTheNight weatherOfTheNight = getWeatherOfTheNight(placeUid, request.getDate());
+
+            CalendarMainResponse.FavouritePlace favouritePlace = CalendarMainResponse.FavouritePlace.builder()
+                    .placeUid(placeUid)
+                    .address(makeAddress(place.getAddress1(), place.getAddress2(), place.getAddress3(), place.getAddress4()))
+                    .details(place.getAddress4())
+                    .placeType(place.getType())
+                    .weatherOfTheNight(weatherOfTheNight)
+                    .best(createBestDay(placeUid, request.getDate(), weatherOfTheNight))
+                    .moonSetTime(getMoonSetTime(request.getDate(), place))
+                    .isPlanned(checkIfPlanned(placeUid, request.getDate())) // placeUid 장소아이디에 대해 연결된 plan 테이블에 값이 있는지 확인하고 21시~00시 사에이 있다면 알려준다.
+                    .build();
+
+            favouritePlaceList.add(favouritePlace);
+        }
+        responseBuilder.favouritePlaceList(favouritePlaceList);
         return responseBuilder.build();
     }
 
@@ -160,7 +226,6 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     private CalendarMainResponse.WeatherOfTheNight getWeatherOfTheNight(String placeUid, LocalDate date) {
-
         log.info("[입력값 확인] placeUid : {}, date : {}", placeUid, date);
 
         log.info("[캘린더 메인 페이지 API] 1. Forecast 데이터를 가져옴");
@@ -172,7 +237,6 @@ public class CalendarServiceImpl implements CalendarService {
         Forecast forecast = optionalForecast.get();
 
         log.info("[캘린더 메인 페이지 API] 2. Place에서 광공해 값을 가져옴");
-
         Optional<Place> optionalPlace = placeRepository.findByPlaceUid(placeUid);
         if (optionalPlace.isEmpty()) {
             log.warn("[캘린더 메인 페이지 API] 장소 정보가 없습니다. placeUid: {}", placeUid);
@@ -228,7 +292,6 @@ public class CalendarServiceImpl implements CalendarService {
                         .cloudCoverage(getWeatherStatus(forecast.getSky02()))
                         .precipitation(getPrecipitationStatus(forecast.getPty02()))
                         .humidity(forecast.getHumidity02())
-
                         .build())
                 .build();
     }
@@ -322,14 +385,14 @@ public class CalendarServiceImpl implements CalendarService {
         return Arrays.stream(WeatherStatus.values())
                 .filter(status -> status.getCode() == code)
                 .findFirst()
-                .orElse(WeatherStatus.CLEAR); // 기본 값 설정
+                .orElse(WeatherStatus.CLEAR);
     }
 
     private PrecipitationStatus getPrecipitationStatus(int code) {
         return Arrays.stream(PrecipitationStatus.values())
                 .filter(status -> status.getCode() == code)
                 .findFirst()
-                .orElse(PrecipitationStatus.NONE); // 기본 값 설정
+                .orElse(PrecipitationStatus.NONE);
     }
 
     private CalendarMainResponse.BestDay createBestDay(String placeUid, LocalDate date, CalendarMainResponse.WeatherOfTheNight weatherOfTheNight) {
