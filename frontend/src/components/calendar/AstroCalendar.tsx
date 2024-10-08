@@ -31,7 +31,7 @@ const AstroCalendar = () => {
   };
   
   const tileContent = ({ date }: { date: Date }) => {
-    const kstOffset = 9 * 60; // Offset in minutes
+    const kstOffset = 9 * 60;
     const formattedDate = new Date(date.getTime() + kstOffset * 60 * 1000);
     formattedDate.setUTCHours(0, 0, 0, 0);
 
@@ -40,26 +40,13 @@ const AstroCalendar = () => {
     const events = AstroEventsDummy[currentMonth] || [];
     const eventForDate = events.find(event => event.locdate === formattedString);
 
-    const isHighlighted = tileClassName({ date }) !== '';
-    const isSelected = Array.isArray(value)
-      ? value.some((d) => d?.getTime() === date.getTime())
-      : value instanceof Date && value.getTime() === date.getTime();
-
     if (eventForDate) {
-      if (isHighlighted || isSelected) {
         return (
           <div className="icon-container">
-          <StarIconCal className="star-icon-dark" fillColor="#000814" />
+          <StarIconCal className="star-icon-cal" />
         </div>
         );
-      } else {
-        return (
-          <div className="icon-container">
-            <StarIconCal fillColor="#B3D8FF"/>
-          </div>
-        );
-      }
-    }
+      } 
     return null;
   };
 
@@ -69,7 +56,7 @@ const AstroCalendar = () => {
         onChange={onChange} 
         value={value}
         locale="ko"
-        formatDay={(locale, date) => date.toLocaleString('en', { day: 'numeric' })}
+        formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })}
         calendarType="gregory"
         navigationLabel={({ date, locale }) => 
           `${date.getFullYear()}년 ${date.toLocaleString(locale, { month: 'long' })}`

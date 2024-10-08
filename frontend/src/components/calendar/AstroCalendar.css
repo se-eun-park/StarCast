@@ -94,9 +94,8 @@
   border-radius: .25rem;
 }
 
-.react-calendar__tile:enabled:focus:after .star-icon-dark{
-  fill: #B3D8FF;
-  transition: fill 0.1s ease;
+.react-calendar__tile:enabled:focus .star-icon-cal {
+  fill: #000814;
 }
 
 .react-calendar__tile--active {
@@ -131,9 +130,18 @@
   transition: opacity 0.1s ease, transform 0.1s ease;
 }
 
-.highlight-start:hover .star-icon-dark,
-.highlight-end:hover .star-icon-dark,
-.highlight:hover .star-icon-dark {
+.highlight-start .star-icon-cal,
+.highlight-end .star-icon-cal,
+.highlight .star-icon-cal {
+  fill: #000814;
+}
+
+.highlight-start:hover .star-icon-cal,
+.highlight-end:hover .star-icon-cal,
+.highlight:hover .star-icon-cal {
   fill: #B3D8FF;
-  transition: fill 0.1s ease;
+}
+
+.star-icon-cal {
+  fill: #B3D8FF;
 }

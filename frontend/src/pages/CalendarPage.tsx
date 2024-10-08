@@ -6,7 +6,6 @@ const CalendarPage = () => {
   return (
     // 테스트를 위해 하드코딩 했습니다.
     <div className='h-full min-h-screen bg-bg-900'>
-      <h1>캘린더 페이지</h1>
       <AstroCalendar />
       <PlaceWeatherCard
         place_uid={PlaceWeatherCardDummyData.myGPS.place_uid}
