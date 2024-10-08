@@ -102,6 +102,7 @@ export default {
         gradient900to700: 'linear-gradient(#000814, #001A3F)',
         gradient900to800: 'linear-gradient(#000814, #00122A)',
         bgGradient: 'linear-gradient(180deg, #00122a 0%, #000814 100%)',
+        gaugeGradient: 'linear-gradient(to right,#FAFA33, #F26B76)',
       },
       keyframes: {
         slideRight: {
