@@ -1,27 +1,45 @@
 package com.mobyeoldol.starcast.calendar.application;
 
 import com.mobyeoldol.starcast.calendar.domain.CelestialEvents;
+import com.mobyeoldol.starcast.calendar.domain.Forecast;
+import com.mobyeoldol.starcast.calendar.domain.LunarCycle;
+import com.mobyeoldol.starcast.calendar.domain.MoonriseMoonsetTimes;
+import com.mobyeoldol.starcast.calendar.domain.enums.MoonStatus;
+import com.mobyeoldol.starcast.calendar.domain.enums.PrecipitationStatus;
+import com.mobyeoldol.starcast.calendar.domain.enums.WeatherStatus;
 import com.mobyeoldol.starcast.calendar.domain.repository.CalendarRepository;
+import com.mobyeoldol.starcast.calendar.domain.repository.ForecastRepository;
+import com.mobyeoldol.starcast.calendar.domain.repository.LunarCycleRepository;
+import com.mobyeoldol.starcast.calendar.domain.repository.MoonriseMoonsetTimesRepository;
 import com.mobyeoldol.starcast.calendar.presentation.request.CalendarMainRequest;
 import com.mobyeoldol.starcast.calendar.presentation.response.CalendarMainResponse;
 import com.mobyeoldol.starcast.calendar.presentation.response.MonthlyAstronomicalResponse;
 import com.mobyeoldol.starcast.calendar.presentation.request.MonthlyAstronomicalRequest;
 import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
+import com.mobyeoldol.starcast.place.domain.MySpot;
+import com.mobyeoldol.starcast.place.domain.Place;
+import com.mobyeoldol.starcast.place.domain.Plan;
+import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
 import com.mobyeoldol.starcast.place.domain.repository.MySpotRepository;
 import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
+import com.mobyeoldol.starcast.place.domain.repository.PlanRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -33,6 +51,10 @@ public class CalendarServiceImpl implements CalendarService {
     private final MySpotRepository mySpotRepository;
     private final PlaceRepository placeRepository;
     private final FavouriteSpotRepository favouriteSpotRepository;
+    private final MoonriseMoonsetTimesRepository moonriseMoonsetTimesRepository;
+    private final PlanRepository planRepository;
+    private final ForecastRepository forecastRepository;
+    private final LunarCycleRepository lunarCycleRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -83,89 +105,296 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public CalendarMainResponse getCalendarMain(String profileUid, CalendarMainRequest request) {
-//        log.info("[캘린더 메인 페이지 API] 1. Member의 actionPlaceType 조회");
-//        Profile profile = getProfileInfo(profileUid);
-//
-//        CalendarMainResponse.CalendarMainResponseBuilder responseBuilder = CalendarMainResponse.builder();
-//        log.info("[캘린더 메인 페이지 API] 2. MY_SPOT인지 GPS인지 보기");
-//        if(profile.getActionPlaceType().equals(ActionPlaceType.MY_SPOT)){
-//            log.info("[캘린더 메인 페이지 API] 2-1-1. MY_SPOT 이면, 내 장소 테이블에서 장소 아이디를 가져오기");
-//
-//            Optional<MySpot> optionalMySpot = mySpotRepository.findByProfile_ProfileUid(profileUid);
-//            if (optionalMySpot.isPresent()) {
-//                MySpot mySpot = optionalMySpot.get();
-//                log.info("[캘린더 메인 페이지 API] 2-1-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
-//                /*
-//                위치별 출몰시각 테이블에서 월몰시 : 월몰분으로 묶어서 LocalTime 자료형인 어디에 담기
-//                단중기예보 테이블에서 장소아이디로 하나를 찾고 습도, SKY, PTY 넣기
-//
-//                 */
-//
-//                Optional<Place> optionalPlace = placeRepository.findByPlaceUid(mySpot.getPlace().getPlaceUid());
-//                if (optionalPlace.isPresent()) {
-//                    responseBuilder.mySpot(makePlaceResponse(optionalPlace.get()));
-//                }else{
-//                    throw new IllegalArgumentException("내 장소의 정보를 조회할 수 없습니다.");
-//                }
-//            }
-//        }else{
-//            log.info("[캘린더 메인 페이지 API] 2-2. GPS 이면, request열고 유효성 검사 -> address 1, 4 필수 / address 2 or 3은 값이 하나 있어야함");
-//            if(request.getGps()==null || request.getGps().getAddress1()==null || request.getGps().getAddress4()==null){
-//                throw new IllegalArgumentException("주소 정보가 명확하지 않습니다.");
-//            }
-//
-//            log.info("[캘린더 메인 페이지 API] 2-2-1. address1~4로 장소 아이디를 가져오기");
-//            Optional<Place> optionalPlace = placeRepository.findByAddress(
-//                    request.getGps().getAddress1(),
-//                    request.getGps().getAddress2(),
-//                    request.getGps().getAddress3(),
-//                    request.getGps().getAddress4()
-//            );
-//
-//            if (optionalPlace.isPresent()) {
-//                Place place = optionalPlace.get();
-//                log.info("[캘린더 메인 페이지 API] 2-2-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
-//
-//                // GPS 정보로 응답 세팅
-//                responseBuilder.myGPS(makePlaceResponse(place));
-//            } else {
-//                throw new IllegalArgumentException("GPS 유효성 검사 실패");
-//            }
-//
-//            log.info("[캘린더 메인 페이지 API] 2-2-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
-//        }
-//
-//        log.info("[캘린더 메인 페이지 API] 3. 즐겨찾기 리스트");
-//
-//        List<FavouriteSpot> favouriteSpots = favouriteSpotRepository.findByProfileUid(profileUid);
-//        List<CalendarMainResponse.FavouritePlace> favouritePlaces = new ArrayList<>();
-//
-//        log.info("[캘린더 메인 페이지 API] 3-1. 프로필 아이디로 모든 즐겨찾기 가져오기");
-//        for (FavouriteSpot favouriteSpot : favouriteSpots) {
-//            log.info("[캘린더 메인 페이지 API] 3-2. 즐겨찾기의 장소아이디로 각 장소가져오고 각 값 가져오기");
-//            Optional<Place> optionalPlace = placeRepository.findByPlaceUid(favouriteSpot.getPlace().getPlaceUid());
-//
-//            CalendarMainResponse.FavouritePlace favouritePlace = CalendarMainResponse.FavouritePlace.builder()
-//                    .placeUid(place.getPlaceUid())
-//                    .address(place.getAddress1()+" "+place.getAddress2()+" "+place.getAddress3()+" "+place.getAddress4())
-//                    .details(place.getAddress4())
-//                    .placeType(place.getType())
-//                    .weatherOfTheNight()
-//                    .best()
-//                    .moonSetTime()
-//                    .isPlanned()
-//                    .build();
-//
-//            favouritePlaces.add(makePlaceResponse(place));
-//        }
-//        responseBuilder.favouritePlaceList(favouritePlaces);
-//
-//        return responseBuilder.build();
-        return null;
+        log.info("[캘린더 메인 페이지 API] 1. Member의 actionPlaceType 조회");
+        Profile profile = getProfileInfo(profileUid);
+
+        CalendarMainResponse.CalendarMainResponseBuilder responseBuilder = CalendarMainResponse.builder();
+        log.info("[캘린더 메인 페이지 API] 2. MY_SPOT or GPS인지 보기 ["+profile.getActionPlaceType()+"]");
+        if(profile.getActionPlaceType().equals(MainPlace.MY_SPOT)){
+            log.info("[캘린더 메인 페이지 API] 2-1-1. MY_SPOT 이면, 내 장소 테이블에서 장소 아이디를 가져오기");
+
+            Optional<MySpot> optionalMySpot = mySpotRepository.findByProfile_ProfileUid(profileUid);
+            if (optionalMySpot.isPresent()) {
+                MySpot mySpot = optionalMySpot.get();
+                log.info("[캘린더 메인 페이지 API] 2-1-1. OK");
+                log.info("[캘린더 메인 페이지 API] 2-1-2. 장소 아이디로 장소 가져오고, 각 값 가져오기");
+
+                String placeUid = mySpot.getPlace().getPlaceUid();
+                Optional<Place> optionalPlace = placeRepository.findByPlaceUid(placeUid);
+                if (optionalPlace.isPresent()) {
+                    log.info("[캘린더 메인 페이지 API] 2-1-2. OK");
+                    Place place = optionalPlace.get();
+
+                    CalendarMainResponse.WeatherOfTheNight weatherOfTheNight = getWeatherOfTheNight(placeUid, request.getDate());
+
+                    CalendarMainResponse.MySpot curMySpot = CalendarMainResponse.MySpot.builder()
+                            .placeUid(placeUid)
+                            .address(makeAddress(place.getAddress1(), place.getAddress2(), place.getAddress3(), place.getAddress4()))
+                            .details(place.getAddress4())
+                            .placeType(place.getType())
+                            .weatherOfTheNight(weatherOfTheNight)
+                            .best(createBestDay(placeUid, request.getDate(), weatherOfTheNight))
+                            .moonSetTime(getMoonSetTime(request.getDate(), place))
+                            .isPlanned(checkIfPlanned(placeUid, request.getDate())) // placeUid 장소아이디에 대해 연결된 plan 테이블에 값이 있는지 확인하고 21시~00시 사에이 있다면 알려준다.
+                            .build();
+
+                    responseBuilder.mySpot(curMySpot);
+                }else{
+                    throw new IllegalArgumentException("내 장소의 정보를 조회할 수 없습니다.");
+                }
+            }
+            log.info("[캘린더 메인 페이지 API] 2번 끗");
+        }else if(profile.getActionPlaceType().equals(MainPlace.GPS)){
+            log.info("[캘린더 메인 페이지 API] 2-2-1. GPS 이면, request열고 유효성 검사 -> address 1, 4 필수 / address 2 or 3은 값이 하나 있어야함");
+        }
+        log.info("[캘린더 메인 페이지 API] 3. 즐겨찾기 리스트");
+
+        return responseBuilder.build();
+    }
+
+    private String makeAddress(String address1, String address2, String address3, String address4) {
+        return Stream.of(address1, address2, address3, address4)
+                .filter(Objects::nonNull)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.joining(" "));
+    }
+
+    private CalendarMainResponse.WeatherOfTheNight getWeatherOfTheNight(String placeUid, LocalDate date) {
+
+        log.info("[입력값 확인] placeUid : {}, date : {}", placeUid, date);
+
+        log.info("[캘린더 메인 페이지 API] 1. Forecast 데이터를 가져옴");
+        Optional<Forecast> optionalForecast = forecastRepository.findByForecastUidAndPlace_PlaceUid(date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd")), placeUid);
+        if (optionalForecast.isEmpty()) {
+            log.warn("[캘린더 메인 페이지 API] 날씨 정보가 없습니다. placeUid: {}, date: {}", placeUid, date);
+            return null;
+        }
+        Forecast forecast = optionalForecast.get();
+
+        log.info("[캘린더 메인 페이지 API] 2. Place에서 광공해 값을 가져옴");
+
+        Optional<Place> optionalPlace = placeRepository.findByPlaceUid(placeUid);
+        if (optionalPlace.isEmpty()) {
+            log.warn("[캘린더 메인 페이지 API] 장소 정보가 없습니다. placeUid: {}", placeUid);
+            return null;
+        }
+        Place place = optionalPlace.get();
+        double lightPollution = getLightPollution(place.getLightPollution().doubleValue());
+
+        Optional<LunarCycle> optionalLunarCycle = lunarCycleRepository.findByLunarCycleUid(date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd")));
+        if (optionalLunarCycle.isEmpty()) {
+            log.warn("[캘린더 메인 페이지 API] 월령 정보가 없습니다. date: {}", date);
+            return null;
+        }
+        LunarCycle lunarCycle = optionalLunarCycle.get();
+        double moonPhaseFactor = getMoonPhaseFactor(lunarCycle.getLunarAge().doubleValue());
+
+        log.info("21 : {}, 22 : {}, 23 : {}, 00 : {}, 01 : {}, 02 : {}"
+                ,forecast.getSky21(), forecast.getSky22(), forecast.getSky23(), forecast.getSky00(), forecast.getSky01(), forecast.getSky02());
+
+        return CalendarMainResponse.WeatherOfTheNight.builder()
+                .hour21(CalendarMainResponse.Hour.builder()
+                        .castarPoint(calculateCastarPoint(forecast.getSky21(), moonPhaseFactor, lightPollution, forecast.getHumidity21(), forecast.getPty21()))
+                        .cloudCoverage(getWeatherStatus(forecast.getSky21()))
+                        .precipitation(getPrecipitationStatus(forecast.getPty21()))
+                        .humidity(forecast.getHumidity21())
+                        .build())
+                .hour22(CalendarMainResponse.Hour.builder()
+                        .castarPoint(calculateCastarPoint(forecast.getSky22(), moonPhaseFactor, lightPollution, forecast.getHumidity22(), forecast.getPty22()))
+                        .cloudCoverage(getWeatherStatus(forecast.getSky22()))
+                        .precipitation(getPrecipitationStatus(forecast.getPty22()))
+                        .humidity(forecast.getHumidity22())
+                        .build())
+                .hour23(CalendarMainResponse.Hour.builder()
+                        .castarPoint(calculateCastarPoint(forecast.getSky23(), moonPhaseFactor, lightPollution, forecast.getHumidity23(), forecast.getPty23()))
+                        .cloudCoverage(getWeatherStatus(forecast.getSky23()))
+                        .precipitation(getPrecipitationStatus(forecast.getPty23()))
+                        .humidity(forecast.getHumidity23())
+                        .build())
+                .hour00(CalendarMainResponse.Hour.builder()
+                        .castarPoint(calculateCastarPoint(forecast.getSky00(), moonPhaseFactor, lightPollution, forecast.getHumidity00(), forecast.getPty00()))
+                        .cloudCoverage(getWeatherStatus(forecast.getSky00()))
+                        .precipitation(getPrecipitationStatus(forecast.getPty00()))
+                        .humidity(forecast.getHumidity00())
+                        .build())
+                .hour01(CalendarMainResponse.Hour.builder()
+                        .castarPoint(calculateCastarPoint(forecast.getSky01(), moonPhaseFactor, lightPollution, forecast.getHumidity01(), forecast.getPty01()))
+                        .cloudCoverage(getWeatherStatus(forecast.getSky01()))
+                        .precipitation(getPrecipitationStatus(forecast.getPty01()))
+                        .humidity(forecast.getHumidity01())
+                        .build())
+                .hour02(CalendarMainResponse.Hour.builder()
+                        .castarPoint(calculateCastarPoint(forecast.getSky02(), moonPhaseFactor, lightPollution, forecast.getHumidity02(), forecast.getPty02()))
+                        .cloudCoverage(getWeatherStatus(forecast.getSky02()))
+                        .precipitation(getPrecipitationStatus(forecast.getPty02()))
+                        .humidity(forecast.getHumidity02())
+
+                        .build())
+                .build();
+    }
+
+    private double calculateCastarPoint(Integer skyValue, double moonPhaseFactor, double lightPollution, BigDecimal humidity, Integer precipitation) {
+        double cloudFactor = getCloudFactor(skyValue);
+        double humidityValue = getHumidityFactor(humidity);
+        double precipitationValue = getPrecipitationFactor(precipitation);
+
+        log.info("구름: {}, 습도: {}, 강수확률: {}",
+                skyValue, humidity, precipitation);
+
+        log.info("구름(cloudFactor): {}, 월령(moonPhaseFactor): {}, 광공해(lightPollution): {}, 습도(humidityValue): {}, 강수확률(precipitationValue): {}",
+                cloudFactor, moonPhaseFactor, lightPollution, humidityValue, precipitationValue);
+
+        // castarPoint 계산: (구름 * 월령 * 광공해) - 습도 - 강수확률
+        DecimalFormat df = new DecimalFormat("###.##");
+        double castarPoint = Math.round((100 * (cloudFactor * moonPhaseFactor * lightPollution) - humidityValue - precipitationValue) * 10.0) / 10.0;
+        return castarPoint<=0?0.0d:castarPoint;
+    }
+
+    private double getCloudFactor(int skyCode) {
+        switch (skyCode) {
+            case 1:
+                return 1.0;
+            case 3:
+                return 0.01;
+            default:
+                return 0.25;
+        }
+    }
+
+    private double getMoonPhaseFactor(double lunAge) {
+        if (lunAge >= 0 && lunAge <= 6 || lunAge >= 24 && lunAge <= 32) {
+            return 1.0;
+        } else if (lunAge >= 6 && lunAge <= 11 || lunAge >= 19 && lunAge <= 24) {
+            return 0.75;
+        } else {
+            return 0.5;
+        }
+    }
+
+    private MoonStatus getMoonPhaseStatus(double lunAge) {
+        if (lunAge >= 0 && lunAge <= 6 || lunAge >= 24 && lunAge <= 32) {
+            return MoonStatus.DARK_MOON;
+        } else if (lunAge >= 6 && lunAge <= 11 || lunAge >= 19 && lunAge <= 24) {
+            return MoonStatus.MOON;
+        } else {
+            return MoonStatus.BRIGHT_MOON;
+        }
     }
 
 
+    private double getLightPollution(double lightPollutionValue) {
+        if (lightPollutionValue <= 80) {
+            return 1.0;
+        } else if (lightPollutionValue <= 140) {
+            return 0.75;
+        } else {
+            return 0.5;
+        }
+    }
 
+    private double getHumidityFactor(BigDecimal humidity) {
+        double humidityValue = humidity.doubleValue();
+        if (humidityValue <= 30) {
+            return 0.0;
+        } else if (humidityValue <= 60) {
+            return 0.2;
+        } else {
+            return 0.4;
+        }
+    }
+
+    private double getPrecipitationFactor(int precipitationCode) {
+        switch (precipitationCode) {
+            case 0:
+                return 0.0;
+            case 1, 3:
+                return 0.2;
+            case 2:
+                return 0.4;
+            case 4:
+                return 0.5;
+            default:
+                return 0.0;
+        }
+    }
+
+    private WeatherStatus getWeatherStatus(int code) {
+        return Arrays.stream(WeatherStatus.values())
+                .filter(status -> status.getCode() == code)
+                .findFirst()
+                .orElse(WeatherStatus.CLEAR); // 기본 값 설정
+    }
+
+    private PrecipitationStatus getPrecipitationStatus(int code) {
+        return Arrays.stream(PrecipitationStatus.values())
+                .filter(status -> status.getCode() == code)
+                .findFirst()
+                .orElse(PrecipitationStatus.NONE); // 기본 값 설정
+    }
+
+    private CalendarMainResponse.BestDay createBestDay(String placeUid, LocalDate date, CalendarMainResponse.WeatherOfTheNight weatherOfTheNight) {
+        Map<String, Double> castarPointsMap = new HashMap<>();
+        castarPointsMap.put("21", weatherOfTheNight.getHour21().getCastarPoint());
+        castarPointsMap.put("22", weatherOfTheNight.getHour22().getCastarPoint());
+        castarPointsMap.put("23", weatherOfTheNight.getHour23().getCastarPoint());
+        castarPointsMap.put("00", weatherOfTheNight.getHour00().getCastarPoint());
+        castarPointsMap.put("01", weatherOfTheNight.getHour01().getCastarPoint());
+        castarPointsMap.put("02", weatherOfTheNight.getHour02().getCastarPoint());
+
+        String bestHour = castarPointsMap.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .get()
+                .getKey();
+
+        Optional<Place> optionalPlace = placeRepository.findByPlaceUid(placeUid);
+        if (optionalPlace.isEmpty()) {
+            log.warn("[캘린더 메인 페이지 API] 장소 정보가 없습니다. placeUid: {}", placeUid);
+            return null;
+        }
+        Place place = optionalPlace.get();
+        double lightPollution = getLightPollution(place.getLightPollution().doubleValue());
+
+        Optional<LunarCycle> optionalLunarCycle = lunarCycleRepository.findByLunarCycleUid(date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd")));
+        if (optionalLunarCycle.isEmpty()) {
+            log.warn("[캘린더 메인 페이지 API] 월령 정보가 없습니다. date: {}", date);
+            return null;
+        }
+        LunarCycle lunarCycle = optionalLunarCycle.get();
+        double moonPhaseFactor = getMoonPhaseFactor(lunarCycle.getLunarAge().doubleValue());
+
+        return CalendarMainResponse.BestDay.builder()
+                .hour(bestHour)
+                .moonPhase(getMoonPhaseStatus(moonPhaseFactor))
+                .lightPollution(lightPollution)
+                .build();
+    }
+
+    private String getMoonSetTime(LocalDate date, Place place) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+        String moonRiseSetTimeUid = date.format(formatter);
+
+        Optional<MoonriseMoonsetTimes> moonTimes = moonriseMoonsetTimesRepository.findByMoonRiseSetTimeUidAndPlace_PlaceUid(moonRiseSetTimeUid, place.getPlaceUid());
+        if (moonTimes.isPresent()) {
+            MoonriseMoonsetTimes times = moonTimes.get();
+            return String.valueOf(LocalTime.of(times.getMoonsetHour(), times.getMoonsetMin()));
+        }
+        return null;
+    }
+
+    private CalendarMainResponse.IsPlanned checkIfPlanned(String placeUid, LocalDate date) {
+        Optional<Plan> optionalPlan = planRepository.findByPlace_PlaceUidAndDateTimeBetweenAndIsDeletedFalse(
+                placeUid, LocalDateTime.of(date, LocalTime.of(21, 0)), LocalDateTime.of(date.plusDays(1), LocalTime.of(3, 0))
+        );
+        if (optionalPlan.isPresent()) {
+            Plan plan = optionalPlan.get();
+            return CalendarMainResponse.IsPlanned.builder()
+                    .planUid(plan.getPlanUid())
+                    .hour(String.format("%02d", plan.getDateTime().getHour()))
+                    .build();
+        }
+        return null;
+    }
 
     private Profile getProfileInfo(String profileUid){
         Optional<Profile> optionalProfile = profileRepository.findById(profileUid);
