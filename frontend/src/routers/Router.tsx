@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter, RouteObject } from 'react-router-dom'
-import { useEffect } from 'react'
 import NotFoundPage from '@pages/NotFoundPage'
 import LoginPage from '@pages/LoginPage'
 import HomePage from '@pages/HomePage'

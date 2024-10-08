@@ -1,5 +1,5 @@
 import LoginButton from '@components/login/LoginButton'
-import LoginCarousel from '@components/login/Carousel'
+import LoginCarousel from '@components/login/index'
 import '@/components/login/CarouselCSS.css'
 
 const LoginPage = () => {
