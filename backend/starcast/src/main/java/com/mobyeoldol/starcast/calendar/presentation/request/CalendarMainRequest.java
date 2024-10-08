@@ -18,7 +18,7 @@ public class CalendarMainRequest {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public class GPS{
+    public static class GPS{
         private String address1;
         private String address2;
         private String address3;
