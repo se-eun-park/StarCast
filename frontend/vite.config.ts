@@ -38,7 +38,6 @@ export default defineConfig({
     hmr: {
       protocol: 'wss', // WebSocket Secure 사용
       host: 'j11a609.p.ssafy.io', // 실제 서버 도메인
-      port: 443, // HTTPS 포트
     },
   },
 })
