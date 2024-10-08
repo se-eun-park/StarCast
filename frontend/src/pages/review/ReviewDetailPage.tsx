@@ -39,10 +39,7 @@ export default function ReviewDetailPage() {
         ]}
         OPTIONS={{ loop: false }}
       />
-      {/* <img
-        src={DefaultIamge2}
-        className='w-[37.5rem] bg-white aspect-square object-cover object-center max-h-96'
-      /> */}
+
       <div className='relative z-50 flex justify-between w-full p-4 bg-bg-900'>
         <div className='flex items-center space-x-2'>
           <SvgDefaultControllerProfileIcon className='rounded-full w-9 h-9' />
