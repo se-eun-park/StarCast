@@ -5,7 +5,6 @@ import com.mobyeoldol.starcast.auth.application.dto.KakaoTokenInfoResponseDto;
 import com.mobyeoldol.starcast.auth.application.dto.KakaoTokenResponseDto;
 import com.mobyeoldol.starcast.auth.application.dto.KakaoUserInfoResponseDto;
 import com.mobyeoldol.starcast.auth.domain.Auth;
-import com.mobyeoldol.starcast.auth.domain.UserInfoTmp;
 import com.mobyeoldol.starcast.auth.presentation.response.UpdateUserInfoTmpResponse;
 
 public interface AuthService {
