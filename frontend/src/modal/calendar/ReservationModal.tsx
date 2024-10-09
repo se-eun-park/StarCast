@@ -1,15 +1,23 @@
 type ReservationModalProps = {
   onClose: () => void
   place_uid: string
+  reservedState: number
+  setReservedState: (isReserved: number) => void
 }
 
-const ReservationModal = ({ onClose, place_uid }: ReservationModalProps) => {
+const ReservationModal = ({
+  onClose,
+  place_uid,
+  reservedState,
+  setReservedState,
+}: ReservationModalProps) => {
   const handleOnClickCancelButton = () => {
     onClose()
   }
 
   const handleOnClickReservationButton = () => {
     console.log(place_uid)
+    setReservedState(reservedState + 1)
     onClose()
   }
 

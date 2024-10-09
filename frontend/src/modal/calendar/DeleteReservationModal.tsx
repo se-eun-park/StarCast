@@ -1,15 +1,23 @@
 type DeleteReservationModalProps = {
   onClose: () => void
   place_uid: string
+  delReservedState: number
+  setDelReservedState: (isReserved: number) => void
 }
 
-const DeleteReservationModal = ({ onClose, place_uid }: DeleteReservationModalProps) => {
+const DeleteReservationModal = ({
+  onClose,
+  place_uid,
+  delReservedState,
+  setDelReservedState,
+}: DeleteReservationModalProps) => {
   const handleOnClickCancelButton = () => {
     onClose()
   }
 
   const handleOnClickDeleteReservationButton = () => {
     console.log(place_uid)
+    setDelReservedState(delReservedState + 1)
     onClose()
   }
 

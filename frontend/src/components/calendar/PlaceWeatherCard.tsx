@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { GetPlaceWeatherResponse } from '../../types/apis'
 import AstronomyInfoWidget from '@components/common/AstronomyInfoWidget'
-import { ArrowIcon, LocationIcon, PlusIcon } from '@assets/svg/calendar'
+import { ArrowIcon, LocationIcon, PlusIcon, CheckIcon, DeleteIcon } from '@assets/svg/calendar'
 import {
   SunIcon,
   PartlyCloudyIcon,
@@ -32,6 +32,12 @@ const PlaceWeatherCard = ({
   const timeList = ['21', '22', '23', '00', '01', '02']
 
   const [istoggled, setIstoggled] = useState(false)
+  const [isReserved, setIsReserved] = useState(false)
+  const [isReservedAnimation, setIsReservedAnimation] = useState(false)
+  const [isDelReservedAnimation, setIsDelReservedAnimation] = useState(false)
+  const [isDelReserved, setIsDelReserved] = useState(false)
+  const [reservedState, setReservedState] = useState(0)
+  const [delReservedState, setDelReservedState] = useState(0)
   const [refresh, setRefresh] = useState(true)
   const [selectedTime, setSelectedTime] = useState('')
   const [astronomyInfo, setAstronomyInfo] = useState({
@@ -43,6 +49,34 @@ const PlaceWeatherCard = ({
     precipitation: weatherOfTheNight[`hour${best.hour}`].precipitation,
     moonSetTime: moonSetTime,
   })
+
+  useEffect(() => {
+    if (reservedState !== 0) {
+      setIsReserved(true)
+      setIsReservedAnimation(true)
+
+      setTimeout(() => {
+        setIsReservedAnimation(false)
+        setTimeout(() => {
+          setIsReserved(false)
+        }, 100)
+      }, 2000)
+    }
+  }, [reservedState])
+
+  useEffect(() => {
+    if (delReservedState !== 0) {
+      setIsDelReserved(true)
+      setIsDelReservedAnimation(true)
+
+      setTimeout(() => {
+        setIsDelReservedAnimation(false)
+        setTimeout(() => {
+          setIsDelReserved(false)
+        }, 100)
+      }, 2000)
+    }
+  }, [delReservedState])
 
   const handleOnClickToggleButton = () => {
     setIstoggled(!istoggled)
@@ -68,7 +102,7 @@ const PlaceWeatherCard = ({
     <>
       <button
         onClick={handleOnClickToggleButton}
-        className={`w-[20.5rem] h-[7.5rem] bg-bg-700 py-4 px-5 ${istoggled ? 'rounded-t-2xl' : 'rounded-2xl delay-200 transition-all'}`}
+        className={`w-[20.5rem] relative h-[7.5rem] bg-bg-700 py-4 px-5 ${istoggled ? 'rounded-t-2xl' : 'rounded-2xl delay-200 transition-all'}`}
       >
         <div className='flex items-center justify-between'>
           <div className='flex items-center'>
@@ -115,7 +149,7 @@ const PlaceWeatherCard = ({
             <div
               key={idx}
               onClick={() => handleOnClickTimeButton(time)}
-              className={`flex flex-col items-center justify-center w-11 rounded-full ${isPlanned === null && selectedTime === time ? 'transition-height duration-200 pt-4 pb-1.5 h-full' : isPlanned?.hour === time && selectedTime === time ? 'transition-height duration-200 pt-4 pb-1.5 h-full bg-comp3-light' : 'transition-colors duration-100'}  ${selectedTime === time ? 'bg-primary-light' : isPlanned?.hour === time ? 'bg-comp3-light' : 'bg-bg-50 bg-opacity-10 max-h-[5.125rem] h-[5.125rem] py-3 cursor-pointer hover:bg-black/30'}`}
+              className={`flex flex-col items-center justify-center w-11 rounded-full ${isPlanned === null && selectedTime === time ? 'transition-height duration-200 pt-4 pb-1.5 h-full' : isPlanned?.hour === time && selectedTime === time ? 'transition-height duration-200 pt-4 pb-1.5 h-full bg-comp3-light' : 'transition-colors duration-100'}  ${selectedTime === time && isPlanned?.hour !== time ? 'bg-primary-light' : isPlanned?.hour === time ? 'bg-comp3-light' : 'bg-bg-50 bg-opacity-10 max-h-[5.125rem] h-[5.125rem] py-3 cursor-pointer hover:bg-black/30'}`}
             >
               <p
                 className={`text-[0.625rem] leading-none text-center mb-1.5 ${selectedTime === time || isPlanned?.hour === time ? 'text-bg-900' : 'text-text-tertiary '}`}
@@ -192,11 +226,47 @@ const PlaceWeatherCard = ({
           className={`w-[20.5rem] ${istoggled ? 'h-[18.125rem]' : 'h-0'} bg-black bg-opacity-20 rounded-b-2xl transition-all`}
         />
       </div>
+      {isReserved && (
+        <div
+          className={`fixed z-10 bottom-5 bg-bg-50 max-w-60 py-1.5 pr-3 pl-2 rounded-full left-0 right-0 mx-auto ${isReservedAnimation ? 'animate-slideUp' : 'animate-slideDown'}`}
+        >
+          <div className='flex items-center'>
+            <div className='flex items-center justify-center w-6 mr-2 rounded-full aspect-square bg-bg-900/10'>
+              <CheckIcon className='w-6' />
+            </div>
+            <p className='font-semibold test-xs text-bg-900'>별 보는 날로 등록되었습니다!</p>
+          </div>
+        </div>
+      )}
+
+      {isDelReserved && (
+        <div
+          className={`fixed z-10 bottom-5 bg-bg-50 max-w-60 py-1.5 pr-3 pl-2 rounded-full left-0 right-0 mx-auto ${isDelReservedAnimation ? 'animate-slideUp' : 'animate-slideDown'}`}
+        >
+          <div className='flex items-center'>
+            <div className='flex items-center justify-center w-6 mr-2 rounded-full aspect-square bg-bg-900/10'>
+              <DeleteIcon className='w-6' />
+            </div>
+            <p className='font-semibold test-xs text-bg-900'>별 보는 날이 삭제되었습니다.</p>
+          </div>
+        </div>
+      )}
+
       <Modal>
         {isPlanned === null ? (
-          <ReservationModal onClose={close} place_uid={place_uid} />
+          <ReservationModal
+            onClose={close}
+            place_uid={place_uid}
+            reservedState={reservedState}
+            setReservedState={setReservedState}
+          />
         ) : (
-          <DeleteReservationModal onClose={close} place_uid={place_uid} />
+          <DeleteReservationModal
+            onClose={close}
+            place_uid={place_uid}
+            delReservedState={delReservedState}
+            setDelReservedState={setDelReservedState}
+          />
         )}
       </Modal>
     </>
