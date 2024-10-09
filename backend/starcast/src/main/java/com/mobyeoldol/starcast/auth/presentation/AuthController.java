@@ -7,16 +7,14 @@ import com.mobyeoldol.starcast.auth.domain.Auth;
 import com.mobyeoldol.starcast.auth.domain.RefreshToken;
 import com.mobyeoldol.starcast.auth.domain.repository.AuthRepository;
 import com.mobyeoldol.starcast.auth.domain.repository.RefreshTokenRepository;
-import com.mobyeoldol.starcast.auth.domain.repository.UserInfoTmpRepository;
 import com.mobyeoldol.starcast.auth.presentation.request.UpdateUserInfoTmpRequest;
-import com.mobyeoldol.starcast.auth.presentation.response.LoginResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.LogoutResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.UnlinkResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.UpdateUserInfoTmpResponse;
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
-import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -33,10 +31,14 @@ import java.util.Optional;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
+    @Value("${kakao.redirect.uri.signup}")
+    String kakaoRedirectUriSignup;
+
+    @Value("${kakao.redirect.uri.home}")
+    String kakaoRedirectUriHome;
+
     private final AuthService authService;
     private final AuthRepository authRepository;
-    private final UserInfoTmpRepository userInfoTmpRepository;
-    private final ProfileRepository profileRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @GetMapping("/login")
@@ -50,49 +52,55 @@ public class AuthController {
     }
 
     @GetMapping("/redirect-login")
-    public ResponseEntity<BaseResponseTemplate<?>> getAccessToken(@RequestParam("code") String code, HttpServletResponse httpServletResponse) {
+    public RedirectView getAccessToken(@RequestParam("code") String code, HttpServletResponse httpServletResponse) {
         log.info("[login 카카오에 토큰 요청 API] GET /api/v1/auth/redirect-login");
         KakaoTokenResponseDto responseDto = authService.getAccessToken(code);
 
+        log.info("[login 카카오에 토큰 요청 API] Access Token 쿠키에 담기");
+        Cookie accessTokenCookie = new Cookie("accessToken", responseDto.getAccessToken());
+        accessTokenCookie.setHttpOnly(true); // JavaScript에서 접근 방지
+        accessTokenCookie.setSecure(true); // HTTPS 연결에서만 사용
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(60 * 60); // 1시간 유효
+
         log.info("[login 카카오에 토큰 요청 API] Refresh Token 쿠키에 담기");
         Cookie refreshTokenCookie = new Cookie("refreshToken", responseDto.getRefreshToken());
-        refreshTokenCookie.setHttpOnly(true); // JavaScript 접근 방지
+        refreshTokenCookie.setHttpOnly(true); // JavaScript에서 접근 방지
         refreshTokenCookie.setSecure(true); // HTTPS 연결에서만 사용
         refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(24 * 60 * 60); // 1일
+        refreshTokenCookie.setMaxAge(24 * 60 * 60); // 1일 유효
 
         log.info("[login 카카오에 토큰 요청 API] httpServletResponse에 쿠키 담기");
+        httpServletResponse.addCookie(accessTokenCookie);
         httpServletResponse.addCookie(refreshTokenCookie);
-
-        log.info("[login 카카오에 토큰 요청 API] 클라이언트에 돌려줄 응답 생성");
-        LoginResponse response = LoginResponse.builder()
-                .accessToken(responseDto.getAccessToken())
-                .accessTokenExpiresIn(responseDto.getExpiresIn())
-                .refreshTokenExpiresIn(responseDto.getRefreshTokenExpiresIn())
-                .build();
 
         log.info("[login 카카오에 토큰 요청 API] 토큰으로 사용자 정보 가져오기");
         KakaoUserInfoResponseDto userInfo = authService.checkUserInfo(responseDto.getAccessToken());
 
+        log.info("[login 카카오에 토큰 요청 API] Redis에 Refresh 토큰을 저장(kakao_id, refresh_token, access_token)");
+        refreshTokenRepository.save(new RefreshToken(String.valueOf(userInfo.getId()), responseDto.getRefreshToken(), responseDto.getAccessToken()));
+
         log.info("[login 카카오에 토큰 요청 API] kakao id로 auth 엔티티 찾기");
         Optional<Auth> optionalAuth = authRepository.findByKakaoUid(String.valueOf(userInfo.getId()));
+
+        RedirectView redirectView = new RedirectView();
 
         if(optionalAuth.isEmpty()) {
             log.info("[login 카카오에 토큰 요청 API] auth 엔티티 존재하지 않음. 따라서 auth 엔티티, userInfoTmp 엔티티 생성");
             authService.generateAuthAndUserInfoTmp(userInfo);
 
-            log.info("[login 카카오에 토큰 요청 API] Redis에 Refresh 토큰을 저장(kakao_id, refresh_token, access_token)");
-            refreshTokenRepository.save(new RefreshToken(String.valueOf(userInfo.getId()), responseDto.getRefreshToken(), responseDto.getAccessToken()));
-        } else {
-            log.info("[login 카카오에 토큰 요청 API] Redis에 Refresh 토큰을 저장(kakao_id, refresh_token, access_token)");
-            refreshTokenRepository.save(new RefreshToken(String.valueOf(userInfo.getId()), responseDto.getRefreshToken(), responseDto.getAccessToken()));
+            log.info("[login 카카오에 토큰 요청 API] 클라이언트를 동의 구하기 페이지로 리다이렉트");
+            redirectView.setUrl(kakaoRedirectUriSignup);
+        }
+        else {
+            log.info("[login 카카오에 토큰 요청 API] 클라이언트를 메인 페이지로 리다이렉트");
+            redirectView.setUrl(kakaoRedirectUriHome);
         }
 
-        BaseResponseTemplate<LoginResponse> successResponse = BaseResponseTemplate.success(response);
-        return ResponseEntity.ok().body(successResponse);
+        return redirectView;
     }
 
-    @GetMapping("/consent-starcast/gps/{consent_gps}/notice/{consent_notice}")
+    @GetMapping("/consent-starcast")
     public ResponseEntity<BaseResponseTemplate<?>> updateUserInfoTmp(
             @RequestBody UpdateUserInfoTmpRequest request,
             @RequestHeader(value = "Authorization") String accessToken) {
