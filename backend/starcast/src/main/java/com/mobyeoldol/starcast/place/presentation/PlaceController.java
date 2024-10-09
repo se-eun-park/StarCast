@@ -2,7 +2,7 @@ package com.mobyeoldol.starcast.place.presentation;
 
 import com.mobyeoldol.starcast.auth.application.service.AuthService;
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
-import com.mobyeoldol.starcast.place.application.PlaceServiceImpl;
+import com.mobyeoldol.starcast.place.application.PlaceService;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import com.mobyeoldol.starcast.place.presentation.request.CreatePlanRequest;
@@ -16,17 +16,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/place")
 public class PlaceController {
 
-    private final PlaceServiceImpl placeService;
+    private final PlaceService placeService;
     private final AuthService authService;
 
     @PostMapping("/{place_uid}/favourite")
-    public ResponseEntity<BaseResponseTemplate<?>> createFavourite(
+    public ResponseEntity<BaseResponseTemplate<?>> createFavouriteSpot(
             @PathVariable(value = "place_uid") String placeUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ){
@@ -35,34 +37,56 @@ public class PlaceController {
 
         try {
             log.info("[즐겨찾기 등록 API] 즐겨찾기 등록 Service 로직 수행");
-            FavouriteSpot favouriteSpot = placeService.createFavourite(placeUid, profileUid);
+            FavouriteSpot favouriteSpot = placeService.createFavouriteSpot(placeUid, profileUid);
 
             log.info("[즐겨찾기 등록 API] 정상 처리되어 201 반환");
-            FavouriteSpotResponse responseDto = new FavouriteSpotResponse(favouriteSpot.getSpotUid());
+            FavouriteSpotUidResponse responseDto = new FavouriteSpotUidResponse(favouriteSpot.getSpotUid());
 
-            BaseResponseTemplate<FavouriteSpotResponse> result = BaseResponseTemplate.success(responseDto);
+            BaseResponseTemplate<FavouriteSpotUidResponse> result = BaseResponseTemplate.success(responseDto);
             return ResponseEntity.status(201).body(result);
         } catch (IllegalStateException e) {
             log.error("[즐겨찾기 등록 API] 즐겨찾기가 이미 등록되어 409 반환");
             BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(409, "이미 즐겨찾기가 등록되었습니다.");
             return ResponseEntity.status(409).body(errorResponse);
         }
-
     }
 
-    @DeleteMapping("/favourite/{spot_uid}")
-    public ResponseEntity<BaseResponseTemplate<?>> deleteFavourite(
-            @PathVariable(value = "spot_uid") String spotUid,
+    @GetMapping("/favourite/{favourite_spot_uid}")
+    public ResponseEntity<BaseResponseTemplate<?>> getFavouriteSpot(
+            @PathVariable("favourite_spot_uid") String favouriteSpotUid,
+            @RequestHeader("Authorization") String bearerToken
+    ) {
+        log.info("[즐겨찾기 하나 조회 API] GET /api/v1/place/favourite/{}",favouriteSpotUid);
+        String profileUid = authService.authenticateMember(bearerToken);
+
+        FavouriteSpotResponse favouriteSpot = placeService.getFavouriteSpot(favouriteSpotUid, profileUid);
+        return ResponseEntity.ok(BaseResponseTemplate.success(favouriteSpot));
+    }
+
+    @GetMapping("/favourite")
+    public ResponseEntity<BaseResponseTemplate<List<?>>> getFavouriteSpots(
+            @RequestHeader("Authorization") String bearerToken
+    ) {
+        log.info("[즐겨찾기 모두 조회 API] GET /api/v1/place/favourite");
+        String profileUid = authService.authenticateMember(bearerToken);
+
+        List<FavouriteSpotResponse> favouriteSpots = placeService.getFavouriteSpots(profileUid);
+        return ResponseEntity.ok(BaseResponseTemplate.success(favouriteSpots));
+    }
+
+    @DeleteMapping("/favourite/{favourite_spot_uid}")
+    public ResponseEntity<BaseResponseTemplate<?>> deleteFavouriteSpot(
+            @PathVariable(value = "favourite_spot_uid") String favouriteSpotUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ) {
-        log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{}", spotUid);
+        log.info("[즐겨찾기 삭제 API] DELETE /api/v1/place/favourite/{}", favouriteSpotUid);
         String profileUid = authService.authenticateMember(bearerToken);
 
         try {
             log.info("[즐겨찾기 삭제 API] 즐겨찾기 삭제 Service 로직 수행");
-            placeService.deleteFavourite(spotUid);
+            placeService.deleteFavouriteSpot(favouriteSpotUid);
 
-            BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success("즐겨찾기가 성공적으로 삭제되었습니다.");
+            BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success(null);
             return ResponseEntity.ok().body(successResponse);
         } catch (IllegalArgumentException e) {
             log.error("[즐겨찾기 삭제 API] 즐겨찾기 항목을 찾을 수 없는 경우 404 반환");
@@ -129,7 +153,7 @@ public class PlaceController {
     }
 
 
-    @PostMapping("/plan/makePlan")
+    @PostMapping("/plan/make-plan")
     public ResponseEntity<BaseResponseTemplate<?>> makePlan(
             @Valid @RequestBody CreatePlanRequest request,
             BindingResult bindingResult,
@@ -152,23 +176,36 @@ public class PlaceController {
         return ResponseEntity.status(201).body(successResponse);
     }
 
+    @GetMapping("/plan")
+    public ResponseEntity<BaseResponseTemplate<?>> getPlanDetails(
+            @RequestHeader(value = "Authorization") String bearerToken
+    ) {
+        log.info("[장소 찜 이력 모두 조회 API] GET /api/v1/place/plan");
+        String profileUid = authService.authenticateMember(bearerToken);
+
+        log.info("[장소 찜 이력 모두 조회 API] Service 로직 수행");
+        PlanListResponse response = placeService.getPlanList(profileUid);
+
+        BaseResponseTemplate<PlanListResponse> successResponse = BaseResponseTemplate.success(response);
+        return ResponseEntity.ok().body(successResponse);
+    }
 
     @GetMapping("/plan/{plan_uid}")
     public ResponseEntity<BaseResponseTemplate<?>> getPlanDetails(
             @PathVariable(value = "plan_uid") String planUid,
             @RequestHeader(value = "Authorization") String bearerToken
     ) {
-        log.info("[장소 찜 조회 API] GET /api/v1/place/plan/{}", planUid);
+        log.info("[장소 찜 하나 조회 API] GET /api/v1/place/plan/{}", planUid);
         String profileUid = authService.authenticateMember(bearerToken);
 
-        log.info("[장소 찜 조회 API] Service 로직 수행");
+        log.info("[장소 찜 하나 조회 API] Service 로직 수행");
         PlanDetailsResponse response = placeService.getPlanDetails(planUid, profileUid);
 
         BaseResponseTemplate<PlanDetailsResponse> successResponse = BaseResponseTemplate.success(response);
         return ResponseEntity.ok().body(successResponse);
     }
 
-    @PatchMapping("plan/changePlan")
+    @PatchMapping("plan/change-plan")
     public ResponseEntity<BaseResponseTemplate<?>> changePlan(
             @Valid @RequestBody ModifyPlanRequest request,
             BindingResult bindingResult,
@@ -207,7 +244,7 @@ public class PlaceController {
         log.info("[장소 찜 삭제 API] Service 로직 수행");
         placeService.deletePlan(planUid, profileUid);
 
-        BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success("장소 찜이 성공적으로 삭제되었습니다.");
+        BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success(null);
         return ResponseEntity.ok().body(successResponse);
     }
 }
