@@ -2,10 +2,7 @@ package com.mobyeoldol.starcast.auth.domain;
 
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -29,15 +26,18 @@ public class UserInfoTmp extends BaseTimeEntity {
     @Column(name = "name", length = 20, nullable = false)
     private String name;
 
+    @Setter
     @Column(name = "nickname", length = 14)
     private String nickname;
 
     @Column(name = "profile_image_num", length = 20)
     private String profileImageNum;
 
+    @Setter
     @Column(name = "consent_gps", length = 20)
     private boolean consentGps;
 
+    @Setter
     @Column(name = "consent_notice", length = 20)
     private boolean consentNotice;
 

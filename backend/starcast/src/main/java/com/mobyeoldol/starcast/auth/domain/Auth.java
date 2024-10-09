@@ -20,5 +20,5 @@ public class Auth extends BaseTimeEntity {
     private String authId;
 
     @Column(name = "kakao_uid", unique = true, nullable = false)
-    private long kakaoUid;
+    private String kakaoUid;
 }

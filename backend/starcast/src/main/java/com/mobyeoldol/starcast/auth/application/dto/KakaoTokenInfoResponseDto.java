@@ -6,13 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor //역직렬화를 위한 기본 생성자
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KakaoAccount {
+public class KakaoTokenInfoResponseDto {
 
-    @JsonProperty("profile")
-    private Profile profile;
+    @JsonProperty("id")
+    private long id;
 
-    @JsonProperty("email")
-    private String email;
+    @JsonProperty("expires_in")
+    private int expiresIn;
+
+    @JsonProperty("app_id")
+    private int appId;
 }
+
