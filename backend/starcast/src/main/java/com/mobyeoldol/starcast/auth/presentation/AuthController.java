@@ -8,6 +8,7 @@ import com.mobyeoldol.starcast.auth.domain.RefreshToken;
 import com.mobyeoldol.starcast.auth.domain.repository.AuthRepository;
 import com.mobyeoldol.starcast.auth.domain.repository.RefreshTokenRepository;
 import com.mobyeoldol.starcast.auth.domain.repository.UserInfoTmpRepository;
+import com.mobyeoldol.starcast.auth.presentation.request.UpdateUserInfoTmpRequest;
 import com.mobyeoldol.starcast.auth.presentation.response.LoginResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.UpdateUserInfoTmpResponse;
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
@@ -91,15 +92,11 @@ public class AuthController {
 
     @GetMapping("/consent-starcast/gps/{consent_gps}/notice/{consent_notice}")
     public ResponseEntity<BaseResponseTemplate<?>> updateUserInfoTmp(
-            @PathVariable(value = "consent_gps") boolean consentGps,
-            @PathVariable(value = "consent_notice") boolean consentNotice,
+            @RequestBody UpdateUserInfoTmpRequest request,
             @RequestHeader(value = "Authorization") String accessToken) {
 
         log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] GET /api/v1/auth/consent-starcast");
-
-//        String accessToken = bearerToken.replace("Bearer ", "");
-
-        if (!consentGps) throw new IllegalStateException("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] consent_gps는 true여야 합니다.");
+        if (!request.isConsentGps()) throw new IllegalStateException("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] consent_gps는 true여야 합니다.");
 
         RefreshToken refreshToken = refreshTokenRepository.findByAccessToken(accessToken)
                 .orElseThrow(() -> new IllegalStateException("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] refresh token 값이 없습니다."));
@@ -111,7 +108,7 @@ public class AuthController {
                 .orElseThrow(() -> new IllegalStateException("Auth not found for Kakao ID: " + kakaoId));
 
         log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] auth 존재함");
-        UpdateUserInfoTmpResponse response = authService.updateUserInfoTmp(auth, consentGps, consentNotice);
+        UpdateUserInfoTmpResponse response = authService.updateUserInfoTmp(auth, request.isConsentGps(), request.isConsentNotice());
         BaseResponseTemplate<UpdateUserInfoTmpResponse> successResponse = BaseResponseTemplate.success(response);
 
         return ResponseEntity.ok().body(successResponse);

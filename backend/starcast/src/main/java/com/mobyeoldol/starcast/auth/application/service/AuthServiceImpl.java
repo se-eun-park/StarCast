@@ -99,6 +99,7 @@ public class AuthServiceImpl implements AuthService{
                 .get()
                 .uri(uriBuilder -> uriBuilder.scheme("https").path("/v2/user/me").build())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Token expired or invalid parameter")))
                 .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
@@ -177,7 +178,6 @@ public class AuthServiceImpl implements AuthService{
                             .path("/v1/user/access_token_info")
                             .build(true))
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-                    .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                         // 401 에러 시 새 토큰 발급 시도
