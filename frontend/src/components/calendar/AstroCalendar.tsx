@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { useAstroEventList } from "@apis/endpoints/calendar/hooks/useAstroEventList";
 import { AstroEventsDummy } from '@dummy/astroEventsDummy'
 import Calendar from "react-calendar";
@@ -15,8 +15,11 @@ const AstroCalendar = () => {
   const [value, onChange] = useState<Value>(new Date());
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [monthlyTip, setMonthlyTip] = useState<any | null>(null);
+  const [isDateSelected, setIsDateSelected] = useState(false);
   
   const handleClick = (value: Date) => {
+    setIsDateSelected(true);
+
     const localeString = value.toLocaleDateString('ko-KR');
     const parts = localeString.split('.').map(part => part.trim());
     const year = parts[0];
@@ -33,6 +36,8 @@ const AstroCalendar = () => {
 
   const handleMonthChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
     if (!activeStartDate) return;
+
+    setIsDateSelected(false);
 
     const year = activeStartDate.getFullYear();
     const month = (activeStartDate.getMonth() + 1).toString().padStart(2, '0');
@@ -82,6 +87,11 @@ const AstroCalendar = () => {
     return null
   }
 
+  useEffect(() => {
+    const currentDate = new Date();
+    handleMonthChange({ activeStartDate: currentDate });
+  }, []);
+
   return (
     <div>
       <Calendar
@@ -100,12 +110,12 @@ const AstroCalendar = () => {
         onActiveStartDateChange={handleMonthChange} 
       />
       {monthlyTip && (
-        <div className="monthly-tip">
-          <h3>Monthly Tip</h3>
-          <p>{monthlyTip.astroEvent}</p>
+        <div className="w-full h-full min-h-full bg-bg-800 flex flex-col justify-center items-center py-4 px-6 gap-2 rounded-t-2xl">
+          <span className='font-medium text-md font-paperlogy'>{monthlyTip.locdate.slice(4, 6)}월의 천문 정보</span>
+          <p className='font-normal text-sm text-text-secondary'>{monthlyTip.astroEvent}</p>
+          <AstroEventDetail event={selectedEvent} isDateSelected={isDateSelected} />
         </div>
       )}
-      <AstroEventDetail event={selectedEvent} />
     </div>
   )
 }
