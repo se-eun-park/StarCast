@@ -12,7 +12,13 @@ export default defineConfig({
         icon: true,
       },
     }),
-    VitePWA({ registerType: 'autoUpdate', injectRegister: 'auto' }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      workbox: {
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      },
+    }),
   ],
   resolve: {
     alias: [
@@ -29,7 +35,7 @@ export default defineConfig({
       { find: '@types', replacement: '/src/types' },
       { find: '@dummy', replacement: '/src/dummy' },
       { find: '@modal', replacement: '/src/modal' },
-      { find: '@utils', replacement: '/src/utils'},
+      { find: '@utils', replacement: '/src/utils' },
     ],
   },
   server: {
