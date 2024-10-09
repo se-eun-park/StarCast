@@ -34,7 +34,7 @@ const NicknameEditPage = () => {
   return (
     <div className='h-[calc(100dvh-56px)] w-full bg-bg-900 flex flex-col items-center px-4 py-6'>
       <div className='flex flex-col w-full'>
-        <h1 className='text-xl font-medium font-paperlogy'>닉네임 변경하기</h1>
+        <h1 className='mb-1 text-xl font-medium font-paperlogy'>닉네임 변경하기</h1>
         <h2 className='font-medium font-paperlogy text-text-secondary'>
           새로운 닉네임을 정해주세요!
         </h2>
