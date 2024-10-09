@@ -8,7 +8,6 @@ import com.mobyeoldol.starcast.auth.domain.RefreshToken;
 import com.mobyeoldol.starcast.auth.domain.repository.AuthRepository;
 import com.mobyeoldol.starcast.auth.domain.repository.RefreshTokenRepository;
 import com.mobyeoldol.starcast.auth.presentation.request.UpdateUserInfoTmpRequest;
-import com.mobyeoldol.starcast.auth.presentation.response.LoginResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.LogoutResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.UnlinkResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.UpdateUserInfoTmpResponse;
