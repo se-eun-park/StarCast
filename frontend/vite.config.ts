@@ -29,6 +29,7 @@ export default defineConfig({
       { find: '@types', replacement: '/src/types' },
       { find: '@dummy', replacement: '/src/dummy' },
       { find: '@modal', replacement: '/src/modal' },
+      { find: '@utils', replacement: '/src/utils'},
     ],
   },
   server: {
