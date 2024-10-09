@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 // import { useAstroEventList } from "@apis/endpoints/calendar/hooks/useAstroEventList";
 import { AstroEventsDummy } from '@dummy/astroEventsDummy'
-import Calendar from "react-calendar";
-import 'react-calendar/dist/Calendar.css';
-import "./AstroCalendar.css";
-import { StarIconCal } from "@assets/svg";
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
+import './AstroCalendar.css'
+import { StarIconCal } from '@assets/svg'
 
-import AstroEventDetail from "./AstroEventDetail";
+import AstroEventDetail from './AstroEventDetail'
 
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
@@ -27,11 +27,11 @@ const AstroCalendar = () => {
     const day = parts[2].padStart(2, '0');   
     const formattedDate = `${year}${month}${day}`;
 
-    const currentMonth = formattedDate.slice(0, 6);
-    const events = AstroEventsDummy[currentMonth] || [];
-    const eventForDate = events.find(event => event.locdate === formattedDate);
+    const currentMonth = formattedDate.slice(0, 6)
+    const events = AstroEventsDummy[currentMonth] || []
+    const eventForDate = events.find((event) => event.locdate === formattedDate)
 
-    setSelectedEvent(eventForDate || null);
+    setSelectedEvent(eventForDate || null)
   }
 
   const handleMonthChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
@@ -39,15 +39,15 @@ const AstroCalendar = () => {
 
     setIsDateSelected(false);
 
-    const year = activeStartDate.getFullYear();
-    const month = (activeStartDate.getMonth() + 1).toString().padStart(2, '0');
-    const formattedMonth = `${year}${month}`;
+    const year = activeStartDate.getFullYear()
+    const month = (activeStartDate.getMonth() + 1).toString().padStart(2, '0')
+    const formattedMonth = `${year}${month}`
 
-    const events = AstroEventsDummy[formattedMonth] || [];
-    const monthTip = events.find(event => event.locdate === formattedMonth);
+    const events = AstroEventsDummy[formattedMonth] || []
+    const monthTip = events.find((event) => event.locdate === formattedMonth)
 
-    setMonthlyTip(monthTip || null);
-  };
+    setMonthlyTip(monthTip || null)
+  }
 
   const tileClassName = ({ date }: { date: Date }) => {
     const today = new Date()
@@ -105,9 +105,9 @@ const AstroCalendar = () => {
         }
         tileClassName={tileClassName}
         tileContent={tileContent}
-        minDetail="month"
+        minDetail='month'
         onClickDay={handleClick}
-        onActiveStartDateChange={handleMonthChange} 
+        onActiveStartDateChange={handleMonthChange}
       />
       {monthlyTip && (
         <div className="w-full h-full min-h-full bg-bg-800 flex flex-col justify-center items-center py-4 px-6 gap-2 rounded-t-2xl">
