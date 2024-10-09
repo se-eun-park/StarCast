@@ -1,6 +1,7 @@
 import SignupButton from '@components/signup/SignupButton'
 import { StarcastLogoIcon } from '@assets/svg'
 import SignupInput from '@components/signup/SignupInput'
+import SignupModal from '@modal/signup/SignupModal'
 
 const SignupPage = () => {
   return (
@@ -17,6 +18,7 @@ const SignupPage = () => {
         }}
       />
       <SignupButton isValid={false} />
+      <SignupModal />
     </div>
   )
 }
