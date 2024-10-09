@@ -11,6 +11,9 @@ import {
   DarkCloudIcon,
   CancelIcon,
 } from '@assets/svg'
+import ReservationModal from '@modal/calendar/ReservationModal'
+import DeleteReservationModal from '@modal/calendar/DeleteReservationModal'
+import useModal from '@hooks/useModal'
 
 const PlaceWeatherCard = ({
   idx,
@@ -21,6 +24,8 @@ const PlaceWeatherCard = ({
   moonSetTime,
   isPlanned,
 }: GetPlaceWeatherResponse) => {
+  const { Modal, open, close } = useModal()
+
   const scoreStatus =
     best.bestCastarPoint >= 75 ? '좋음' : best.bestCastarPoint >= 40 ? '보통' : '나쁨'
 
@@ -55,12 +60,9 @@ const PlaceWeatherCard = ({
     })
   }
 
-  const handleOnClickPlusButton = () => {
-    // 나중엔 즐겨찾기 추가 api 호출
-    console.log('즐겨찾기 추가 완료!', 'id:', place_uid, '시간:', selectedTime)
+  const handleOnClickButton = () => {
+    open()
   }
-
-  const handleOnClickDelButton = () => {}
 
   return (
     <>
@@ -145,7 +147,7 @@ const PlaceWeatherCard = ({
 
               {isPlanned === null ? (
                 <button
-                  onClick={handleOnClickPlusButton}
+                  onClick={handleOnClickButton}
                   className={`flex items-center justify-center rounded-full bg-bg-900/10 ${selectedTime === time ? 'w-8 h-8 transition-all duration-200' : 'w-0 h-0'}`}
                 >
                   <PlusIcon
@@ -155,7 +157,7 @@ const PlaceWeatherCard = ({
               ) : (
                 isPlanned?.hour === time && (
                   <button
-                    onClick={handleOnClickDelButton}
+                    onClick={handleOnClickButton}
                     className={`flex items-center justify-center rounded-full bg-bg-900/10 ${selectedTime === time ? 'w-8 h-8 transition-all duration-200' : 'w-0 h-0'}`}
                   >
                     <CancelIcon
@@ -190,6 +192,13 @@ const PlaceWeatherCard = ({
           className={`w-[20.5rem] ${istoggled ? 'h-[18.125rem]' : 'h-0'} bg-black bg-opacity-20 rounded-b-2xl transition-all`}
         />
       </div>
+      <Modal>
+        {isPlanned === null ? (
+          <ReservationModal onClose={close} place_uid={place_uid} />
+        ) : (
+          <DeleteReservationModal onClose={close} place_uid={place_uid} />
+        )}
+      </Modal>
     </>
   )
 }
