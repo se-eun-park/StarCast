@@ -2,8 +2,18 @@ import { useState } from 'react'
 import type { GetPlaceWeatherResponse } from '../../types/apis'
 import AstronomyInfoWidget from '@components/common/AstronomyInfoWidget'
 import { ArrowIcon, LocationIcon, PlusIcon } from '@assets/svg/calendar'
+import {
+  SunIcon,
+  PartlyCloudyIcon,
+  CloudIcon,
+  DarkSunIcon,
+  DarkPartlyCloudyIcon,
+  DarkCloudIcon,
+  CancelIcon,
+} from '@assets/svg'
 
 const PlaceWeatherCard = ({
+  idx,
   place_uid,
   details,
   weatherOfTheNight,
@@ -50,6 +60,8 @@ const PlaceWeatherCard = ({
     console.log('즐겨찾기 추가 완료!', 'id:', place_uid, '시간:', selectedTime)
   }
 
+  const handleOnClickDelButton = () => {}
+
   return (
     <>
       <button
@@ -57,9 +69,14 @@ const PlaceWeatherCard = ({
         className={`w-[20.5rem] h-[7.5rem] bg-bg-700 py-4 px-5 ${istoggled ? 'rounded-t-2xl' : 'rounded-2xl delay-200 transition-all'}`}
       >
         <div className='flex items-center justify-between'>
-          <div className='flex'>
+          <div className='flex items-center'>
             <h1 className='mr-1 font-semibold text-white'>{details}</h1>
             <LocationIcon className='w-4' />
+            {idx === 0 && (
+              <p className='px-2 py-1 ml-2 text-xs font-semibold leading-none border rounded-full text-bg-50 border-bg-50'>
+                내 위치
+              </p>
+            )}
           </div>
           <ArrowIcon
             className={`w-6 transition duration-200 ${istoggled ? ' rotate-180' : 'rotate-0'}`}
@@ -68,18 +85,26 @@ const PlaceWeatherCard = ({
 
         <div className='flex items-center justify-between mt-2.5'>
           <div className='text-left'>
-            <h2 className='text-2xl font-semibold text-white mb-0.5'>{scoreStatus}</h2>
-            <p className='text-xs text-white'>{best.hour}시에 제일 잘 보여요!</p>
+            <h2
+              className={`text-2xl font-medium font-paperlogy mb-0.5 ${scoreStatus === '좋음' ? 'text-comp1-light' : scoreStatus === '보통' ? 'text-primary-light' : 'text-comp2-light'}`}
+            >
+              {scoreStatus}
+            </h2>
+            <p className='text-xs text-text-secondary'>{best.hour}시에 제일 잘 보여요!</p>
           </div>
           <div className='flex items-center justify-center bg-white rounded-full w-14 h-14 bg-opacity-10'>
-            <span className='text-2xl font-semibold text-primary'>{best.bestCastarPoint}</span>
+            <span
+              className={`text-2xl font-semibold ${scoreStatus === '좋음' ? 'text-comp1' : scoreStatus === '보통' ? 'text-primary' : 'text-comp2'}`}
+            >
+              {best.bestCastarPoint}
+            </span>
           </div>
         </div>
       </button>
 
       {/* 확장 화면 */}
       <div
-        className={`w-[20.5rem] ${istoggled ? 'h-[17rem]' : 'h-0'} bg-bg-700 rounded-b-2xl duration-300 transition-height flex felx-col justify-center relative`}
+        className={`w-[20.5rem] ${istoggled ? 'h-[18.125rem]' : 'h-0'} bg-bg-700 rounded-b-2xl duration-300 transition-height flex felx-col justify-center relative`}
       >
         <div
           className={`absolute top-5 grid grid-cols-6 gap-x-1.5 transition-all duration-300 ease-out ${istoggled ? 'opacity-100' : 'opacity-0 scale-95 pointer-events-none'}`}
@@ -88,34 +113,66 @@ const PlaceWeatherCard = ({
             <div
               key={idx}
               onClick={() => handleOnClickTimeButton(time)}
-              className={`flex flex-col items-center justify-center w-11 rounded-full ${isPlanned === null ? 'transition-height duration-200' : 'transition-colors duration-100'}  ${selectedTime === time ? 'bg-primary pt-4 pb-1.5 h-full' : isPlanned?.hour === time ? 'bg-secondary-dark' : 'bg-white bg-opacity-10 max-h-[4.125rem] h-[4.125rem] py-4 cursor-pointer hover:bg-bg-500'}`}
+              className={`flex flex-col items-center justify-center w-11 rounded-full ${isPlanned === null && selectedTime === time ? 'transition-height duration-200 pt-4 pb-1.5 h-full' : isPlanned?.hour === time && selectedTime === time ? 'transition-height duration-200 pt-4 pb-1.5 h-full bg-comp3-light' : 'transition-colors duration-100'}  ${selectedTime === time ? 'bg-primary-light' : isPlanned?.hour === time ? 'bg-comp3-light' : 'bg-bg-50 bg-opacity-10 max-h-[5.125rem] h-[5.125rem] py-3 cursor-pointer hover:bg-black/30'}`}
             >
               <p
-                className={`text-[0.625rem] leading-none text-opacity-70 text-center mb-1.5 ${selectedTime === time ? 'text-bg-700' : 'text-white '}`}
+                className={`text-[0.625rem] leading-none text-center mb-1.5 ${selectedTime === time || isPlanned?.hour === time ? 'text-bg-900' : 'text-text-tertiary '}`}
               >
                 {parseInt(time)}시
               </p>
+              {weatherOfTheNight[`hour${time}`]['cloudCoverage'] === 1 ? (
+                selectedTime === time || isPlanned?.hour === time ? (
+                  <DarkSunIcon className='w-5' />
+                ) : (
+                  <SunIcon className='w-5' />
+                )
+              ) : weatherOfTheNight[`hour${time}`]['cloudCoverage'] === 2 ? (
+                selectedTime === time || isPlanned?.hour === time ? (
+                  <DarkPartlyCloudyIcon className='w-5' />
+                ) : (
+                  <PartlyCloudyIcon className='w-5' />
+                )
+              ) : selectedTime === time || isPlanned?.hour === time ? (
+                <DarkCloudIcon className='w-5' />
+              ) : (
+                <CloudIcon className='w-5' />
+              )}
               <p
-                className={`font-semibold text-center leading-none ${selectedTime === time ? 'text-bg-900 mb-2' : 'text-white '}`}
+                className={`font-semibold text-center leading-none ${selectedTime === time || isPlanned?.hour === time ? 'text-bg-900 mb-0.5' : 'text-text-primary '}`}
               >
                 {weatherOfTheNight[`hour${time}`]['castarPoint']}
               </p>
 
-              {isPlanned === null && (
+              {isPlanned === null ? (
                 <button
                   onClick={handleOnClickPlusButton}
-                  className={`flex items-center justify-center rounded-full bg-primary-light ${selectedTime === time ? 'w-8 h-8 transition-all duration-200' : 'w-0 h-0'}`}
+                  className={`flex items-center justify-center rounded-full bg-bg-900/10 ${selectedTime === time ? 'w-8 h-8 transition-all duration-200' : 'w-0 h-0'}`}
                 >
                   <PlusIcon
                     className={selectedTime === time ? 'w-3.5 transition-all duration-200' : 'w-0'}
                   />
                 </button>
+              ) : (
+                isPlanned?.hour === time && (
+                  <button
+                    onClick={handleOnClickDelButton}
+                    className={`flex items-center justify-center rounded-full bg-bg-900/10 ${selectedTime === time ? 'w-8 h-8 transition-all duration-200' : 'w-0 h-0'}`}
+                  >
+                    <CancelIcon
+                      className={
+                        selectedTime === time
+                          ? 'w-6 transition-all duration-200 fill-bg-900/70'
+                          : 'w-0'
+                      }
+                    />
+                  </button>
+                )
               )}
             </div>
           ))}
         </div>
         <div
-          className={`absolute bottom-5 transition-all duration-100 ease-in-out ${istoggled ? 'opacity-100 delay-150' : 'opacity-0 scale-95 pointer-events-none'}`}
+          className={`absolute bottom-4 transition-all duration-100 ease-in-out ${istoggled ? 'opacity-100 delay-150' : 'opacity-0 scale-95 pointer-events-none'}`}
         >
           <AstronomyInfoWidget
             buttonBgColor='bg-black bg-opacity-30'
@@ -130,7 +187,7 @@ const PlaceWeatherCard = ({
           />
         </div>
         <div
-          className={`w-[20.5rem] ${istoggled ? 'h-[17rem]' : 'h-0'} bg-black bg-opacity-20 rounded-b-2xl transition-all`}
+          className={`w-[20.5rem] ${istoggled ? 'h-[18.125rem]' : 'h-0'} bg-black bg-opacity-20 rounded-b-2xl transition-all`}
         />
       </div>
     </>
