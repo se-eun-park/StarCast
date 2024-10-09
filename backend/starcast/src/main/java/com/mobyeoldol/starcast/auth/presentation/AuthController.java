@@ -12,6 +12,7 @@ import com.mobyeoldol.starcast.auth.presentation.response.UpdateUserInfoTmpRespo
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -27,6 +28,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
+
+    @Value("${kakao.redirect.uri.signup}")
+    String kakaoRedirectUriSignup;
+
+    @Value("${kakao.redirect.uri.home}")
+    String kakaoRedirectUriHome;
 
     private final AuthService authService;
     private final AuthRepository authRepository;
@@ -81,11 +88,11 @@ public class AuthController {
             authService.generateAuthAndUserInfoTmp(userInfo);
 
             log.info("[login 카카오에 토큰 요청 API] 클라이언트를 동의 구하기 페이지로 리다이렉트");
-            redirectView.setUrl("http://j11a609.p.ssafy.io:8000/signup");
+            redirectView.setUrl(kakaoRedirectUriSignup);
         }
         else {
             log.info("[login 카카오에 토큰 요청 API] 클라이언트를 메인 페이지로 리다이렉트");
-            redirectView.setUrl("http://j11a609.p.ssafy.io:8000/home");
+            redirectView.setUrl(kakaoRedirectUriHome);
         }
 
         return redirectView;
