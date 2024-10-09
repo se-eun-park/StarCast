@@ -46,7 +46,7 @@ public class AuthController {
             @RequestHeader(value = "Authorization") String bearerToken) {
 
         log.info("[Profile 만들기 API] GET /api/v1/auth/nickname/{nickname}");
-        if(nickname.equals(null)) throw new IllegalStateException("[Profile 만들기 API] nickname은 null일 될 수 없습니다.");
+        if(nickname.isEmpty()) throw new IllegalStateException("[Profile 만들기 API] nickname은 필수입니다.");
 
         log.info("[Profile 만들기 API] 새로운 Profile 만들기");
         authService.generateProfile(nickname, bearerToken);

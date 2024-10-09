@@ -72,7 +72,8 @@ public class AuthServiceImpl implements AuthService{
 
         log.info("[accessTokenToAuth : accessToken으로 Auth 리턴하기] 1. 카카오로 accessToken 전송");
         WebClient webClient = WebClient.create(kakaoApiUri);
-        KakaoTokenInfoResponseDto tokenInfo = webClient
+
+        return webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
@@ -84,8 +85,6 @@ public class AuthServiceImpl implements AuthService{
                 .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
                 .bodyToMono(KakaoTokenInfoResponseDto.class)
                 .block();
-
-        return tokenInfo;
     }
 
     @Override
