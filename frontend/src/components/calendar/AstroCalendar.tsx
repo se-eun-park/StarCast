@@ -1,48 +1,48 @@
 import { useState } from 'react'
 // import { useAstroEventList } from "@apis/endpoints/calendar/hooks/useAstroEventList";
 import { AstroEventsDummy } from '@dummy/astroEventsDummy'
-import Calendar from "react-calendar";
-import 'react-calendar/dist/Calendar.css';
-import "./AstroCalendar.css";
-import { StarIconCal } from "@assets/svg";
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
+import './AstroCalendar.css'
+import { StarIconCal } from '@assets/svg'
 
-import AstroEventDetail from "./AstroEventDetail";
+import AstroEventDetail from './AstroEventDetail'
 
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
 
 const AstroCalendar = () => {
-  const [value, onChange] = useState<Value>(new Date());
-  const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
-  const [monthlyTip, setMonthlyTip] = useState<any | null>(null);
-  
+  const [value, onChange] = useState<Value>(new Date())
+  const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
+  const [monthlyTip, setMonthlyTip] = useState<any | null>(null)
+
   const handleClick = (value: Date) => {
-    const localeString = value.toLocaleDateString('ko-KR');
-    const parts = localeString.split('.').map(part => part.trim());
-    const year = parts[0];
-    const month = parts[1].padStart(2, '0'); 
-    const day = parts[2].padStart(2, '0');   
-    const formattedDate = `${year}${month}${day}`;
+    const localeString = value.toLocaleDateString('ko-KR')
+    const parts = localeString.split('.').map((part) => part.trim())
+    const year = parts[0]
+    const month = parts[1].padStart(2, '0')
+    const day = parts[2].padStart(2, '0')
+    const formattedDate = `${year}${month}${day}`
 
-    const currentMonth = formattedDate.slice(0, 6);
-    const events = AstroEventsDummy[currentMonth] || [];
-    const eventForDate = events.find(event => event.locdate === formattedDate);
+    const currentMonth = formattedDate.slice(0, 6)
+    const events = AstroEventsDummy[currentMonth] || []
+    const eventForDate = events.find((event) => event.locdate === formattedDate)
 
-    setSelectedEvent(eventForDate || null);
+    setSelectedEvent(eventForDate || null)
   }
 
   const handleMonthChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
-    if (!activeStartDate) return;
+    if (!activeStartDate) return
 
-    const year = activeStartDate.getFullYear();
-    const month = (activeStartDate.getMonth() + 1).toString().padStart(2, '0');
-    const formattedMonth = `${year}${month}`;
+    const year = activeStartDate.getFullYear()
+    const month = (activeStartDate.getMonth() + 1).toString().padStart(2, '0')
+    const formattedMonth = `${year}${month}`
 
-    const events = AstroEventsDummy[formattedMonth] || [];
-    const monthTip = events.find(event => event.locdate === formattedMonth);
+    const events = AstroEventsDummy[formattedMonth] || []
+    const monthTip = events.find((event) => event.locdate === formattedMonth)
 
-    setMonthlyTip(monthTip || null);
-  };
+    setMonthlyTip(monthTip || null)
+  }
 
   const tileClassName = ({ date }: { date: Date }) => {
     const today = new Date()
@@ -95,12 +95,12 @@ const AstroCalendar = () => {
         }
         tileClassName={tileClassName}
         tileContent={tileContent}
-        minDetail="month"
+        minDetail='month'
         onClickDay={handleClick}
-        onActiveStartDateChange={handleMonthChange} 
+        onActiveStartDateChange={handleMonthChange}
       />
       {monthlyTip && (
-        <div className="monthly-tip">
+        <div className='monthly-tip'>
           <h3>Monthly Tip</h3>
           <p>{monthlyTip.astroEvent}</p>
         </div>

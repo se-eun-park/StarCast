@@ -4,7 +4,6 @@ import PlaceWeatherCard from '@components/calendar/PlaceWeatherCard'
 import AstroCalendar from '@components/calendar/AstroCalendar'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-
 export default function CalendarPage() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -12,14 +11,14 @@ export default function CalendarPage() {
   const [activeDay, setActiveDay] = useState(1)
 
   const dayList = Array.from({ length: 7 }, (_, index) => {
-    const date = new Date();
-    date.setDate(date.getDate() + index);
+    const date = new Date()
+    date.setDate(date.getDate() + index)
     return {
       index: index + 1,
       day: date.getDate(),
       month: date.getMonth() + 1,
-    };
-  });
+    }
+  })
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search)
@@ -45,13 +44,11 @@ export default function CalendarPage() {
   const onClickDay = (day: number) => {
     setActiveDay(day)
   }
-  
 
   return (
-    // 테스트를 위해 하드코딩 했습니다.
-    <div className='h-full min-h-dvh bg-bg-900 flex flex-col items-center'>
-      <div className='sticky top-14 bg-bg-900 z-20 flex justify-center w-full h-12 border-b border-bg-50/20'>
-        <button 
+    <div className='flex flex-col items-center h-full min-h-dvh bg-bg-900'>
+      <div className='sticky z-20 flex justify-center w-full h-12 border-b top-14 bg-bg-900 border-bg-50/20'>
+        <button
           className={`w-1/4 text-center font-paperlogy text-sm ${activeTab === 'week' ? 'border-b-2 border-bg-50' : 'text-text-tertiary'}`}
           onClick={() => {
             onClickTab('week')
@@ -59,7 +56,7 @@ export default function CalendarPage() {
         >
           주간 예보
         </button>
-        <button 
+        <button
           className={`w-1/4 text-center font-paperlogy text-sm ${activeTab === 'month' ? 'border-b-2 border-bg-50' : 'text-text-tertiary'}`}
           onClick={() => {
             onClickTab('month')
@@ -75,17 +72,18 @@ export default function CalendarPage() {
           >
             {dayList.map(({ index, day }) => (
               <button
-              key={index}
-              className={`px-2 py-1 text-sm w-8 h-8 font-semibold rounded-full ${
-                activeDay === index ? 'text-bg-900 bg-bg-50' : 'text-bg-50'
-              }`}
-              onClick={() => onClickDay(index)}
-            >
-              {`${day}`}
-            </button>
+                key={index}
+                className={`px-2 py-1 text-sm w-8 h-8 font-semibold rounded-full ${
+                  activeDay === index ? 'text-bg-900 bg-bg-50' : 'text-bg-50'
+                }`}
+                onClick={() => onClickDay(index)}
+              >
+                {`${day}`}
+              </button>
             ))}
           </div>
           <PlaceWeatherCard
+            idx={0}
             place_uid={PlaceWeatherCardDummyData.myGPS.place_uid}
             details={PlaceWeatherCardDummyData.myGPS.details}
             weatherOfTheNight={PlaceWeatherCardDummyData.myGPS.weatherOfTheNight}
@@ -95,6 +93,7 @@ export default function CalendarPage() {
           />
           <br />
           <PlaceWeatherCard
+            idx={1}
             place_uid={PlaceWeatherCardDummyData.myPlace.place_uid}
             details={PlaceWeatherCardDummyData.myPlace.details}
             weatherOfTheNight={PlaceWeatherCardDummyData.myPlace.weatherOfTheNight}
@@ -102,11 +101,19 @@ export default function CalendarPage() {
             moonSetTime={PlaceWeatherCardDummyData.myPlace.moonSetTime}
             isPlanned={PlaceWeatherCardDummyData.myPlace.isPlanned}
           />
+          <br />
+          <PlaceWeatherCard
+            idx={2}
+            place_uid={PlaceWeatherCardDummyData.favoritePlaces[0].place_uid}
+            details={PlaceWeatherCardDummyData.favoritePlaces[0].details}
+            weatherOfTheNight={PlaceWeatherCardDummyData.favoritePlaces[0].weatherOfTheNight}
+            best={PlaceWeatherCardDummyData.favoritePlaces[0].best}
+            moonSetTime={PlaceWeatherCardDummyData.favoritePlaces[0].moonSetTime}
+            isPlanned={PlaceWeatherCardDummyData.favoritePlaces[0].isPlanned}
+          />
         </div>
       )}
-      {activeTab === 'month' && (
-        <AstroCalendar />
-      )}
+      {activeTab === 'month' && <AstroCalendar />}
     </div>
   )
 }
