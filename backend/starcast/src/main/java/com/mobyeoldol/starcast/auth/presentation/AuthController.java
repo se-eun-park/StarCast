@@ -10,6 +10,8 @@ import com.mobyeoldol.starcast.auth.domain.repository.RefreshTokenRepository;
 import com.mobyeoldol.starcast.auth.domain.repository.UserInfoTmpRepository;
 import com.mobyeoldol.starcast.auth.presentation.request.UpdateUserInfoTmpRequest;
 import com.mobyeoldol.starcast.auth.presentation.response.LoginResponse;
+import com.mobyeoldol.starcast.auth.presentation.response.LogoutResponse;
+import com.mobyeoldol.starcast.auth.presentation.response.UnlinkResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.UpdateUserInfoTmpResponse;
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
 import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
@@ -111,6 +113,43 @@ public class AuthController {
         UpdateUserInfoTmpResponse response = authService.updateUserInfoTmp(auth, request.isConsentGps(), request.isConsentNotice());
         BaseResponseTemplate<UpdateUserInfoTmpResponse> successResponse = BaseResponseTemplate.success(response);
 
+        return ResponseEntity.ok().body(successResponse);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<BaseResponseTemplate<?>> logout(@RequestHeader(value = "Authorization") String bearerToken) {
+
+        log.info("[로그아웃 API] GET /api/v1/auth/logout");
+        LogoutResponse response = authService.logout(bearerToken);
+
+        log.info("[로그아웃 API] 로그아웃 후 받은 카카오 id 리턴");
+        BaseResponseTemplate<LogoutResponse> successResponse = BaseResponseTemplate.success(response);
+        return ResponseEntity.ok().body(successResponse);
+    }
+
+    @GetMapping("/unlink")
+    public ResponseEntity<BaseResponseTemplate<?>> unlink(@RequestHeader(value = "Authorization") String bearerToken) {
+
+        log.info("[탈퇴 API] GET /api/v1/auth/unlink");
+        UnlinkResponse response = authService.unlink(bearerToken);
+
+        log.info("[로그아웃 API] 로그아웃 후 받은 카카오 id 리턴");
+        BaseResponseTemplate<UnlinkResponse> successResponse = BaseResponseTemplate.success(response);
+        return ResponseEntity.ok().body(successResponse);
+    }
+
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<BaseResponseTemplate<?>> generateProfile(
+            @PathVariable("nickname") String nickname,
+            @RequestHeader(value = "Authorization") String bearerToken) {
+
+        log.info("[Profile 만들기 API] GET /api/v1/auth/nickname/{nickname}");
+        if(nickname.isEmpty()) throw new IllegalStateException("[Profile 만들기 API] nickname은 필수입니다.");
+
+        log.info("[Profile 만들기 API] 새로운 Profile 만들기");
+        authService.generateProfile(nickname, bearerToken);
+
+        BaseResponseTemplate<?> successResponse = BaseResponseTemplate.success("프로필이 성공적으로 생성되었습니다.");
         return ResponseEntity.ok().body(successResponse);
     }
 }

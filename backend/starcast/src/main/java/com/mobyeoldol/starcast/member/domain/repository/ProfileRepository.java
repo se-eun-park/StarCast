@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface ProfileRepository extends JpaRepository<Profile, String> {
     Optional<Profile> findByNickname(String nickname);
 
-    @Query("SELECT profileUid FROM Profile WHERE auth = :auth")
+    @Query("SELECT p FROM Profile p WHERE p.auth = :auth")
     Optional<Profile> findByAuth(Auth auth);
 }
