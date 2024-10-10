@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 type SubmitDataProps = {
   nickName: string
@@ -20,17 +21,18 @@ const schema = yup
 
 const SignupInput = () => {
   const navigate = useNavigate()
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
+
   const {
     register,
     handleSubmit,
-    setValue, // useForm에서 setValue로 랜덤 닉네임 설정
+    setValue,
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
     resolver: yupResolver(schema),
   })
 
-  // 묶음1과 묶음2 정의
   const group1 = [
     '당근을좋아하는',
     '별을보는',
@@ -56,7 +58,6 @@ const SignupInput = () => {
     '다다',
   ]
 
-  // 랜덤 닉네임 생성 함수
   const generateRandomNickName = () => {
     const randomGroup1 = group1[Math.floor(Math.random() * group1.length)]
     const randomGroup2 = group2[Math.floor(Math.random() * group2.length)]
@@ -72,6 +73,19 @@ const SignupInput = () => {
     console.log(data)
     navigate('/home')
   }
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isKeyboard = window.innerHeight < 500
+      setIsKeyboardOpen(isKeyboard)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
     <div className=' w-full flex flex-col items-center px-4 py-6 h-[calc(100dvh-10rem)]'>
@@ -105,7 +119,7 @@ const SignupInput = () => {
         <button
           type='submit'
           disabled={!isValid}
-          className='mt-auto mb-6 btn-primary-full disabled:btn-disabled-full'
+          className={`mt-auto mb-6 btn-primary-full disabled:btn-disabled-full transition-transform ${isKeyboardOpen ? 'translate-y-[-20px]' : ''}`} // 키보드가 열리면 버튼을 위로 이동
         >
           {isValid
             ? '회원가입 완료'
