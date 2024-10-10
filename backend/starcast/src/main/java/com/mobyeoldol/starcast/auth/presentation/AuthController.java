@@ -59,14 +59,14 @@ public class AuthController {
         log.info("[login 카카오에 토큰 요청 API] Access Token 쿠키에 담기");
         Cookie accessTokenCookie = new Cookie("accessToken", responseDto.getAccessToken());
         accessTokenCookie.setHttpOnly(true); // JavaScript에서 접근 방지
-        accessTokenCookie.setSecure(true); // HTTPS 연결에서만 사용
+        accessTokenCookie.setSecure(false); // HTTPS 연결에서만 사용
         accessTokenCookie.setPath("/");
         accessTokenCookie.setMaxAge(60 * 60); // 1시간 유효
 
         log.info("[login 카카오에 토큰 요청 API] Refresh Token 쿠키에 담기");
         Cookie refreshTokenCookie = new Cookie("refreshToken", responseDto.getRefreshToken());
         refreshTokenCookie.setHttpOnly(true); // JavaScript에서 접근 방지
-        refreshTokenCookie.setSecure(true); // HTTPS 연결에서만 사용
+        refreshTokenCookie.setSecure(false); // HTTPS 연결에서만 사용
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setMaxAge(24 * 60 * 60); // 1일 유효
 
