@@ -12,6 +12,7 @@ import com.mobyeoldol.starcast.auth.presentation.response.UnlinkResponse;
 import com.mobyeoldol.starcast.auth.presentation.response.UpdateUserInfoTmpResponse;
 import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.member.domain.Rank;
+import com.mobyeoldol.starcast.member.domain.enums.CastarImage;
 import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
 import com.mobyeoldol.starcast.member.domain.repository.RankRepository;
 import io.netty.handler.codec.http.HttpHeaderValues;
@@ -348,7 +349,7 @@ public class AuthServiceImpl implements AuthService{
                 .email(userInfoTmp.getEmail())
                 .name(userInfoTmp.getName())
                 .nickname(nickname)
-                .profileImgNum("CASTAR1")
+                .profileImgNum(CastarImage.BASIC_1)
                 .exp(0)
                 .isDeleted(false)
                 .actionPlaceType("GPS")
