@@ -1,5 +1,6 @@
 package com.mobyeoldol.starcast.member.application.dto;
 
+import com.mobyeoldol.starcast.member.domain.enums.CastarImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,5 +14,5 @@ public class AuthorDto {
 
     private String profileUid;
     private String nickname;
-    private String profileImage;
+    private CastarImage profileImage;
 }
