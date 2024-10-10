@@ -1,36 +1,30 @@
 package com.mobyeoldol.starcast.place.presentation.response;
 
-import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class FavouriteSpotResponse {
-    private String favouriteSpotId;
-    private Place place;
-    private LocalDateTime date;
-
+public class GetPlaceListResponse {
+    private List<Data> dataList;
 
     @Getter
-    @Builder
-    @NoArgsConstructor
+    @Setter
     @AllArgsConstructor
-    public static class Place{
+    public static class Data{
         private String placeUid;
-        private String name;
-        private PlaceType type;
         private String image;
+        private String name;
         private Address address;
+        private Integer reviewCount;
     }
 
     @Getter
-    @Builder
-    @NoArgsConstructor
+    @Setter
     @AllArgsConstructor
     public static class Address{
         private String address1;

@@ -7,6 +7,7 @@ import com.mobyeoldol.starcast.calendar.presentation.request.MonthlyAstronomical
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -24,6 +25,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     private final CalendarRepository calendarRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public MonthlyAstronomicalResponse getMonthlyAstronomicalEvents(MonthlyAstronomicalRequest request) {
         log.info("[월별 천문현상 조회 API] 1. 일자를 1일로 임시 설정");

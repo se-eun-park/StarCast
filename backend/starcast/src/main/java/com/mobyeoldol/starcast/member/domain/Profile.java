@@ -4,6 +4,7 @@ import com.mobyeoldol.starcast.auth.domain.Auth;
 import com.mobyeoldol.starcast.community.domain.Community;
 import com.mobyeoldol.starcast.community.domain.Reaction;
 import com.mobyeoldol.starcast.global.entity.BaseTimeEntity;
+import com.mobyeoldol.starcast.member.domain.enums.CastarImage;
 import com.mobyeoldol.starcast.notice.domain.Consent;
 import com.mobyeoldol.starcast.notice.domain.Notice;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
@@ -46,7 +47,7 @@ public class Profile extends BaseTimeEntity {
     private String nickname;
 
     @Column(name = "profile_image_num", length = 20, nullable = false)
-    private String profileImgNum;
+    private CastarImage profileImgNum;
 
     @Column(name = "exp", nullable = false)
     private int exp;

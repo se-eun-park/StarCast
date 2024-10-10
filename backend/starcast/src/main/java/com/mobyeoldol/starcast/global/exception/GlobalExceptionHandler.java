@@ -20,6 +20,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<BaseResponseTemplate<?>> handleRuntimeException(RuntimeException ex, WebRequest request) {
+        BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<BaseResponseTemplate<?>> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
         BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(

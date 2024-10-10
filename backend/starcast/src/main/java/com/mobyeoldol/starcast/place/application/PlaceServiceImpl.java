@@ -16,17 +16,18 @@ import com.mobyeoldol.starcast.place.domain.repository.FavouriteSpotRepository;
 import com.mobyeoldol.starcast.place.domain.repository.PlaceRepository;
 import com.mobyeoldol.starcast.place.domain.repository.PlanRepository;
 import com.mobyeoldol.starcast.place.presentation.request.CreatePlanRequest;
+import com.mobyeoldol.starcast.place.presentation.request.GetPlaceListRequest;
 import com.mobyeoldol.starcast.place.presentation.request.ModifyPlanRequest;
-import com.mobyeoldol.starcast.place.presentation.response.PlaceDetailsResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlanDetailsResponse;
-import com.mobyeoldol.starcast.place.presentation.response.PlanUidResponse;
+import com.mobyeoldol.starcast.place.presentation.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -40,9 +41,11 @@ public class PlaceServiceImpl implements PlaceService {
     private final ReactionRepository reactionRepository;
     private final ProfileRepository profileRepository;
 
+    private final LevenshteinDistance levenshtein = new LevenshteinDistance();
+
     @Transactional
     @Override
-    public FavouriteSpot createFavourite(String placeUid, String profileUid) {
+    public FavouriteSpot createFavouriteSpot(String placeUid, String profileUid) {
         log.info("[즐겨찾기 등록 API] 1. 기존 즐겨찾기 등록 여부 확인");
         Optional<FavouriteSpot> existingFavourite = favouriteSpotRepository.findByPlace_PlaceUidAndProfile_ProfileUid(placeUid, profileUid);
 
@@ -68,15 +71,73 @@ public class PlaceServiceImpl implements PlaceService {
         return favouriteSpotRepository.save(favouriteSpot);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public FavouriteSpotResponse getFavouriteSpot(String favouriteSpotUid, String profileUid) {
+        log.info("[즐겨찾기 하나 조회 API] 1. 즐겨찾기 유효성 검사");
+        FavouriteSpot favouriteSpot = favouriteSpotRepository.findById(favouriteSpotUid)
+                .orElseThrow(() -> new IllegalStateException("[즐겨찾기 하나 조회 API] 1-1. 해당 즐겨찾기 항목을 찾을 수 없습니다."));
+
+        log.info("[즐겨찾기 하나 조회 API] 2. ProfileUid가 일치하는지 확인");
+        if (!favouriteSpot.getProfile().getProfileUid().equals(profileUid)) {
+            throw new IllegalStateException("[즐겨찾기 하나 조회 API] 2-1. 권한이 없습니다.");
+        }
+
+        log.info("[즐겨찾기 하나 조회 API] 3. FavouriteSpotResponse로 응답 반환");
+        return FavouriteSpotResponse.builder()
+                .favouriteSpotId(favouriteSpot.getSpotUid())
+                .place(FavouriteSpotResponse.Place.builder()
+                        .placeUid(favouriteSpot.getPlace().getPlaceUid())
+                        .name(favouriteSpot.getPlace().getName())
+                        .type(favouriteSpot.getPlace().getType())
+                        .image(favouriteSpot.getPlace().getImage())
+                        .address(FavouriteSpotResponse.Address.builder()
+                                .address1(favouriteSpot.getPlace().getAddress1())
+                                .address2(favouriteSpot.getPlace().getAddress2())
+                                .address3(favouriteSpot.getPlace().getAddress3())
+                                .address4(favouriteSpot.getPlace().getAddress4())
+                                .build())
+                        .build())
+                .date(favouriteSpot.getCreatedDate())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<FavouriteSpotResponse> getFavouriteSpots(String profileUid) {
+        log.info("[즐겨찾기 모두 조회 API] 1. 로그인한 사용자가 작성한 즐겨찾기 조회");
+        List<FavouriteSpot> favouriteSpots = favouriteSpotRepository.findByProfile_ProfileUid(profileUid);
+
+        log.info("[즐겨찾기 모두 조회 API] 2. 응답 반환");
+        return favouriteSpots.stream()
+                .map(favouriteSpot -> FavouriteSpotResponse.builder()
+                        .favouriteSpotId(favouriteSpot.getSpotUid())
+                        .place(FavouriteSpotResponse.Place.builder()
+                                .placeUid(favouriteSpot.getPlace().getPlaceUid())
+                                .name(favouriteSpot.getPlace().getName())
+                                .type(favouriteSpot.getPlace().getType())
+                                .image(favouriteSpot.getPlace().getImage())
+                                .address(FavouriteSpotResponse.Address.builder()
+                                        .address1(favouriteSpot.getPlace().getAddress1())
+                                        .address2(favouriteSpot.getPlace().getAddress2())
+                                        .address3(favouriteSpot.getPlace().getAddress3())
+                                        .address4(favouriteSpot.getPlace().getAddress4())
+                                        .build())
+                                .build())
+                        .date(favouriteSpot.getCreatedDate())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     @Override
-    public void deleteFavourite(String spotUid) {
+    public void deleteFavouriteSpot(String favouriteSpotUid) {
         log.info("[즐겨찾기 삭제 API] 1. 기존 즐겨찾기 등록 여부 확인");
-        FavouriteSpot favouriteSpot = favouriteSpotRepository.findById(spotUid)
+        FavouriteSpot favouriteSpot = favouriteSpotRepository.findById(favouriteSpotUid)
                 .orElseThrow(() -> new IllegalStateException("[즐겨찾기 삭제 API] 1-1. 해당 즐겨찾기 항목을 찾을 수 없습니다."));
 
         log.info("[즐겨찾기 삭제 API] 2. 즐겨찾기 삭제");
-        favouriteSpotRepository.deleteById(spotUid);
+        favouriteSpotRepository.deleteById(favouriteSpotUid);
     }
 
     @Transactional(readOnly = true)
@@ -92,7 +153,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .address1(curPlace.getAddress1())
                 .address2(curPlace.getAddress2())
                 .address3(curPlace.getAddress3())
-                .address4(curPlace.getAddress4()==null?"":curPlace.getAddress4())
+                .address4(curPlace.getAddress4())
                 .build();
 
         String websiteUrl = (curPlaceType == PlaceType.OBSERVATORY) ? curPlace.getWebAddress() : "None";
@@ -120,6 +181,34 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Transactional
     @Override
+    public GetPlaceListResponse getPlaceList(GetPlaceListRequest request) {
+
+        log.info("[관측지 리스트 보기 API] 1. 검색어 입력 확인");
+        if (request.getSearch() != null && !request.getSearch().isEmpty()) {
+            log.info("[관측지 리스트 보기 API] \t1-1. 검색어가 있는 경우, 유사도 알고리즘 사용");
+            return searchWithSimilarityAlgorithm(request);
+        }
+
+        log.info("[관측지 리스트 보기 API] 2. 정렬 기준에 따라 처리");
+        List<Place> places = placeRepository.findByType(request.getPlaceType());
+
+        log.info("[관측지 리스트 보기 API] \t2-1. 이름 순 정렬");
+        if (request.getSortBy() == GetPlaceListRequest.SortBy.NAME) {
+            places.sort(Comparator.comparing(Place::getName));
+        }
+
+        log.info("[관측지 리스트 보기 API] \t2-1. 리뷰 순 정렬");
+        if (request.getSortBy() == GetPlaceListRequest.SortBy.REVIEW) {
+            places.sort(Comparator.comparingInt(place -> place.getCommunities().size()));
+        }
+
+        log.info("[관측지 리스트 보기 API] 3. 응답 데이터 생성");
+        List<GetPlaceListResponse.Data> dataList = places.stream().map(this::mapPlaceToData).collect(Collectors.toList());
+        return new GetPlaceListResponse(dataList);
+    }
+
+    @Transactional
+    @Override
     public PlanUidResponse makePlan(CreatePlanRequest request, String profileUid) {
         log.info("[장소 찜 생성 API] 1. Profile 정보 조회");
         Profile curProfile = profileRepository.findById(profileUid)
@@ -127,11 +216,16 @@ public class PlaceServiceImpl implements PlaceService {
 
         log.info("[장소 찜 생성 API] 2. 입력받은 장소 아이디가 유효한지 확인");
         Place curPlace = placeRepository.findByPlaceUid(request.getPlaceUid())
-                .orElseThrow(() -> new IllegalStateException("[장소 찜 생성 API] 2-1. 해당 장소를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("[장소 찜 생성 API] 2-1. 해당 장소를 찾을 수 없습니다."));
 
-        log.info("[장소 찜 생성 API] 3. 이미 존재하는 찜 삭제");
-        planRepository.findByPlace_PlaceUidAndProfile_ProfileUid(request.getPlaceUid(), profileUid)
-                .ifPresent(planRepository::delete);
+        log.info("[장소 찜 생성 API] 3. 이미 존재하는 찜 여부 확인");
+        List<Plan> existingPlans = planRepository.findByProfile_ProfileUidAndIsDeletedFalse(profileUid);  // profile_uid로 조회하여 isDeleted가 false인 Plan들 조회
+
+        existingPlans.forEach(plan -> {
+            log.info("[장소 찜 생성 API] 3-1. isDeleted가 false인 기존 찜을 삭제 처리: {}", plan.getPlanUid());
+            plan.setIsDeleted(true);
+            planRepository.save(plan);
+        });
 
         log.info("[장소 찜 생성 API] 4. 새로운 찜 엔티티 생성 및 저장");
         Plan plan = Plan.builder()
@@ -146,6 +240,48 @@ public class PlaceServiceImpl implements PlaceService {
 
         log.info("[장소 찜 생성 API] 5. 응답 반환");
         return new PlanUidResponse(plan.getPlanUid());
+    }
+
+    @Override
+    public PlanListResponse getPlanList(String profileUid) {
+        log.info("[장소 찜 이력 모두 조회 API] 1. profileUid로 관련된 모든 Plan을 조회");
+        List<Plan> plans = planRepository.findByProfile_ProfileUid(profileUid);
+
+        log.info("[장소 찜 이력 모두 조회 API] 2. 응답 PlanDetailsResponse 반환");
+        List<PlanListResponse.PlanDetail> activePlans = new ArrayList<>();
+        List<PlanListResponse.PlanDetail> deletedPlans = new ArrayList<>();
+
+        for (Plan plan : plans) {
+            PlanListResponse.PlanDetail planDetail = PlanListResponse.PlanDetail.builder()
+                    .planUid(plan.getPlanUid())
+                    .place(PlanListResponse.Place.builder()
+                            .placeUid(plan.getPlace().getPlaceUid())
+                            .name(plan.getPlace().getName())
+                            .type(plan.getPlace().getType())
+                            .image(plan.getPlace().getImage())
+                            .address(PlanListResponse.Address.builder()
+                                    .address1(plan.getPlace().getAddress1())
+                                    .address2(plan.getPlace().getAddress2())
+                                    .address3(plan.getPlace().getAddress3())
+                                    .address4(plan.getPlace().getAddress4())
+                                    .build())
+                            .build())
+                    .dateTime(plan.getDateTime())
+                    .castarPoint(plan.getCastarPoint())
+                    .isDeleted(plan.getIsDeleted())
+                    .build();
+
+            if (plan.getIsDeleted()) {
+                deletedPlans.add(planDetail);
+            } else {
+                activePlans.add(planDetail);
+            }
+        }
+
+        return PlanListResponse.builder()
+                .deletedPlans(deletedPlans)
+                .activePlans(activePlans)
+                .build();
     }
 
     @Transactional
@@ -163,7 +299,7 @@ public class PlaceServiceImpl implements PlaceService {
         }
 
         log.info("[장소 찜 조회 API] 3. 응답 생성 및 반환");
-        return makePlanDetailsResponse(plan.getPlace(), plan);
+        return makePlanDetailsResponse(plan);
     }
 
     @Transactional
@@ -172,6 +308,10 @@ public class PlaceServiceImpl implements PlaceService {
         log.info("[장소 찜 수정 API] 1. Plan 유효한지 검증");
         Plan plan = planRepository.findById(request.getPlanUid())
                 .orElseThrow(() -> new IllegalStateException("[장소 찜 수정 API] 1-1. 해당 찜을 찾을 수 없습니다."));
+
+        if (plan.getIsDeleted()) {
+            throw new IllegalStateException("[장소 찜 수정 API] 1-2. 삭제된 찜은 수정할 수 없습니다.");
+        }
 
         log.info("[장소 찜 수정 API] 2. Profile 일치 여부 확인");
         if (!profileUid.equals(plan.getProfile().getProfileUid())) {
@@ -192,7 +332,7 @@ public class PlaceServiceImpl implements PlaceService {
 
         log.info("[장소 찜 수정 API] 4. 최종 저장 및 응답 반환");
         planRepository.save(plan);
-        return makePlanDetailsResponse(plan.getPlace(), plan);
+        return makePlanDetailsResponse(plan);
     }
 
     @Transactional
@@ -202,7 +342,7 @@ public class PlaceServiceImpl implements PlaceService {
         Plan plan = planRepository.findById(planUid)
                 .orElseThrow(() -> new IllegalStateException("[장소 찜 삭제 API] 1-1. 해당 찜을 찾을 수 없습니다."));
 
-        log.info("[찜 삭제] 비교 : "+profileUid+", "+plan.getProfile().getProfileUid());
+        log.info("[장소 찜 삭제 API] 비교 : "+profileUid+", "+plan.getProfile().getProfileUid());
 
         log.info("[장소 찜 삭제 API] 2. Profile 일치 여부 확인");
         if (!profileUid.equals(plan.getProfile().getProfileUid())) {
@@ -219,10 +359,9 @@ public class PlaceServiceImpl implements PlaceService {
         planRepository.save(plan);
     }
 
-
+    @Transactional
     @Override
     public void updateActionPlaceType(String profileUid, MainPlace mainPlace) {
-        profileUid = "profile1";
         log.info("[메인 장소 유형 업데이트 API] 1. 프로필 조회");
         Profile profile = profileRepository.findById(profileUid)
                 .orElseThrow(() -> new IllegalArgumentException("[메인 장소 유형 업데이트 API] 1-1. 해당 프로필 정보를 찾을 수 없습니다."));
@@ -270,7 +409,9 @@ public class PlaceServiceImpl implements PlaceService {
         return topReviewsMap;
     }
 
-    private PlanDetailsResponse makePlanDetailsResponse(Place curPlace, Plan plan) {
+    private PlanDetailsResponse makePlanDetailsResponse(Plan plan) {
+        Place curPlace = plan.getPlace();
+
         PlanDetailsResponse.Address address = PlanDetailsResponse.Address.builder()
                 .address1(curPlace.getAddress1())
                 .address2(curPlace.getAddress2())
@@ -294,6 +435,55 @@ public class PlaceServiceImpl implements PlaceService {
                 .isDeleted(plan.getIsDeleted())
                 .build();
     }
+
+
+    private GetPlaceListResponse searchWithSimilarityAlgorithm(GetPlaceListRequest request) {
+        String keyword = request.getSearch();
+        PlaceType type = request.getPlaceType();
+
+        log.info("[관측지 리스트 보기 API] 공백만 있거나 특수문자가 포함된 경우 검색결과는 빈 리스트");
+        if (keyword == null || keyword.trim().isEmpty() || keyword.matches("[\\p{Punct}\\s]*")) {
+            return new GetPlaceListResponse(Collections.emptyList());
+        }
+
+        List<Place> allPlaces = placeRepository.findByType(type);
+
+        log.info("[관측지 리스트 보기 API] Levenshtein 거리 계산");
+        List<Place> similarPlaces = allPlaces.stream()
+                .filter(place -> {
+                    double similarity = calculateSimilarity(place, keyword);
+                    return similarity > 0.95;
+                })
+                .sorted(Comparator.comparingDouble(place -> calculateSimilarity(place, keyword)))
+                .toList();
+
+        log.info("[관측지 리스트 보기 API] 응답 데이터 생성");
+        List<GetPlaceListResponse.Data> dataList = similarPlaces.stream().map(this::mapPlaceToData).collect(Collectors.toList());
+        return new GetPlaceListResponse(dataList);
+    }
+
+    private double calculateSimilarity(Place place, String keyword) {
+        log.info("[관측지 리스트 보기 API] 장소 이름과 주소들에 대해 유사도 계산");
+        String combinedString = String.join(" ", place.getName(), place.getAddress1(), place.getAddress2(), place.getAddress3(), place.getAddress4(), place.getPhoneNum());
+
+        log.info("[관측지 리스트 보기 API] Levenshtein 거리 계산");
+        return levenshtein.apply(combinedString, keyword);
+    }
+
+    private GetPlaceListResponse.Data mapPlaceToData(Place place) {
+        log.info("[관측지 리스트 보기 API] Place를 GetPlaceListResponse.Data로 변환");
+        return new GetPlaceListResponse.Data(
+                place.getPlaceUid(),
+                place.getImage(),
+                place.getName(),
+                new GetPlaceListResponse.Address(
+                        place.getAddress1(),
+                        place.getAddress2(),
+                        place.getAddress3(),
+                        place.getAddress4()
+                ),
+                placeRepository.countCommunitiesByPlace(place)
+        );
+    }
+
 }
-
-

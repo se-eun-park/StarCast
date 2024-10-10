@@ -1,20 +1,33 @@
 package com.mobyeoldol.starcast.place.presentation.response;
 
 import com.mobyeoldol.starcast.place.domain.enums.PlaceType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavouriteSpotResponse {
-    private String favouriteSpotId;
-    private Place place;
-    private LocalDateTime date;
+public class PlanListResponse {
+    private List<PlanDetail> deletedPlans;
+    private List<PlanDetail> activePlans;
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlanDetail {
+        private String planUid;
+        private Place place;
+        private LocalDateTime dateTime;
+        private Integer castarPoint;
+        private Boolean isDeleted;
+    }
 
     @Getter
     @Builder
@@ -38,4 +51,5 @@ public class FavouriteSpotResponse {
         private String address3;
         private String address4;
     }
+
 }
