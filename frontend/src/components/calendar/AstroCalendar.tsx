@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { useAstroEventList } from "@apis/endpoints/calendar/hooks/useAstroEventList";
 import { AstroEventsDummy } from '@dummy/astroEventsDummy'
 import Calendar from 'react-calendar'
@@ -12,27 +12,35 @@ type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
 
 const AstroCalendar = () => {
-  const [value, onChange] = useState<Value>(new Date())
-  const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
-  const [monthlyTip, setMonthlyTip] = useState<any | null>(null)
-
+  const [value, onChange] = useState<Value>(new Date());
+  const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
+  const [monthlyTip, setMonthlyTip] = useState<any | null>(null);
+  const [isDateSelected, setIsDateSelected] = useState(false);
+  const [formattedDate, setFormattedDate] = useState<string | null>(null);
+  
   const handleClick = (value: Date) => {
-    const localeString = value.toLocaleDateString('ko-KR')
-    const parts = localeString.split('.').map((part) => part.trim())
-    const year = parts[0]
-    const month = parts[1].padStart(2, '0')
-    const day = parts[2].padStart(2, '0')
-    const formattedDate = `${year}${month}${day}`
+    setIsDateSelected(true);
+
+    const localeString = value.toLocaleDateString('ko-KR');
+    const parts = localeString.split('.').map(part => part.trim());
+    const year = parts[0];
+    const month = parts[1].padStart(2, '0'); 
+    const day = parts[2].padStart(2, '0');   
+    const formattedDate = `${year}${month}${day}`;
+
+    setFormattedDate(formattedDate)
 
     const currentMonth = formattedDate.slice(0, 6)
     const events = AstroEventsDummy[currentMonth] || []
-    const eventForDate = events.find((event) => event.locdate === formattedDate)
+    const eventForDate = events.filter((event) => event.locdate === formattedDate)
 
-    setSelectedEvent(eventForDate || null)
+    setSelectedEvent(eventForDate.length > 0 ? eventForDate : null)
   }
 
   const handleMonthChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
-    if (!activeStartDate) return
+    if (!activeStartDate) return;
+
+    setIsDateSelected(false);
 
     const year = activeStartDate.getFullYear()
     const month = (activeStartDate.getMonth() + 1).toString().padStart(2, '0')
@@ -82,6 +90,11 @@ const AstroCalendar = () => {
     return null
   }
 
+  useEffect(() => {
+    const currentDate = new Date();
+    handleMonthChange({ activeStartDate: currentDate });
+  }, []);
+
   return (
     <div>
       <Calendar
@@ -100,12 +113,14 @@ const AstroCalendar = () => {
         onActiveStartDateChange={handleMonthChange}
       />
       {monthlyTip && (
-        <div className='monthly-tip'>
-          <h3>Monthly Tip</h3>
-          <p>{monthlyTip.astroEvent}</p>
+        <div className="w-full h-full min-h-[calc(100vh-590px)] bg-bg-800 flex flex-col justify-center items-center py-4 px-6 gap-4 rounded-t-2xl">
+          <div className='flex flex-col items-center gap-2 px-4'>
+            <span className='font-medium text-md font-paperlogy'>{monthlyTip.locdate.slice(4, 6)}월의 천문 정보</span>
+            <p className='font-normal text-sm text-text-secondary'>{monthlyTip.astroEvent}</p>
+          </div>
+          <AstroEventDetail day={formattedDate} event={selectedEvent} isDateSelected={isDateSelected} />
         </div>
       )}
-      <AstroEventDetail event={selectedEvent} />
     </div>
   )
 }

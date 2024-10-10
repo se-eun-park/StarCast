@@ -41,5 +41,9 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000,
+    hmr: {
+      protocol: 'wss', // WebSocket Secure 사용
+      host: 'j11a609.p.ssafy.io', // 실제 서버 도메인
+    },
   },
 })

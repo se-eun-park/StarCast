@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter, RouteObject } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter, RouteObject, Navigate } from 'react-router-dom'
 import NotFoundPage from '@pages/NotFoundPage'
 import LoginPage from '@pages/LoginPage'
 import HomePage from '@pages/HomePage'
@@ -25,6 +25,10 @@ const Router = () => {
       element: <Layout />,
       errorElement: <NotFoundPage />,
       children: [
+        {
+          index: true,
+          element: <Navigate to='/login' />, // 기본 경로로 /login으로 리디렉션
+        },
         {
           path: 'login',
           element: <LoginPage />,
