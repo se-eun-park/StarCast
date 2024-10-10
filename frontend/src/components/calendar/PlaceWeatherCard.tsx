@@ -102,7 +102,7 @@ const PlaceWeatherCard = ({
     <>
       <button
         onClick={handleOnClickToggleButton}
-        className={`w-[20.5rem] relative h-[7.5rem] bg-bg-700 py-4 px-5 ${istoggled ? 'rounded-t-2xl' : 'rounded-2xl delay-200 transition-all'}`}
+        className={`w-full max-w-96 relative h-[7.5rem] bg-bg-700 py-4 px-5 ${istoggled ? 'rounded-t-2xl' : 'rounded-2xl delay-200 transition-all mb-3'}`}
       >
         <div className='flex items-center justify-between'>
           <div className='flex items-center'>
@@ -140,7 +140,7 @@ const PlaceWeatherCard = ({
 
       {/* 확장 화면 */}
       <div
-        className={`w-[20.5rem] ${istoggled ? 'h-[18.125rem]' : 'h-0'} bg-bg-700 rounded-b-2xl duration-300 transition-height flex felx-col justify-center relative`}
+        className={`w-full max-w-96 ${istoggled ? 'h-[18.125rem] mb-3' : 'h-0'} bg-bg-700 rounded-b-2xl duration-300 transition-height flex felx-col justify-center relative`}
       >
         <div
           className={`absolute top-5 grid grid-cols-6 gap-x-1.5 transition-all duration-300 ease-out ${istoggled ? 'opacity-100' : 'opacity-0 scale-95 pointer-events-none'}`}
@@ -223,7 +223,7 @@ const PlaceWeatherCard = ({
           />
         </div>
         <div
-          className={`w-[20.5rem] ${istoggled ? 'h-[18.125rem]' : 'h-0'} bg-black bg-opacity-20 rounded-b-2xl transition-all`}
+          className={`w-full max-w-96 ${istoggled ? 'h-[18.125rem]' : 'h-0'} bg-black bg-opacity-20 rounded-b-2xl transition-all`}
         />
       </div>
       {isReserved && (

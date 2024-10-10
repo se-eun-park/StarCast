@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter, RouteObject } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter, RouteObject, Navigate } from 'react-router-dom'
 import NotFoundPage from '@pages/NotFoundPage'
 import LoginPage from '@pages/LoginPage'
 import HomePage from '@pages/HomePage'
@@ -16,6 +16,8 @@ import ReviewDetailPage from '@pages/review/ReviewDetailPage'
 import ReviewDetailLayout from '@components/layout/ReviewDetailLayout'
 import CreateReviewPage from '@pages/review/CreateReviewPage'
 import NotificationPage from '@pages/NotificationPage'
+import SignupPage from '@pages/SignupPage'
+import RedirectPage from '@pages/RedirectPage'
 
 const Router = () => {
   const routes: RouteObject[] = [
@@ -25,8 +27,16 @@ const Router = () => {
       errorElement: <NotFoundPage />,
       children: [
         {
+          index: true,
+          element: <Navigate to='/login' />,
+        },
+        {
           path: 'login',
           element: <LoginPage />,
+        },
+        {
+          path: 'signup',
+          element: <SignupPage />,
         },
         {
           path: 'home',
@@ -43,6 +53,10 @@ const Router = () => {
         {
           path: 'notification',
           element: <NotificationPage />,
+        },
+        {
+          path: 'redirect',
+          element: <RedirectPage />,
         },
         {
           path: 'review',

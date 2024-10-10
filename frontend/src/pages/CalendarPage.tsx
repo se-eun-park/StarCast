@@ -66,7 +66,7 @@ export default function CalendarPage() {
         </button>
       </div>
       {activeTab === 'week' && (
-        <div>
+        <div className='w-full flex flex-col items-center'>
           <div
             className={`sticky z-20 top-[104px] w-full max-w-[600px] flex items-center justify-center py-4 space-x-2 rounded-b-2xl bg-gradient900to800`}
           >
@@ -82,35 +82,35 @@ export default function CalendarPage() {
               </button>
             ))}
           </div>
-          <PlaceWeatherCard
-            idx={0}
-            place_uid={PlaceWeatherCardDummyData.myGPS.place_uid}
-            details={PlaceWeatherCardDummyData.myGPS.details}
-            weatherOfTheNight={PlaceWeatherCardDummyData.myGPS.weatherOfTheNight}
-            best={PlaceWeatherCardDummyData.myGPS.best}
-            moonSetTime={PlaceWeatherCardDummyData.myGPS.moonSetTime}
-            isPlanned={PlaceWeatherCardDummyData.myGPS.isPlanned}
-          />
-          <br />
-          <PlaceWeatherCard
-            idx={1}
-            place_uid={PlaceWeatherCardDummyData.myPlace.place_uid}
-            details={PlaceWeatherCardDummyData.myPlace.details}
-            weatherOfTheNight={PlaceWeatherCardDummyData.myPlace.weatherOfTheNight}
-            best={PlaceWeatherCardDummyData.myPlace.best}
-            moonSetTime={PlaceWeatherCardDummyData.myPlace.moonSetTime}
-            isPlanned={PlaceWeatherCardDummyData.myPlace.isPlanned}
-          />
-          <br />
-          <PlaceWeatherCard
-            idx={2}
-            place_uid={PlaceWeatherCardDummyData.favoritePlaces[0].place_uid}
-            details={PlaceWeatherCardDummyData.favoritePlaces[0].details}
-            weatherOfTheNight={PlaceWeatherCardDummyData.favoritePlaces[0].weatherOfTheNight}
-            best={PlaceWeatherCardDummyData.favoritePlaces[0].best}
-            moonSetTime={PlaceWeatherCardDummyData.favoritePlaces[0].moonSetTime}
-            isPlanned={PlaceWeatherCardDummyData.favoritePlaces[0].isPlanned}
-          />
+          <div className='w-full flex flex-col items-center py-4'>
+            <PlaceWeatherCard
+              idx={0}
+              place_uid={PlaceWeatherCardDummyData.myGPS.place_uid}
+              details={PlaceWeatherCardDummyData.myGPS.details}
+              weatherOfTheNight={PlaceWeatherCardDummyData.myGPS.weatherOfTheNight}
+              best={PlaceWeatherCardDummyData.myGPS.best}
+              moonSetTime={PlaceWeatherCardDummyData.myGPS.moonSetTime}
+              isPlanned={PlaceWeatherCardDummyData.myGPS.isPlanned}
+            />
+            <PlaceWeatherCard
+              idx={1}
+              place_uid={PlaceWeatherCardDummyData.myPlace.place_uid}
+              details={PlaceWeatherCardDummyData.myPlace.details}
+              weatherOfTheNight={PlaceWeatherCardDummyData.myPlace.weatherOfTheNight}
+              best={PlaceWeatherCardDummyData.myPlace.best}
+              moonSetTime={PlaceWeatherCardDummyData.myPlace.moonSetTime}
+              isPlanned={PlaceWeatherCardDummyData.myPlace.isPlanned}
+            />
+            <PlaceWeatherCard
+              idx={2}
+              place_uid={PlaceWeatherCardDummyData.favoritePlaces[0].place_uid}
+              details={PlaceWeatherCardDummyData.favoritePlaces[0].details}
+              weatherOfTheNight={PlaceWeatherCardDummyData.favoritePlaces[0].weatherOfTheNight}
+              best={PlaceWeatherCardDummyData.favoritePlaces[0].best}
+              moonSetTime={PlaceWeatherCardDummyData.favoritePlaces[0].moonSetTime}
+              isPlanned={PlaceWeatherCardDummyData.favoritePlaces[0].isPlanned}
+            />
+          </div>
         </div>
       )}
       {activeTab === 'month' && <AstroCalendar />}

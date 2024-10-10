@@ -88,7 +88,7 @@
     @apply w-full px-6 py-2.5 rounded-full bg-btn-secondary-bg text-btn-tertiary-text text-md font-paperlogy font-semibold;
   }
   .btn-outlined-full {
-    @apply w-full px-6 py-2.5 rounded-full border-1 border-solid border-primary text-btn-outlined-text text-md font-paperlogy font-semibold;
+    @apply w-full px-6 py-2.5 rounded-full border border-solid border-primary text-btn-outlined-text text-md font-paperlogy font-semibold;
   }
   .btn-disabled-full {
     @apply w-full px-6 py-2.5 rounded-full bg-btn-disabled-bg text-btn-disabled-text text-md font-paperlogy font-semibold;
