@@ -16,6 +16,7 @@ const AstroCalendar = () => {
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [monthlyTip, setMonthlyTip] = useState<any | null>(null);
   const [isDateSelected, setIsDateSelected] = useState(false);
+  const [formattedDate, setFormattedDate] = useState<string | null>(null);
   
   const handleClick = (value: Date) => {
     setIsDateSelected(true);
@@ -27,11 +28,13 @@ const AstroCalendar = () => {
     const day = parts[2].padStart(2, '0');   
     const formattedDate = `${year}${month}${day}`;
 
+    setFormattedDate(formattedDate)
+
     const currentMonth = formattedDate.slice(0, 6)
     const events = AstroEventsDummy[currentMonth] || []
-    const eventForDate = events.find((event) => event.locdate === formattedDate)
+    const eventForDate = events.filter((event) => event.locdate === formattedDate)
 
-    setSelectedEvent(eventForDate || null)
+    setSelectedEvent(eventForDate.length > 0 ? eventForDate : null)
   }
 
   const handleMonthChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
@@ -110,10 +113,12 @@ const AstroCalendar = () => {
         onActiveStartDateChange={handleMonthChange}
       />
       {monthlyTip && (
-        <div className="w-full h-full min-h-full bg-bg-800 flex flex-col justify-center items-center py-4 px-6 gap-2 rounded-t-2xl">
-          <span className='font-medium text-md font-paperlogy'>{monthlyTip.locdate.slice(4, 6)}월의 천문 정보</span>
-          <p className='font-normal text-sm text-text-secondary'>{monthlyTip.astroEvent}</p>
-          <AstroEventDetail event={selectedEvent} isDateSelected={isDateSelected} />
+        <div className="w-full h-full min-h-[calc(100vh-590px)] bg-bg-800 flex flex-col justify-center items-center py-4 px-6 gap-4 rounded-t-2xl">
+          <div className='flex flex-col items-center gap-2 px-4'>
+            <span className='font-medium text-md font-paperlogy'>{monthlyTip.locdate.slice(4, 6)}월의 천문 정보</span>
+            <p className='font-normal text-sm text-text-secondary'>{monthlyTip.astroEvent}</p>
+          </div>
+          <AstroEventDetail day={formattedDate} event={selectedEvent} isDateSelected={isDateSelected} />
         </div>
       )}
     </div>
