@@ -216,66 +216,56 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     public void updateCommunity(String profileUid, String communityUid, UpdateCommunityRequest request) {
-//        log.info("[관측후기 글 수정 API] communityUid: {}", communityUid);
-//
-//        log.info("[관측후기 글 수정 API] 1. communityUid로 커뮤니티 조회");
-//        Community community = communityRepository.findById(communityUid)
-//                .orElseThrow(() -> new EntityNotFoundException("해당 커뮤니티를 찾을 수 없습니다."));
-//
-//        log.info("[관측후기 글 수정 API] 2. 작성자 확인");
-//        if (!community.getProfile().getProfileUid().equals(profileUid)) {
-//            throw new IllegalArgumentException("작성자만 글을 수정할 수 있습니다.");
-//        }
-//
-//        log.info("[관측후기 글 수정 API] 3. 커뮤니티 수정");
-//        log.info("[관측후기 글 수정 API] 3-1. 제목이 변경된 경우");
-//        if (request.getTitle() != null) {
-//            community.setTitle(request.getTitle());
-//        }
-//
-//        log.info("[관측후기 글 수정 API] 3-2. 내용이 변경된 경우");
-//        if (request.getContent() != null) {
-//            community.setContent(request.getContent());
-//        }
-//
-//        log.info("[관측후기 글 수정 API] 3-3. 장소가 변경된 경우");
-//        if (request.getPlace() != null) {
-//            Place newPlace = placeRepository.findById(request.getPlace().getPlaceUid())
-//                    .orElseThrow(() -> new EntityNotFoundException("해당 장소를 찾을 수 없습니다."));
-//            community.setPlace(newPlace);
-//        }
-//
-//        // 4. 이미지 업데이트
-//        log.info("[관측후기 글 수정 API] 4. 이미지 업데이트");
-//        if (request.getImages() != null && !request.getImages().isEmpty()) {
-//            log.info("[관측후기 글 수정 API] 4-1. 기존 이미지 삭제 처리");
-//            community.getCommunityImages().forEach(image -> image.setIsDeleted(true));
-//
-//            // 이미지가 실제로 삭제된 상태를 반영하여 저장
-//            communityRepository.saveAndFlush(community); // flush 호출하여 커뮤니티 저장
-//
-//            log.info("[관측후기 글 수정 API] 4-2. 새로운 이미지 추가");
-//            int imageSeq = 1;
-//            for (String imageUrl : request.getImages()) {
-//                CommunityImage newImage = CommunityImage.builder()
-//                        .imageUid(UUID.randomUUID().toString())
-//                        .community(community)
-//                        .url(imageUrl)
-//                        .imageSeq(imageSeq++)
-//                        .isDeleted(false)
-//                        .build();
-//                community.addCommunityImage(newImage);
-//            }
-//
-//            // 이미지 추가 후 다시 저장
-//            communityRepository.saveAndFlush(community);
-//        }
-//
-//        // 5. 커뮤니티 최종 저장
-//        log.info("[관측후기 글 수정 API] 5. 최종 저장");
-//        communityRepository.save(community);
-//
-//        log.info("[관측후기 글 수정 API] communityUid: {} 수정 완료", communityUid);
+        log.info("[관측후기 글 수정 API] communityUid: {}", communityUid);
+
+        log.info("[관측후기 글 수정 API] 1. communityUid로 커뮤니티 조회");
+        Community community = communityRepository.findById(communityUid)
+                .orElseThrow(() -> new EntityNotFoundException("해당 커뮤니티를 찾을 수 없습니다."));
+
+        log.info("[관측후기 글 수정 API] 2. 작성자 확인");
+        if (!community.getProfile().getProfileUid().equals(profileUid)) {
+            throw new IllegalArgumentException("작성자만 글을 수정할 수 있습니다.");
+        }
+
+        log.info("[관측후기 글 수정 API] 3. 커뮤니티 수정");
+        log.info("[관측후기 글 수정 API] 3-1. 제목이 변경된 경우");
+        if (request.getTitle() != null) {
+            community.setTitle(request.getTitle());
+        }
+
+        log.info("[관측후기 글 수정 API] 3-2. 내용이 변경된 경우");
+        if (request.getContent() != null) {
+            community.setContent(request.getContent());
+        }
+
+        log.info("[관측후기 글 수정 API] 3-3. 장소가 변경된 경우");
+        if (request.getPlace() != null) {
+            Place newPlace = placeRepository.findById(request.getPlace().getPlaceUid())
+                    .orElseThrow(() -> new EntityNotFoundException("해당 장소를 찾을 수 없습니다."));
+            community.setPlace(newPlace);
+        }
+
+        // 4. 이미지 업데이트
+        log.info("[관측후기 글 수정 API] 4. 이미지 업데이트");
+        if (request.getImages() != null && !request.getImages().isEmpty()) {
+            log.info("[관측후기 글 수정 API] 4-1. 기존 이미지 삭제 처리");
+            community.getCommunityImages().forEach(image -> image.setIsDeleted(true)); // 기존 이미지를 모두 삭제 처리
+
+            log.info("[관측후기 글 수정 API] 4-2. 새로운 이미지 추가");
+            int imageSeq = 1;
+            for (String imageUrl : request.getImages()) {
+                CommunityImage newImage = CommunityImage.builder()
+                        .imageUid(UUID.randomUUID().toString())
+                        .community(community)
+                        .url(imageUrl)
+                        .imageSeq(imageSeq++)
+                        .isDeleted(false)
+                        .build();
+                communityImageRepository.save(newImage);
+            }
+        }
+        log.info("[관측후기 글 수정 API] 5. 커뮤니티 저장");
+        communityRepository.save(community);
     }
 
     @Override
