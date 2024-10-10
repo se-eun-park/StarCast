@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react'
 import { useKakaoAddressQuery } from '@apis/endpoints/place/hooks/quries/PlaceApi'
 
 const LocationSettingPage = () => {
-  const [address, setAddress] = useState('서울 강남구 압구정동')
+  const [address, setAddress] = useState('')
   const [search, setSearch] = useState('')
   const [debounceElement, setDebounceElement] = useState('')
-  const [isSearching, setIsSearching] = useState(true)
+  const [isSearching, setIsSearching] = useState(false)
 
   const { data: kakaoAddress } = useKakaoAddressQuery(debounceElement)
 

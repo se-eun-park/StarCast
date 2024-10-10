@@ -1,4 +1,3 @@
-import SvgDefaultControllerProfileIcon from '@assets/svg/DefaultControllerProfileIcon'
 import SvgNotificationActiveIcon from '@assets/svg/NotificationActiveIcon'
 import SvgNotificationInactiveIcon from '@assets/svg/NotificationInactiveIcon'
 import { useWelcomeMessage } from '@hooks/useWelcomeMessage'
