@@ -22,7 +22,7 @@ export default function CreateReviewPage() {
     }
 
     createReview({
-      author: 'Anonymous',
+      author: '즐거운캐스타당근도둑',
       content,
       addressSummary: location,
       mainImage: images[0],

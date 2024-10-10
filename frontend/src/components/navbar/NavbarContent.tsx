@@ -1,7 +1,9 @@
 import { pathToNavContent } from '@constants/navigationContent'
+import { useNotificationStore } from '@stores/useNotification.ts'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function NavbarContent() {
+  const setIsReadAll = useNotificationStore((state) => state.setIsReadAll)
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const exactNavContent = pathToNavContent[pathname]
@@ -15,7 +17,9 @@ export default function NavbarContent() {
           onClick={() => navigate(exactNavContent.navigate ?? '')}
         />
       ) : exactNavContent?.text ? (
-        <div className='text-xs text-white cursor-pointer'>{exactNavContent.text}</div>
+        <div className='text-xs text-white cursor-pointer' onClick={() => setIsReadAll(true)}>
+          {exactNavContent.text}
+        </div>
       ) : (
         <div className='w-9' />
       )}

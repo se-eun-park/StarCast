@@ -1,9 +1,7 @@
+import NoContent from '@components/common/NoContent.tsx'
+
 const ObservingSpotPage = () => {
-  return (
-    <div>
-      <h1>관측스팟 페이지</h1>
-    </div>
-  )
+  return <NoContent label='아직 제공하지 않는 기능입니다.' />
 }
 
 export default ObservingSpotPage
