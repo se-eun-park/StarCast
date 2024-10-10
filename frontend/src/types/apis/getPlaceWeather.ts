@@ -23,6 +23,7 @@ type IsPlanned = {
 }
 
 export type GetPlaceWeatherResponse = {
+  idx: number
   place_uid: string
   details: string
   weatherOfTheNight: WeatherOfTheNight
