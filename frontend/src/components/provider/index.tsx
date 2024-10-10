@@ -27,7 +27,7 @@ const Provider = ({ children }: PropsWithChildren) => {
   return (
     <QueryClientProvider client={queryClient}>
       <CookiesProvider>{children}</CookiesProvider>
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }
