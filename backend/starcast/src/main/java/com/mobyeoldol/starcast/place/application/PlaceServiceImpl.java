@@ -367,7 +367,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .orElseThrow(() -> new IllegalArgumentException("[메인 장소 유형 업데이트 API] 1-1. 해당 프로필 정보를 찾을 수 없습니다."));
 
         log.info("[메인 장소 유형 업데이트 API] 2. 메인 클릭한 장소 유형 업데이트");
-        profile.setActionPlaceType(mainPlace.name());
+        profile.setActionPlaceType(MainPlace.valueOf(mainPlace.name()));
         profileRepository.save(profile);
     }
 

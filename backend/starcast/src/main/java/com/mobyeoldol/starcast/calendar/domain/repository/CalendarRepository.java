@@ -10,3 +10,4 @@ import java.util.List;
 public interface CalendarRepository extends JpaRepository<CelestialEvents, String> {
     List<CelestialEvents> findByCelestialEventUidStartingWith(String yearMonth);
 }
+

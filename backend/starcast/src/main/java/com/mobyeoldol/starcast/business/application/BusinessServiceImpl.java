@@ -159,8 +159,6 @@ public class BusinessServiceImpl implements BusinessService {
         }
     }
 
-
-
     private WeatherStatus getCloudCoverage(String placeUid, LocalDate date) {
         String forecastUid = date.format(DateTimeFormatter.ofPattern("yyyy_MM_dd"))+"_"+placeUid;
         log.info("1. forecastUid : {} [getCloudCoverage]", forecastUid);

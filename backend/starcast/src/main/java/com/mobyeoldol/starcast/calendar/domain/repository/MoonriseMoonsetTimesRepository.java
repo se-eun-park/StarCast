@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface MoonriseMoonsetTimesRepository extends JpaRepository<MoonriseMoonsetTimes, String> {
     Optional<MoonriseMoonsetTimes> findByMoonRiseSetTimeUid(String moonRiseSetTimeUid);
+    Optional<MoonriseMoonsetTimes> findByMoonRiseSetTimeUidAndPlace_PlaceUid(String moonRiseSetTimeUid, String placeUid);
 }

@@ -10,6 +10,7 @@ import com.mobyeoldol.starcast.notice.domain.Notice;
 import com.mobyeoldol.starcast.place.domain.FavouriteSpot;
 import com.mobyeoldol.starcast.place.domain.MySpot;
 import com.mobyeoldol.starcast.place.domain.Plan;
+import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -56,8 +57,9 @@ public class Profile extends BaseTimeEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "action_place_type")
-    private String actionPlaceType;
+    private MainPlace actionPlaceType;
 
     @Builder.Default
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
