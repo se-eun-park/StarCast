@@ -34,6 +34,7 @@ kakao:
     uri:
       login: ${KAKAO_REDIRECT_URI_LOGIN}
       logout: ${KAKAO_REDIRECT_URI_LOGOUT}
+      client: ${KAKAO_REDIRECT_URI_CLIENT}
   response:
     type: ${KAKAO_RESPONSE_TYPE}
   grant:
