@@ -19,4 +19,8 @@ public interface PlaceRepository extends JpaRepository<Place, String> {
 
     @Query("SELECT COUNT(c) FROM Community c WHERE c.place = :place")
     int countCommunitiesByPlace(@Param("place") Place place);
+
+    @Query("SELECT p FROM Place p WHERE " +
+            "p.address1 LIKE %:keyword% OR p.address2 LIKE %:keyword% OR p.address3 LIKE %:keyword% OR p.address4 LIKE %:keyword%")
+    List<Place> findByAddressContaining(@Param("keyword") String keyword);
 }

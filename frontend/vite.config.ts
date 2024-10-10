@@ -12,7 +12,13 @@ export default defineConfig({
         icon: true,
       },
     }),
-    VitePWA({ registerType: 'autoUpdate', injectRegister: 'auto' }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      workbox: {
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      },
+    }),
   ],
   resolve: {
     alias: [

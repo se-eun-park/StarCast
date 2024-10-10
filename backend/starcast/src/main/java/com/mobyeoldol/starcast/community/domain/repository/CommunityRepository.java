@@ -1,6 +1,7 @@
 package com.mobyeoldol.starcast.community.domain.repository;
 
 import com.mobyeoldol.starcast.community.domain.Community;
+import com.mobyeoldol.starcast.place.domain.enums.ReactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,10 @@ public interface CommunityRepository extends JpaRepository<Community, String> {
 
     List<Community> findByPlace_PlaceUid(String placeUid);
     int countByPlace_PlaceUid(String placeUid);
+
+    List<Community> findByIsDeletedFalseOrderByCreatedDateDesc();
+
+    @Query("SELECT c FROM Community c JOIN c.reactions r WHERE r.reactionType = :reactionType GROUP BY c ORDER BY COUNT(r) DESC")
+    List<Community> findTopByReactionType(@Param("reactionType") ReactionType reactionType);
+
 }

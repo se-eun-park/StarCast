@@ -14,7 +14,7 @@ public interface CommunityService {
 
     CommunityListResponse getCommunityList(GetCommunityListRequest request);
 
-    CommunityDetailsResponse getCommunityDetails(String communityUid);
+    CommunityDetailsResponse getCommunityDetails(String profileUid, String communityUid);
 
     void updateCommunity(String profileUid, String communityUid, UpdateCommunityRequest request);
 
