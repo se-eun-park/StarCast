@@ -16,12 +16,15 @@ import {
 import RadioGroup from '@components/common/RadioGroup'
 import Radio from '@components/common/Radio'
 import { useMemo, useState } from 'react'
+import useMyProfile from '@stores/useMyProfile'
 
 type TierAvatarSelectorProps = {
   tier: string
 }
 
 const TierAvatarSelector = ({ tier }: TierAvatarSelectorProps) => {
+  const setMyProfile = useMyProfile((state) => state.setMyProfile)
+
   const [isChecked, setIsChecked] = useState(false)
   const [numTier, setNumTier] = useState(0)
 
@@ -29,7 +32,7 @@ const TierAvatarSelector = ({ tier }: TierAvatarSelectorProps) => {
     e.preventDefault()
     const target = e.target as HTMLFormElement
 
-    console.log(target.tier.value)
+    setMyProfile(target.tier.value)
   }
 
   const handleOnChange = () => {

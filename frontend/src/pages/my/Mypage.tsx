@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { BRONZE_2 } from '@assets/svg/profile'
 import { EditIcon } from '@assets/svg/home'
 import { ArrowIcon } from '@assets/svg/calendar'
+import useMyProfile from '@stores/useMyProfile'
 
 const Mypage = () => {
+  const myProfile = useMyProfile((state) => state.myProfile)
+
   const [isActive, setIsActive] = useState(false)
 
   const handleActive = () => {
@@ -15,7 +17,7 @@ const Mypage = () => {
     <div className='w-full h-[calc(100dvh-56px)] flex flex-col items-center bg-bg-900 pb-20'>
       <div className='flex flex-col items-center w-full pt-2 h-fit bg-gradient900to800 rounded-b-2xl'>
         <div className='flex relative items-center justify-center w-[4.25rem] h-[4.25rem] rounded-full bg-bg-50/50'>
-          <BRONZE_2 className='w-[3.75rem]' />
+          <img src={`/public/svg/profile/${myProfile}.svg`} alt='현재 프로필 이미지' />
           <NavLink
             to='/mypage/profile'
             className='absolute bottom-0 right-0 flex items-center justify-center w-6 h-6 rounded-full bg-bg-50'

@@ -3,8 +3,14 @@ import { gaugeIconPathD } from '@constants/gaugeIconPathD'
 import useModal from '@hooks/useModal'
 import CastaScoreInfoModal from '@modal/home/CastaScoreInfoModal'
 
-const CastaScoreGauge = () => {
+type CastaScoreGaugeProps = {
+  status: string
+}
+
+const CastaScoreGauge = ({ status }: CastaScoreGaugeProps) => {
   const { Modal, open, close } = useModal()
+
+  const score = 23
 
   return (
     <>
@@ -12,13 +18,16 @@ const CastaScoreGauge = () => {
         <div className='flex items-center justify-center'>
           <GaugeIcon className='relative w-[6.25rem] opacity-30 z-0' d={gaugeIconPathD[100]} />
           <GaugeIcon
-            className='absolute w-[6.25rem] fill-comp1-light z-10'
-            d={gaugeIconPathD[82]}
+            className={`absolute w-[6.25rem] z-10 ${status === '좋음' ? 'fill-comp1-light' : status === '보통' ? 'fill-primary-light' : 'fill-comp2-light'}`}
+            d={gaugeIconPathD[score]}
           />
           <div className='absolute flex flex-col top-7'>
-            <p className='text-xs text-center text-text-secondary'>22시</p>
-            <p className='text-3xl font-semibold leading-6 text-center text-comp1-light'>
-              82<span className='text-sm font-normal'>점</span>
+            <p className='text-xs text-center text-text-secondary'>01시</p>
+            <p
+              className={`text-3xl font-semibold leading-6 text-center ${status === '좋음' ? 'text-comp1-light' : status === '보통' ? 'text-primary-light' : 'text-comp2-light'}`}
+            >
+              {score}
+              <span className='text-sm font-normal'>점</span>
             </p>
           </div>
         </div>
@@ -28,8 +37,10 @@ const CastaScoreGauge = () => {
         </div>
         <button onClick={open} className='flex items-center pl-5'>
           <p className='text-sm font-semibold text-center text-text-tertiary'>캐스타점수</p>
-          <p className='pb-1 mx-1 text-xl font-medium text-center font-paperlogy text-comp1-light'>
-            좋음
+          <p
+            className={`pb-1 mx-1 text-xl font-medium text-center font-paperlogy ${status === '좋음' ? 'text-comp1-light' : status === '보통' ? 'text-primary-light' : 'text-comp2-light'}`}
+          >
+            나쁨
           </p>
           <HelpIcon className='w-4' />
         </button>

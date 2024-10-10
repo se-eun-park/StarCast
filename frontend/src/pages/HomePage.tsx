@@ -12,12 +12,12 @@ const HomePage = () => {
   return (
     <div className='relative w-full h-full overflow-hidden overflow-y-auto scrollbar-hide'>
       <TopbarController />
-      <SkyBackground />
+      <SkyBackground status='나쁨' />
       <div className='mb-20 mt-80'>
         <HomeContentsLayout>
           <div className='relative flex items-end justify-center mr-5 space-x-2 -top-4'>
-            <CastaScoreGauge />
-            <CastaScoreReaction status='좋음' />
+            <CastaScoreGauge status='나쁨' />
+            <CastaScoreReaction status='나쁨' />
           </div>
           <div className='w-full h-full px-12 py-4 bg-gradient900to800 rounded-3xl'>
             <AstronomyInfoWidget
@@ -26,7 +26,7 @@ const HomePage = () => {
               textAlign='text-center'
               details='역삼동'
               hour='22'
-              cloudCoverage={1}
+              cloudCoverage={2}
               lightPollution={1}
               moonPhase={2}
               precipitation={0}
