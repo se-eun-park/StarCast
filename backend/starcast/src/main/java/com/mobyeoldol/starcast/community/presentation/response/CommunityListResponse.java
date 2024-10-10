@@ -19,7 +19,7 @@ public class CommunityListResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    static class Communtiy {
+    public static class Communtiy {
         private String communityUid;
         private String mainImage;
         private String title;
@@ -33,7 +33,7 @@ public class CommunityListResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    static class Author {
+    public static class Author {
         private String profileUid;
         private String nickname;
         private CastarImage profileImage;
@@ -44,7 +44,7 @@ public class CommunityListResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    static class Place {
+    public static class Place {
         private String placeUid;
         private String addressSummary;
     }

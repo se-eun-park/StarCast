@@ -5,15 +5,14 @@ import com.mobyeoldol.starcast.member.domain.Profile;
 import com.mobyeoldol.starcast.place.domain.Place;
 import com.mobyeoldol.starcast.place.domain.Plan;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -44,6 +43,9 @@ public class Community extends BaseTimeEntity {
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reaction> reactions = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "community")

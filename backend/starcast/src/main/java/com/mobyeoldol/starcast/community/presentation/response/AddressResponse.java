@@ -12,7 +12,12 @@ import java.util.List;
 public class AddressResponse {
     List<Address> addressList;
 
-    static class Address {
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Address {
         private String placeUid;
         private String address1;
         private String address2;
