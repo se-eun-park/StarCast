@@ -1,32 +1,12 @@
-import DefaultReviewImage1 from '@assets/image/default-review-image1.jpg'
-import DefaultReviewImage2 from '@assets/image/default-review-image2.jpg'
-import DefaultReviewImage3 from '@assets/image/default-review-image3.jpg'
-
-const trendReviews = [
-  {
-    id: 1,
-    image: DefaultReviewImage1,
-    title: '캐스타와 함께한 은하수 여행',
-    author: '캐스타들고중량스쿼트',
-    date: '2024.09.29',
-  },
-  {
-    id: 2,
-    image: DefaultReviewImage2,
-    title: '캐스타와 함께한 은하수 여행캐스타와 함께한 은하수 여행캐스타와 함께한 은하수 여행',
-    author: '캐스타들고중량스쿼트',
-    date: '2024.09.29',
-  },
-  {
-    id: 3,
-    image: DefaultReviewImage3,
-    title: '캐스타와 함께한 은하수 여행',
-    author: '캐스타들고중량스쿼트',
-    date: '2024.09.29',
-  },
-]
+import NoContent from '@components/common/NoContent'
+import { useReviewStore } from '@stores/useReviewStore'
+import { useNavigate } from 'react-router-dom'
 
 const MyObservationReviewsPage = () => {
+  const navigate = useNavigate()
+  const reviews = useReviewStore((state) => state.reviews)
+  const myReviews = reviews.filter((review) => review.author === '즐거운캐스타당근도둑')
+
   return (
     <div className='h-[calc(100dvh-56px)] w-full bg-bg-900 flex flex-col items-center'>
       <div className='flex flex-col w-full px-6 py-4 border-b border-bg-50/30'>
@@ -37,10 +17,14 @@ const MyObservationReviewsPage = () => {
       </div>
 
       <div className='flex flex-col gap-4 px-6 py-4 overflow-y-auto scrollbar-hide'>
-        {trendReviews.map((review) => (
-          <div key={review.id} className='w-full'>
+        {myReviews.map((review) => (
+          <div
+            key={review.id}
+            className='w-full cursor-pointer'
+            onClick={() => navigate('/review/' + review.id)}
+          >
             <img
-              src={review.image}
+              src={review.mainImage}
               className='w-full aspect-[5/2] object-cover object-center rounded-lg'
             />
             <div className='flex flex-col items-start gap-1 px-1 pt-2 pb-5'>
@@ -52,6 +36,7 @@ const MyObservationReviewsPage = () => {
             </div>
           </div>
         ))}
+        {myReviews.length === 0 && <NoContent label='아직 작성한 관측 후기가 없어요!' />}
       </div>
     </div>
   )
