@@ -17,6 +17,7 @@ import ReviewDetailLayout from '@components/layout/ReviewDetailLayout'
 import CreateReviewPage from '@pages/review/CreateReviewPage'
 import NotificationPage from '@pages/NotificationPage'
 import SignupPage from '@pages/SignupPage'
+import RedirectPage from '@pages/RedirectPage'
 
 const Router = () => {
   const routes: RouteObject[] = [
@@ -27,7 +28,7 @@ const Router = () => {
       children: [
         {
           index: true,
-          element: <Navigate to='/login' />, // 기본 경로로 /login으로 리디렉션
+          element: <Navigate to='/login' />,
         },
         {
           path: 'login',
@@ -52,6 +53,10 @@ const Router = () => {
         {
           path: 'notification',
           element: <NotificationPage />,
+        },
+        {
+          path: 'redirect',
+          element: <RedirectPage />,
         },
         {
           path: 'review',
