@@ -16,7 +16,10 @@ public class ChangeReactionRequest {
     @NotNull(message = "리액션 정보는 필수입니다.")
     private Reaction reaction;
 
-    class Reaction {
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Reaction {
         @NotNull(message = "리액션 타입은 필수입니다.")
         private ReactionType type;
         @NotNull(message = "리액션 변경 여부는 필수입니다.")

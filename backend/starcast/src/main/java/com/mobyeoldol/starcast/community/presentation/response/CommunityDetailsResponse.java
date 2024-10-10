@@ -21,18 +21,33 @@ public class CommunityDetailsResponse {
     private Place place;
     private Reaction reaction;
 
-    static class Author {
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Author {
         private String profileUid;
         private String nickname;
         private CastarImage profileImage;
     }
 
-    static class Place {
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Place {
         private String placeUid;
         private String addressSummary;
     }
 
-    static class Reaction {
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Reaction {
         private boolean visitAgain;
         private boolean helpful;
         private boolean nicePhotos;

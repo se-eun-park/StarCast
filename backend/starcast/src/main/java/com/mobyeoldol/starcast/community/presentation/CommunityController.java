@@ -42,7 +42,7 @@ public class CommunityController {
             return ResponseEntity.status(400).body(errorResponse);
         }
 
-        String profileUid = authService.authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";//authService.authenticateMember(bearerToken);
 
         log.info("[관측후기 글 작성 API] Service 로직 수행");
         communityService.createCommunity(profileUid, request);
@@ -60,11 +60,11 @@ public class CommunityController {
         log.info("[관측 후기 전체 조회 API] GET /api/v1/community");
         if (bindingResult.hasErrors()) {
             log.error("[관측 후기 전체 조회 API] 유효성 검사 실패: {}", bindingResult.getFieldError().getDefaultMessage());
-            BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(400, "[관측지 리스트 보기 API] placeType과 sortBy는 필수입니다.");
+            BaseResponseTemplate<?> errorResponse = BaseResponseTemplate.failure(400, "[관측 후기 전체 조회 API] sortType과 option을 확인해주세요.");
             return ResponseEntity.status(400).body(errorResponse);
         }
 
-        String profileUid = authService.authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";//authService.authenticateMember(bearerToken);
 
         log.info("[관측 후기 전체 조회 API] Service 로직 수행");
         CommunityListResponse response = communityService.getCommunityList(request);
@@ -80,10 +80,10 @@ public class CommunityController {
     {
         log.info("[관측 후기 하나 조회 API] GET /api/v1/community/{}", communityUid);
 
-        String profileUid = authService.authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";//authService.authenticateMember(bearerToken);
 
         log.info("[관측 후기 하나 조회 API] Service 로직 수행");
-        CommunityDetailsResponse response = communityService.getCommunityDetails(communityUid);
+        CommunityDetailsResponse response = communityService.getCommunityDetails(profileUid, communityUid);
 
         BaseResponseTemplate<CommunityDetailsResponse> successResponse = BaseResponseTemplate.success(response);
         return ResponseEntity.ok().body(successResponse);
@@ -103,7 +103,7 @@ public class CommunityController {
             return ResponseEntity.status(400).body(errorResponse);
         }
 
-        String profileUid = authService.authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";//authService.authenticateMember(bearerToken);
 
         log.info("[관측후기 글 수정 API] Service 로직 수행");
         communityService.updateCommunity(profileUid, communityUid, request);
@@ -119,7 +119,7 @@ public class CommunityController {
     {
         log.info("[관측후기 글 삭제 API] DELETE /api/v1/community/{}",communityUid);
 
-        String profileUid = authService.authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";//authService.authenticateMember(bearerToken);
 
         log.info("[관측후기 글 삭제 API] Service 로직 수행");
         communityService.deleteCommunity(profileUid, communityUid);
@@ -142,7 +142,7 @@ public class CommunityController {
             return ResponseEntity.status(400).body(errorResponse);
         }
 
-        String profileUid = authService.authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";//authService.authenticateMember(bearerToken);
 
         log.info("[관측후기 글에서 반응 클릭시 등록 or 삭제 API] Service 로직 수행");
         ChangeReactionResponse response = communityService.changeReaction(profileUid, communityUid, request);
@@ -158,7 +158,7 @@ public class CommunityController {
     {
         log.info("[주소 조회 API] GET /api/v1/community?keyword={}", keyword);
 
-        String profileUid = authService.authenticateMember(bearerToken);
+        String profileUid = "profile-uid-01";//authService.authenticateMember(bearerToken);
 
         log.info("[주소 조회 API] Service 로직 수행");
         AddressResponse response = communityService.getAddress(keyword);
