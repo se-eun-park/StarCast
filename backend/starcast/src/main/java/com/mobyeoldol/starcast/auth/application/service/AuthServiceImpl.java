@@ -165,7 +165,7 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public KakaoTokenInfoResponseDto getKakaoId(String accessToken, String refreshToken) {
 
-        log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 1. accessToken으로 kakaoId 가져오기");
+        log.info("1. accessToken으로 kakaoId 가져오기");
         try {
             WebClient webClient = WebClient.create(kakaoApiUri);
             KakaoTokenInfoResponseDto tokenInfo = webClient
@@ -179,28 +179,28 @@ public class AuthServiceImpl implements AuthService{
                     .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                         // 401 에러 시 새 토큰 발급 시도
                         if (clientResponse.statusCode() == HttpStatus.UNAUTHORIZED) {
-                            log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 2-1-1-1. access token 만료");
+                            log.info("2-1-1-1. access token 만료");
                             return Mono.error(new RuntimeException("TokenExpired"));
                         }
-                        log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 2-1-2. 유효하지 않은 매개변수 전달");
+                        log.info("2-1-2. 유효하지 않은 매개변수 전달");
                         return Mono.error(new RuntimeException("Invalid Parameter"));
                     })
                     .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
                     .bodyToMono(KakaoTokenInfoResponseDto.class)
                     .block();
 
-            log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 2-2. 유저 정보 리턴 성공");
+            log.info("2-2. 유저 정보 리턴 성공");
             return tokenInfo;
         } catch (Exception e) {
             if (e.getMessage().equals("TokenExpired")) {
-                log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 2-1-1-2. refreshToken으로 새로운 accessToken 발급");
+                log.info("2-1-1-2. refreshToken으로 새로운 accessToken 발급");
                 String newAccessToken = refreshAccessToken(refreshToken);
 
-                log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 2-1-1-3. 새로운 accessToken으로 사용자 정보 요청 다시 시도");
+                log.info("2-1-1-3. 새로운 accessToken으로 사용자 정보 요청 다시 시도");
                 return getKakaoId(newAccessToken, refreshToken); // 갱신된 토큰으로 다시 시도
             } else {
-                log.info("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 2-1-3. 다른 종류의 4xx에러 발생. error : {}", e.getMessage());
-                throw new IllegalStateException("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] 다른 종류의 4xx에러 발생");
+                log.info("2-1-3. 다른 종류의 4xx에러 발생. error : {}", e.getMessage());
+                throw new IllegalStateException("다른 종류의 4xx에러 발생");
             }
         }
     }
