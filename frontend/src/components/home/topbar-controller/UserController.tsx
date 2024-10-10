@@ -4,8 +4,11 @@ import SvgNotificationInactiveIcon from '@assets/svg/NotificationInactiveIcon'
 import { useWelcomeMessage } from '@hooks/useWelcomeMessage'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import useMyProfile from '@stores/useMyProfile'
 
 export default function UseController() {
+  const myProfile = useMyProfile((state) => state.myProfile)
+
   const [hasNotification] = useState(false)
   const isWelcomeMessageShown = useWelcomeMessage()
 
@@ -15,7 +18,11 @@ export default function UseController() {
     >
       <div className='p-[5px] flex items-center justify-between space-x-[10px] bg-bg-50/25 rounded-full'>
         <Link to='/mypage'>
-          <SvgDefaultControllerProfileIcon className='w-8 h-8' />
+          <img
+            src={`/public/svg/profile/${myProfile}.svg`}
+            alt='현재 프로필 이미지'
+            className='w-8 h-8'
+          />
         </Link>
         {!isWelcomeMessageShown && (
           <p className='text-sm font-pafont-paperlogy'>반가워요, 즐거운캐스타당근도둑님!</p>
