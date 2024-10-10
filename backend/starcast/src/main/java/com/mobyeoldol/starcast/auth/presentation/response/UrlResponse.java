@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class LoginResponse {
-    private boolean isSignedUp;
+public class UrlResponse {
+    private String url;
 }
