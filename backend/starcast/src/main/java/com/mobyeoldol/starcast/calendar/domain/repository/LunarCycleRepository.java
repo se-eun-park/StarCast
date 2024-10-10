@@ -10,3 +10,4 @@ import java.util.Optional;
 public interface LunarCycleRepository extends JpaRepository<LunarCycle, String> {
     Optional<LunarCycle> findByLunarCycleUid(String lunarCycleUid);
 }
+

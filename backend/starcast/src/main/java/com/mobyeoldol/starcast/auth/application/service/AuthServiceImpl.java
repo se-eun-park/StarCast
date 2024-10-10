@@ -15,6 +15,7 @@ import com.mobyeoldol.starcast.member.domain.Rank;
 import com.mobyeoldol.starcast.member.domain.enums.CastarImage;
 import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
 import com.mobyeoldol.starcast.member.domain.repository.RankRepository;
+import com.mobyeoldol.starcast.place.domain.enums.MainPlace;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -352,7 +353,7 @@ public class AuthServiceImpl implements AuthService{
                 .profileImgNum(CastarImage.BASIC_1)
                 .exp(0)
                 .isDeleted(false)
-                .actionPlaceType("GPS")
+                .actionPlaceType(MainPlace.GPS)
                 .build();
 
         profileRepository.save(profile);

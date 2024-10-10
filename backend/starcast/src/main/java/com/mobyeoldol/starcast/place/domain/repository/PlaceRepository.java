@@ -23,4 +23,6 @@ public interface PlaceRepository extends JpaRepository<Place, String> {
     @Query("SELECT p FROM Place p WHERE " +
             "p.address1 LIKE %:keyword% OR p.address2 LIKE %:keyword% OR p.address3 LIKE %:keyword% OR p.address4 LIKE %:keyword%")
     List<Place> findByAddressContaining(@Param("keyword") String keyword);
+
+    Optional<Place> findByAddress1AndAddress2AndAddress3AndAddress4AndType(String address1, String address2, String address3, String address4, PlaceType type);
 }
