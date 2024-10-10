@@ -1,8 +1,8 @@
 /* eslint-disable no-prototype-builtins */
 
-import NavbarContent from '@components/navbar/NavbarContent.tsx'
+import NavbarContent from '@components/navbar/NavbarContent'
 import RouteBack from '@components/navbar/RouteBack'
-import { pathToNavContent } from '@constants/navigationContent.ts'
+import { pathToNavContent } from '@constants/navigationContent'
 import { useLocation } from 'react-router-dom'
 
 export default function NavbarWithLabel() {

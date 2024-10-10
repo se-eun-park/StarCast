@@ -1,5 +1,5 @@
 import LocationController from '@components/home/topbar-controller/LocationController'
-import UserController from '@components/home/topbar-controller/UserController.tsx'
+import UserController from '@components/home/topbar-controller/UserController'
 
 export default function TopbarController() {
   return (

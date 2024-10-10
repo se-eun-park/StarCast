@@ -1,4 +1,4 @@
-import Menubar from '@components/home/menubar/index.tsx'
+import Menubar from '@components/home/menubar'
 import TopbarController from '@components/home/topbar-controller'
 import A2HSModal from '@modal/a2hs/a2hsModal'
 import SkyBackground from '@components/home/SkyBackground'

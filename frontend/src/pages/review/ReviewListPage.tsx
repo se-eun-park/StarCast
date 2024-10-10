@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { activeTagMap } from '@dummy/dummyReview'
-import { useReviewStore } from '@stores/useReviewStore.ts'
+import { useReviewStore } from '@stores/useReviewStore'
 
 export default function ReviewListPage() {
   const navigate = useNavigate()

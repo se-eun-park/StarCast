@@ -1,5 +1,5 @@
-import SvgCloseIcon from '@assets/svg/CloseIcon.tsx'
-import SvgGtIcon from '@assets/svg/GtIcon.tsx'
+import SvgCloseIcon from '@assets/svg/CloseIcon'
+import SvgGtIcon from '@assets/svg/GtIcon'
 import { useCheckOutsideClick } from '@hooks/useCheckOutsideClick'
 import { useWelcomeMessage } from '@hooks/useWelcomeMessage'
 import { useEffect, useRef, useState } from 'react'

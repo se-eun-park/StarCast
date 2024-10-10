@@ -1,17 +1,17 @@
-import SvgDefaultControllerProfileIcon from '@assets/svg/DefaultControllerProfileIcon.tsx'
+import SvgDefaultControllerProfileIcon from '@assets/svg/DefaultControllerProfileIcon'
 import SvgLocationIcon from '@assets/svg/calendar/LocationIcon'
 import SvgCastarCuteIcon from '@assets/svg/response/CastarCuteIcon'
 import SvgCastarHappyIcon from '@assets/svg/response/CastarHappyIcon'
 import SvgCastarSmartIcon from '@assets/svg/response/CastarSmartIcon'
 import ReviewCarousel from '@components/review/ReviewCarousel'
-import { useReviewStore } from '@stores/useReviewStore.ts'
+import { useReviewStore } from '@stores/useReviewStore'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 export default function ReviewDetailPage() {
   const [activeButton, setActiveButton] = useState<number>(0)
-  const location = useLocation() // 현재 위치 정보를 가져옵니다.
-  const pathSegments = location.pathname.split('/') // 경로를 '/'로 분리합니다.
+  const location = useLocation()
+  const pathSegments = location.pathname.split('/')
   const reviewId = parseInt(pathSegments[pathSegments.length - 1])
   const review = useReviewStore((state) => state.reviews.find((review) => review.id === reviewId))
 
