@@ -1,16 +1,14 @@
-import SvgAddIcon from '@assets/svg/AddIcon'
-import ReviewEditCarousel from '@components/review/ReviewEditCarousel.tsx'
+import SvgDeleteIcon from '@assets/svg/DeleteIcon'
+import SvgSearchIcon from '@assets/svg/SearchIcon'
+import ReviewEditCarousel from '@components/review/ReviewEditCarousel'
 import { ChangeEvent, useRef, useState } from 'react'
 
 export default function CreateReviewPage() {
   const [images, setImages] = useState<string[]>([])
+  const [location, setLocation] = useState<string>('')
+  const [title, setTitle] = useState<string>('')
+  const [content, setContent] = useState<string>('')
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const SLIDES = [
-    '/review/default-review-image1.jpg',
-    '/review/default-review-image2.jpg',
-    '/review/default-review-image3.jpg',
-  ]
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -33,9 +31,11 @@ export default function CreateReviewPage() {
     }
   }
 
+  const isSubmitButtonEnabled = location && title && content && images.length > 0
+
   return (
     <div>
-      <div className='w-full py-2 aspect-video'>
+      <div className='w-full py-2 pr-4 border-t border-b aspect-video border-bg-50/20'>
         <input
           ref={fileInputRef}
           type='file'
@@ -49,22 +49,56 @@ export default function CreateReviewPage() {
             options={{ dragFree: true, direction: 'rtl' }}
             fileUploader={handleFileUpload}
           />
-          {/* <img
-            src={imageUrl}
-            alt='uploaded'
-            className='object-cover object-center w-full h-full aspect-square'
-          />
-          <button
-            onClick={handleClick}
-            className='flex flex-col items-center justify-center h-full gap-1 mx-auto rounded-lg aspect-square bg-bg-50/10'
-          >
-            <SvgAddIcon className='w-6 h-6' />
-            <div className='font-semibold text-center text-2xs'>
-              <p className='text-text-secondary'>사진 추가하기</p>
-              <p className='text-text-tertiary'>0 / 3</p>
-            </div>
-          </button> */}
         </div>
+      </div>
+      <div className='flex flex-col gap-4 p-4 text-sm'>
+        <div className='flex flex-col gap-2'>
+          <h2 className='font-semibold '>어디서 관측한 사진인가요?</h2>
+          <div className='flex justify-between w-full p-4 border rounded-lg border-bg-50/10 bg-bg-50/10 focus-within:border-primary-light'>
+            <input
+              id='location'
+              type='text'
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder='주소 검색하기'
+              className='w-full border-none outline-none text-primary-light placeholder:text-text-secondary bg-bg-transparent '
+            />
+            {location ? (
+              <SvgDeleteIcon className='w-5 h-5 cursor-pointer' onClick={() => setLocation('')} />
+            ) : (
+              <label htmlFor='location'>
+                <SvgSearchIcon className='w-5 h-5 cursor-pointer' />
+              </label>
+            )}
+          </div>
+        </div>
+        <div className='flex flex-col gap-2'>
+          <div className='p-4 border rounded-lg border-bg-50/20 focus-within:border-primary-light'>
+            <input
+              type='text'
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder='제목'
+              className='w-full outline-none placeholder:text-text-secondary bg-bg-transparent'
+            />
+          </div>
+          <div className='h-64 p-4 border rounded-lg border-bg-50/20 focus-within:border-primary-light'>
+            <textarea
+              placeholder='내용'
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className='w-full h-full outline-none resize-none placeholder:text-text-secondary bg-bg-transparent scrollbar-hide'
+            />
+          </div>
+        </div>
+      </div>
+      <div className='p-4 pt-0'>
+        <button
+          disabled={!isSubmitButtonEnabled}
+          className={isSubmitButtonEnabled ? 'btn-primary-full' : 'btn-disabled-full'}
+        >
+          작성 완료
+        </button>
       </div>
     </div>
   )
