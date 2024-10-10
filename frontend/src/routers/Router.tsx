@@ -16,6 +16,7 @@ import ReviewDetailPage from '@pages/review/ReviewDetailPage'
 import ReviewDetailLayout from '@components/layout/ReviewDetailLayout'
 import CreateReviewPage from '@pages/review/CreateReviewPage'
 import NotificationPage from '@pages/NotificationPage'
+import SignupPage from '@pages/SignupPage'
 
 const Router = () => {
   const routes: RouteObject[] = [
@@ -31,6 +32,10 @@ const Router = () => {
         {
           path: 'login',
           element: <LoginPage />,
+        },
+        {
+          path: 'signup',
+          element: <SignupPage />,
         },
         {
           path: 'home',
