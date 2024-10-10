@@ -44,12 +44,13 @@ public class Community extends BaseTimeEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reaction> reactions = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "community")
-    private List<CommunityImage> communityImages = new ArrayList<CommunityImage>();
+    private List<CommunityImage> communityImages = new ArrayList<>();
 
     public void setProfile(Profile profile) {
         this.profile = profile;
