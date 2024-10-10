@@ -47,6 +47,7 @@ public class Profile extends BaseTimeEntity {
     private String nickname;
 
     @Column(name = "profile_image_num", length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
     private CastarImage profileImgNum;
 
     @Column(name = "exp", nullable = false)

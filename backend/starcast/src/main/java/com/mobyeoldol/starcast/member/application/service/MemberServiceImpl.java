@@ -7,6 +7,7 @@ import com.mobyeoldol.starcast.community.domain.repository.ReactionRepository;
 import com.mobyeoldol.starcast.member.application.dto.AddressDto;
 import com.mobyeoldol.starcast.member.application.dto.AuthorDto;
 import com.mobyeoldol.starcast.member.domain.*;
+import com.mobyeoldol.starcast.member.domain.enums.CastarImage;
 import com.mobyeoldol.starcast.member.domain.repository.*;
 import com.mobyeoldol.starcast.member.presentation.request.UpdateMySpotRequest;
 import com.mobyeoldol.starcast.member.presentation.response.*;
@@ -117,7 +118,7 @@ public class MemberServiceImpl implements MemberService {
         Profile profile = getProfileInfo(profileUid);
 
         log.info("[나의 정보 수정 (캐스타이미지) API] 2. 캐스타이미지 수정 및 저장");
-        profile.setProfileImgNum(image);
+        profile.setProfileImgNum(CastarImage.valueOf(image));
         profileRepository.save(profile);
     }
 
@@ -199,7 +200,7 @@ public class MemberServiceImpl implements MemberService {
                 .name(profile.getName())
                 .nickname(profile.getNickname())
                 .email(profile.getEmail())
-                .profileImage(profile.getProfileImgNum())
+                .profileImage(String.valueOf(profile.getProfileImgNum()))
                 .address(address)
                 .myCurExp(profile.getExp())
                 .rank(rank.get().getName())
