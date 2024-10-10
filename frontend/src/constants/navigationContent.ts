@@ -24,6 +24,11 @@ const pathToNavContent: PathToNavContent = {
   '/calendar': { label: '캘린더' },
   '/observing-spot': { label: '관측지' },
   '/mypage': { label: 'MY' },
+  '/mypage/profile': { label: 'MY' },
+  '/mypage/nickname': { label: 'MY' },
+  '/mypage/location': { label: 'MY' },
+  '/mypage/review': { label: 'MY' },
+  '/mypage/reaction': { label: 'MY' },
   '/review': { label: '후기', Component: SvgEditIcon, navigate: '/review/new' },
   '/review/new': { label: '후기 작성' },
 }
