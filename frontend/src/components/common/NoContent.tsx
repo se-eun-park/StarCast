@@ -1,4 +1,4 @@
-import SvgNoContentIcon from '@assets/svg/NoContentIcon.tsx'
+import SvgNoContentIcon from '@assets/svg/NoContentIcon'
 
 type NoContentProps = {
   label?: string

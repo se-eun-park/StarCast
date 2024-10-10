@@ -1,2 +1,2 @@
 export type { GetPlaceWeatherResponse } from './getPlaceWeather'
-export type { BeforeInstallPromptEvent } from 'types/pwa.d.ts'
+export type { BeforeInstallPromptEvent } from 'types/pwa.d'
