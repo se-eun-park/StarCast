@@ -1,0 +1,29 @@
+import type { SVGProps } from 'react'
+const SvgDarkPartlyCloudyIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    xmlnsXlink='http://www.w3.org/1999/xlink'
+    fill='none'
+    viewBox='0 0 20 20'
+    {...props}
+  >
+    <path fill='url(#dark-partly-cloudy-icon_svg__a)' d='M0 0h20v20H0z' />
+    <defs>
+      <pattern
+        id='dark-partly-cloudy-icon_svg__a'
+        width={1}
+        height={1}
+        patternContentUnits='objectBoundingBox'
+      >
+        <use xlinkHref='#dark-partly-cloudy-icon_svg__b' transform='scale(.00833)' />
+      </pattern>
+      <image
+        xlinkHref='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAAACXBIWXMAACxLAAAsSwGlPZapAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAuYSURBVHgB7Z1rjFxlGcf/7zlz393ubbbswkIXaLVQubTIRVFYvBAgIq2o0aBJEcMHjB+8BS8xop9ITIyJnxRjMfGD0USoJopCQksUiyWhBaUgJZRaoe3utst2OzM7c+a8/t+z20Jl2zlz5lxmmOe3OWfncuZ2/u/zPs/7PO85BxAEQRAEQRAEQRAEIVpyoxPIFR9HtnjUW3IjW7zHhNBRSILcyCuAnjj1QbUPudp6zM7OQggNC3GTG9n8dnENfKxi3wYhVOIXGLj+DM9NQgiVJASeDPicEIB4BfYCqeW65xMoBl8DqyCERrwCW7XLG29kT0IIjXgFdq3GQZRSPhqB4Jd4BVa6sXhab4QQGvGNgz3/67zib1tnUMbD4RCfBfvyv0vIeDg04hPYj/89gfjh0IhPYD/+9wTih0MjHh/cjP89+Rrxw2EQjwU3439PULKvh9Ay8QjcjP89gWVJNx0C0XfRheGNcNVDCIJLX1yd2QohMDaiYGBgAFbPTbB774XG/QiKUp9BqmcCmbyC3V+BMy8+uUnCsWAjaCW9kZHyZdBq45kLCi2gsIvvvwuWuxVuehcqB/dBOCPBBM4NTADpycgFbYQI3hB/Ap+wULiMbK3JxARtiNrH1TZvqUz9EoIPgb0xbP3x9hX1dBix7Ru63ap9DJPq3+s8cQ3mOztb0OU0tmAzrVVhAJ2IxiwWpgfRxSQxJ0uIkcYCm0i1U1H6YXQ5PizYuZN93T50HOY717+PLsf/ODg3vBmLc5onvdmPbYmJnN1tbLfbkKttlWpUK4kOy74MLjZ6xXmNhAr0FNR0wybZgRrHvrOvQjiFcFKVsQn+FkHFQn0RTTXprYJDbUZL6AcZKTyMTH27CNo80ZcLMywXWgHLhZbehNJM10fCrRDTlJ3hLc1bMi23MnMnImd1Fj1zA6jVB+FaRRZQ++gC8gzW0mxgaaY7zUijztr0AvdWics8XOcIUvYMStMzfK6KNiaFOLDAag82N/MSbh+l5aZQKI7ASQ1CvXEeHHcNY4cLkHIvYkMcp5+nyBQaKPCL2Lxdptgl3j/M5RDdz17U3T3IjrxE4Q8jpQ+iPHMIpiGY/FkbEY8Fe9Wo1NGmXgPnfEbF+xAeCmNjeczP57GQHqVh3gKtb6SwV1CSAQTZFxrH+frdvPEobOchWPX/4tgVjBO2uTBNtA2I8ciG5Y7qPw2a2bOF6fUIlwx6Vq6lxd0N7W7mT+9BqOjjfM9f07J/jlr2WeD1EtqAaKbsLEe6MMH1NWfcxhQHgEfYRT4Ip7wb4aCQH7wWqd4fUNwf8v4H+FAGoeO95wa6ozuQctYglZuCUzmAhLvseHywQXtd2eme3cblPuSd3eEOhcaHkF7YhLq+hzt+LaXOIXIUP0NtYvd/CbLDP6U7+A1wcAoJEV8XvZwf1gykXOs+1A6HZa1vkhldx5jnc+wNbqOfPJ8fFoO4p2Ci61co9F8YvD2A40efQwLEe5adk37YFAI4bKpMb0cUFEbWszu+h7du5jKKOF3RqbhsYAfhqj/CcregfORJxEy8P9z4YYUdyNU/i/kjLyIK0sUNXLNLVrdiUdwka940INXL9XkUeRBWYT/c0uuIkXgt2HTT0aUbU8j1nwud/hF/1Ud5P+QouWVKdEmPscu+F9WZl3m/hhiI14IrlQoiYTKF/NwY3NRdtNcv8oEs2o80G94a2lQN6fQLcBbmEEOEnZRvCpe+2iCq7sco7nfNoAjti+Lf5airPSjY/0G1WkbEdP6crNXMJdeq69hUv8ad14/2Jw9bfRMV+3JMTETe03S+BR+3VnPN4RBuRceghmFZ85hbYE67HOkYOb5Ehz9SyPavgkp/iMOcaxkJX8yRxgh3yMji02bIAe4Q9Tx30N/gun/n/Q+yH7oLncdmjs//BYy8CkzNIyKSOdvs2xjPI1+9mTniTzHK3MAfPszwg4kJneI3ZC+jlnoabao1LrNiNT5uAjaT72XFB2buc6e5G82/rVDOj1lUiSYfgHaw4PzQNaiX7uY48b3eZD6ljGD2YtP7//anFr+vgsn7mmHQMDoXBlz6KijrSt7ewWUBEZCUD6ZyZ/Ugn7mdRvpV3r+Bwp67lCvuosn4pjGrKdg9u9jIjyACkhG4b6wIq7aRH/8l9lTXLVltNx5lYbGbdvj/nxT434iA+Hdqfvgcjv8+TT/6DYr7PrRNHJAYq2FpBpOIoIQZu8DFPor6flrs5ynrOgimea9gY1+F3NgoIiBOgZljctdBW7ejUeG/21AYZ2r6QkRAfAIPDfVR3Jvoc26CcCoaZ3F9NiIgPoHLeM9i99wR6cS4GYRyVyIC4hoHW0xPXM3/V3Z9SLUcWjOxozrYB2eLa7ygSqkVEJZBmaJDJFWwmLpoaxXHvOPozrFuY5Q5giKaOWPx7HDbvYDrcyCcDturFEfyxtGhvKMMM73X0cdsYqR4WZsX4xPE0/YYU5ZHkc5U4FTeQEhE0WpSLCCMsnjwcb77FfS76xlgXegN6IXTo2Gm8OzlfnqGRbOnWQ79w9LxTg5aIEyBFXPMw6jVOBxi8QD6C3xoDO+UaUHxwZKo+xq95y/gnbHP3gkcMmXRQPO3wtr5FgYG+lHTk7z5Fd6/k+L2Q4KqIFhL+46ujeVQ251HpjAHp3wcAUQOQ2CF3t4iqllzUtJv8b4UEMLBhF3v5nIpNT+EfLBJemEInIe9wkxV/Ta/02oIIWOmK+kNTPOWaMXmnGVN+eRWBbaRG7qD/7/OL3IehIhgl62xFlb+KNyyOcbJ97HHrQmcH2FlSJlgit2I+NtIoSOEsnqRyR+jJe/x+7LgAufGmJ2qU1zcCMj4NnqURZGHaUcuUpndHCv7OgQoqMAW0tm7+aGfQERlLmFZzEzTAhNHs6hXnoaPqDpYt5otrqbT/zBvjUOIF624z61bkO0/38/mwQTWahNXayFdc/woFJgdvBhI+7oWVQCBR3ph6Y9gcbK5kASaQyelGfuMFRpt2rzAPeBYV5kJc30QksEr2tCKeyoN53E1L7BW13AVyRRPwTfMFOo8tH11ow2bF9itX8XYrR0PsO4utMrCda9qtFkQC750cQaCkCjK9KJWw9M2B4mii28e7SckBzXQqthoq+YFVtpEzyJw8rDa5A412iiIBYv/bQ+Mdlk/GzWHVm19fuQuQjNl2VCLIBY8tXSkvZAoRgN1uNFWAQTW+71zPQnJohUL/6rhVWYCCKz2sHOQbjp56nDVC402CpDocHcyfmtpKqcQAkpXKMY/Gm3WvMBW6gksnt1GSA7WgVUZdvqJRhs2L/DC4ZfZNexcmqgtJIHWc3D1Dj8Xvw44j8p9iN30NISkOEAL9nUtqmACV63HKPBztOJjEOLFXOkFeBHV6p/9bB4w5ViaR7pgJre/CzInK14UdnP5FZzZHX42Dz7VVWG7twCxnsG8y3mN+eftqFR8Wa8heNGgVjoGVZhhEzGTss0R/JKjjpLFoPZ3qFtb4M7u9fuy1qpCbukw7N4yx2SrsHh9BKkTRwOHpepJivsAnKmn0MRBaK2W/TTqxw8gVTCZrZXe6YCUiBwq2rsg5rNcfobq1CNo8loPYdR163BKe2EXDkGpNd51AKW7DofFUcpOWu/9WJj+E283fc2LsAr3Duqll2H1PQVLm/M9XQKhdRR+C+1+B9UZ0y0Hyv9HcBzveB7Z8rW05p+wCV7Ij5Auuyk0u2D1Ev9/GZW+J4F9LV2pJqIDtSdyyM+NQNs3sgV+kmKbk14PRfd5HQ+DJj3D9V8ZsP6ee+lRlFdMtyquIeIdftZKZGpFKHuCXfdFzKGaWYAX8IeczXrmMB/LnzyLe9egHbgoe6leBXOSlb00gGdYpXue+2U/qub8HOFdPCwui8oBxSHG16Ow9SDcei+Q6qHAjAGsLjuu2HVZrGG5VZeZQ5hDXc0yLj4ITJszvkd04TBBEARBEARBEARBEARBEARBiI7/AeKmSSpZeEFdAAAAAElFTkSuQmCC'
+        id='dark-partly-cloudy-icon_svg__b'
+        width={120}
+        height={120}
+      />
+    </defs>
+  </svg>
+)
+export default SvgDarkPartlyCloudyIcon

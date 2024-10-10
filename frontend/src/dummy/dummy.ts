@@ -137,7 +137,7 @@ export const PlaceWeatherCardDummyData = {
         },
       },
       best: {
-        bestCastarPoint: 99,
+        bestCastarPoint: 23,
         hour: '21',
         moonPhase: 1,
         cloudCoverage: 1,
