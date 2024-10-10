@@ -10,13 +10,17 @@ import com.mobyeoldol.starcast.auth.domain.repository.RefreshTokenRepository;
 import com.mobyeoldol.starcast.auth.presentation.request.UpdateUserInfoTmpRequest;
 import com.mobyeoldol.starcast.auth.presentation.response.*;
 import com.mobyeoldol.starcast.global.template.BaseResponseTemplate;
+import com.mobyeoldol.starcast.member.domain.Profile;
+import com.mobyeoldol.starcast.member.domain.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Optional;
 
@@ -27,8 +31,12 @@ import java.util.Optional;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
+    @Value("${kakao.redirect.uri.client}")
+    String kakaoRedirectUriClient;
+
     private final AuthService authService;
     private final AuthRepository authRepository;
+    private final ProfileRepository profileRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @GetMapping("/login")
@@ -42,7 +50,7 @@ public class AuthController {
     }
 
     @GetMapping("/redirect-login")
-    public ResponseEntity<BaseResponseTemplate<?>> getAccessToken(@RequestParam("code") String code, HttpServletResponse httpServletResponse) {
+    public RedirectView getAccessToken(@RequestParam("code") String code, HttpServletResponse httpServletResponse) {
         log.info("[login 카카오에 토큰 요청 API] GET /api/v1/auth/redirect-login");
         KakaoTokenResponseDto responseDto = authService.getAccessToken(code);
 
@@ -73,22 +81,42 @@ public class AuthController {
         log.info("[login 카카오에 토큰 요청 API] kakao id로 auth 엔티티 찾기");
         Optional<Auth> optionalAuth = authRepository.findByKakaoUid(String.valueOf(userInfo.getId()));
 
-        BaseResponseTemplate<LoginResponse> successResponse;
-        LoginResponse response;
+        RedirectView response = new RedirectView();
+        response.setUrl(kakaoRedirectUriClient);
+
         if(optionalAuth.isEmpty()) {
             log.info("[login 카카오에 토큰 요청 API] auth 엔티티 존재하지 않음. 따라서 auth 엔티티, userInfoTmp 엔티티 생성");
             authService.generateAuthAndUserInfoTmp(userInfo);
+        }
 
-            log.info("[login 카카오에 토큰 요청 API] 클라이언트를 동의 구하기 페이지로 리다이렉트");
+        return response;
+    }
+
+    @GetMapping("/member-check")
+    public ResponseEntity<BaseResponseTemplate<?>> checkMember(@RequestHeader(value = "Authorization") String accessToken) {
+
+        log.info("[신규회원인지 확인하기 API] GET /api/v1/auth/member-check");
+        RefreshToken refreshToken = refreshTokenRepository.findByAccessToken(accessToken)
+                .orElseThrow(() -> new IllegalStateException("[login 스타캐스트 요구 사항으로 UserTmpInfo 업데이트하기 API] refresh token 값이 없습니다."));
+
+        log.info("[신규회원인지 확인하기 API] accessToken과 refreshToken으로 kakaoId 가져오기");
+        String kakaoId = String.valueOf(authService.getKakaoId(accessToken, refreshToken.getRefreshToken()).getId());
+
+        Auth auth = authRepository.findByKakaoUid(kakaoId)
+                .orElseThrow(() -> new IllegalStateException("[신규회원인지 확인하기 API] auth 존재하지 않음"));
+
+        Optional<Profile> profile = profileRepository.findByAuth(auth);
+        LoginResponse response;
+        if(profile.isEmpty()) {
+            log.info("[신규회원인지 확인하기 API] 신규회원입니다.");
             response = new LoginResponse(true);
-            successResponse = BaseResponseTemplate.success(response);
         }
         else {
-            log.info("[login 카카오에 토큰 요청 API] 클라이언트를 메인 페이지로 리다이렉트");
+            log.info("[신규회원인지 확인하기 API] 등록된 회원입니다.");
             response = new LoginResponse(false);
-            successResponse = BaseResponseTemplate.success(response);
         }
 
+        BaseResponseTemplate<LoginResponse> successResponse = BaseResponseTemplate.success(response);
         return ResponseEntity.ok().body(successResponse);
     }
 
