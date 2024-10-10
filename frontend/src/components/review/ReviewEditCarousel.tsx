@@ -8,10 +8,11 @@ type PropType = {
   slides: string[]
   options?: EmblaOptionsType
   fileUploader: (e: ChangeEvent<HTMLInputElement>) => void
+  handleFileDelete: (index: number) => void
 }
 
 const ReviewEditCarousel: React.FC<PropType> = (props) => {
-  const { slides, options, fileUploader } = props
+  const { slides, options, fileUploader, handleFileDelete } = props
   const [emblaRef] = useEmblaCarousel(options)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -46,9 +47,9 @@ const ReviewEditCarousel: React.FC<PropType> = (props) => {
             </div>
           </button>
           {slides.map((src, index) => (
-            <div className={`${styles.embla}`} key={index}>
+            <div className={`${styles.embla}`} key={index} onClick={() => handleFileDelete(index)}>
               <img
-                className='object-cover object-center h-full rounded-lg aspect-square'
+                className='object-cover object-center h-full rounded-lg cursor-pointer aspect-square'
                 src={src}
                 alt={`Slide ${index + 1}`}
               />

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Reviews, activeTagMap } from '@dummy/dummyReview'
+import { activeTagMap } from '@dummy/dummyReview'
+import { useReviewStore } from '@stores/useReviewStore.ts'
 
 export default function ReviewListPage() {
   const navigate = useNavigate()
@@ -9,6 +10,8 @@ export default function ReviewListPage() {
   const [activeTag, setActiveTag] = useState(1)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [tagVisible, setTagVisible] = useState(true)
+
+  const Reviews = useReviewStore((state) => state.reviews)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search)
@@ -66,9 +69,9 @@ export default function ReviewListPage() {
 
   return (
     <div className=' min-h-dvh bg-bg-900'>
-      <div className={`sticky top-14 rounded-b-2xl ${tagVisible && 'bg-bgGradient'}`}>
+      <div className={`sticky top-14 rounded-b-2xl`}>
         <div
-          className={`relative z-20 flex justify-center w-full h-12 border-b border-bg-50/20  ${!tagVisible && 'bg-bgGradient'}`}
+          className={`relative z-20 flex justify-center w-full h-12 border-b border-bg-50/20  bg-bg-900`}
         >
           <button
             className={`w-1/4 text-center font-paperlogy text-sm ${activeTab === 'popular' ? 'border-b-2 border-bg-50' : 'text-text-tertiary'}`}
@@ -89,7 +92,7 @@ export default function ReviewListPage() {
         </div>
         {activeTab === 'popular' && (
           <div
-            className={`relative z-0 flex items-center justify-center py-4 space-x-2 rounded-b-2xl transition-all duration-500 ${tagVisible ? 'animate-fadeIn  translate-y-0' : '-translate-y-full'} `}
+            className={`relative z-0 flex items-center justify-center py-4 space-x-2 rounded-b-2xl transition-all duration-500  ${tagVisible && 'bg-gradient900to800'} ${tagVisible ? 'animate-fadeIn  translate-y-0' : '-translate-y-full'} `}
           >
             <button
               className={`px-3 py-1 text-xs border rounded-full border-bg-50/50 ${activeTag === 1 ? 'text-bg-900 bg-bg-50' : 'text-bg-50'} `}

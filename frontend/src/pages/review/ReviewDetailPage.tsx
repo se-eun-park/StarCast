@@ -4,7 +4,7 @@ import SvgCastarCuteIcon from '@assets/svg/response/CastarCuteIcon'
 import SvgCastarHappyIcon from '@assets/svg/response/CastarHappyIcon'
 import SvgCastarSmartIcon from '@assets/svg/response/CastarSmartIcon'
 import ReviewCarousel from '@components/review/ReviewCarousel'
-import { Reviews } from '@dummy/dummyReview'
+import { useReviewStore } from '@stores/useReviewStore.ts'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
@@ -13,6 +13,7 @@ export default function ReviewDetailPage() {
   const location = useLocation() // 현재 위치 정보를 가져옵니다.
   const pathSegments = location.pathname.split('/') // 경로를 '/'로 분리합니다.
   const reviewId = parseInt(pathSegments[pathSegments.length - 1])
+  const review = useReviewStore((state) => state.reviews.find((review) => review.id === reviewId))
 
   const onClickButton = (num: number) => {
     if (activeButton !== num) {
@@ -21,8 +22,6 @@ export default function ReviewDetailPage() {
       setActiveButton(0)
     }
   }
-
-  const review = Reviews.find((review) => review.id === reviewId)
 
   return (
     <div className='w-full divide-y divide-bg-50/10 '>
