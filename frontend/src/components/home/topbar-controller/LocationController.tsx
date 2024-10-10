@@ -3,8 +3,10 @@ import SvgGtIcon from '@assets/svg/GtIcon'
 import { useCheckOutsideClick } from '@hooks/useCheckOutsideClick'
 import { useWelcomeMessage } from '@hooks/useWelcomeMessage'
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function LocationController() {
+  const navigate = useNavigate()
   const divRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -61,7 +63,10 @@ export default function LocationController() {
               </div>
               <SvgGtIcon className='w-5 h-5' />
             </div>
-            <div className='flex items-center justify-between w-full py-2 pl-5 pr-4 cursor-pointer hover:bg-bg-900/30'>
+            <div
+              className='flex items-center justify-between w-full py-2 pl-5 pr-4 cursor-pointer hover:bg-bg-900/30'
+              onClick={() => navigate('/mypage/location')}
+            >
               <p>주소지 직접 입력</p>
               <SvgGtIcon className='w-5 h-5' />
             </div>
