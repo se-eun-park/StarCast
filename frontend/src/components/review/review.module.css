@@ -1,0 +1,8 @@
+.embla {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto; /* 버튼과 동일한 너비를 갖도록 설정 */
+  height: auto; /* 버튼과 동일한 높이를 갖도록 설정 */
+  aspect-ratio: 1 / 1; /* 너비와 높이가 동일하도록 비율 설정 */
+}
