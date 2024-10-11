@@ -110,6 +110,11 @@ const PlaceWeatherCard = ({
             <LocationIcon className='w-4' />
             {idx === 0 && (
               <p className='px-2 py-1 ml-2 text-xs font-semibold leading-none border rounded-full text-bg-50 border-bg-50'>
+                GPS
+              </p>
+            )}
+            {idx === 1 && (
+              <p className='px-2 py-1 ml-2 text-xs font-semibold leading-none border rounded-full text-bg-50 border-bg-50'>
                 내 위치
               </p>
             )}

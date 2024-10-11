@@ -66,7 +66,7 @@ export default function CalendarPage() {
         </button>
       </div>
       {activeTab === 'week' && (
-        <div className='w-full flex flex-col items-center'>
+        <div className='flex flex-col items-center w-full'>
           <div
             className={`sticky z-20 top-[104px] w-full max-w-[600px] flex items-center justify-center py-4 space-x-2 rounded-b-2xl bg-gradient900to800`}
           >
@@ -82,7 +82,7 @@ export default function CalendarPage() {
               </button>
             ))}
           </div>
-          <div className='w-full flex flex-col items-center py-4'>
+          <div className='flex flex-col items-center w-full py-4 overflow-y-auto scrollbar-hide'>
             <PlaceWeatherCard
               idx={0}
               place_uid={PlaceWeatherCardDummyData.myGPS.place_uid}
