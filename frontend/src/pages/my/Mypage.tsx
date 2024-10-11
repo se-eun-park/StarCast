@@ -57,7 +57,9 @@ const Mypage = () => {
           <div className='flex items-center justify-center'>
             <p className='mr-2 text-sm font-semibold'>{tier}</p>
             <div className='relative w-40 h-1.5 bg-text-tertiary/50 rounded-full'>
-              <div className='absolute left-0 w-16 h-1.5 bg-gaugeGradient rounded-full' />
+              <div
+                className={`absolute left-0 w-[calc(10rem/3*${tierLevel})] h-1.5 bg-gaugeGradient rounded-full`}
+              />
             </div>
             <p className='font-semibold text-2xs ml-2.5'>{tierLevel} / 3</p>
           </div>
