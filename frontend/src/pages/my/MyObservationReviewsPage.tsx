@@ -1,11 +1,13 @@
 import NoContent from '@components/common/NoContent'
 import { useReviewStore } from '@stores/useReviewStore'
+import { useUsernameStore } from '@stores/useUsername.ts'
 import { useNavigate } from 'react-router-dom'
 
 const MyObservationReviewsPage = () => {
   const navigate = useNavigate()
   const reviews = useReviewStore((state) => state.reviews)
-  const myReviews = reviews.filter((review) => review.author === '즐거운캐스타당근도둑')
+  const nickname = useUsernameStore((state) => state.nickname)
+  const myReviews = reviews.filter((review) => review.author === nickname)
 
   return (
     <div className='h-[calc(100dvh-56px)] w-full bg-bg-900 flex flex-col items-center'>

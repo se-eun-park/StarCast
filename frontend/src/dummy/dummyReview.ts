@@ -33,7 +33,7 @@ export const Reviews = [
     images: [DefaultReviewImage2, DefaultReviewImage5, DefaultReviewImage8],
     title: '은하수 촬영 도전기, 성공했어요!',
     tag: 'HELPFUL',
-    author: '캐스타밤하늘정복자빛의여정',
+    author: '즐거운캐스타당근도둑',
     content:
       '처음으로 은하수를 찍어보았는데, 생각보다 어려웠어요. 노출 조절과 포커스를 맞추는 과정이 꽤 까다로웠지만, 찍힌 결과물을 보니 그 모든 노력이 보상받는 기분이었어요.\n 여러분도 은하수 촬영에 도전해보세요. 팁을 드리자면, 날씨와 빛 공해가 적은 장소를 고르는 게 중요해요!\n\n 이 작은 성공이 저에게 큰 자신감을 주었어요.',
     addressSummary: '경북 영양군 수비면',
@@ -135,7 +135,7 @@ export const Reviews = [
     images: [DefaultReviewImage8, DefaultReviewImage2, DefaultReviewImage5],
     title: '별빛과 함께한 캠핑',
     tag: 'VISIT_AGAIN',
-    author: '별빛의여정캐스타캠핑러버',
+    author: '즐거운캐스타당근도둑',
     content:
       '은하수를 보며 캠핑을 즐길 수 있었던 이번 여행은 정말 특별했어요.\n 텐트 밖으로 나와 하늘을 올려다보니 수많은 별들이 가득했어요. 사진은 물론, 직접 눈으로 보는 그 순간이 더 아름다웠답니다.\n\n 다음에도 꼭 다시 와서 이 경험을 반복하고 싶어요. 밤하늘 아래에서의 캠핑은 정말 마법 같은 경험이었어요.',
     addressSummary: '강원 강릉시 왕산면',

@@ -1,6 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { useUsernameStore } from '@stores/useUsername.ts'
+import { useNavigate } from 'react-router-dom'
+import { useReviewStore } from '@stores/useReviewStore.ts'
 
 type SubmitDataProps = {
   nickName: string
@@ -18,6 +21,10 @@ const schema = yup
   .required()
 
 const NicknameEditPage = () => {
+  const navigate = useNavigate()
+  const changeReviewAuthor = useReviewStore((state) => state.changeReviewAuthor)
+  const nickname = useUsernameStore((state) => state.nickname)
+  const setNickname = useUsernameStore((state) => state.setNickname)
   const {
     register,
     handleSubmit,
@@ -28,7 +35,10 @@ const NicknameEditPage = () => {
   })
 
   const onSubmit = (data: SubmitDataProps) => {
-    console.log(data)
+    changeReviewAuthor(nickname, data.nickName)
+    setNickname(data.nickName)
+
+    navigate('/mypage')
   }
 
   return (

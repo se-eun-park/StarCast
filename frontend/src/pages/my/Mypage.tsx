@@ -1,13 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { EditIcon } from '@assets/svg/home'
 import { ArrowIcon } from '@assets/svg/calendar'
 import useMyProfile from '@stores/useMyProfile'
+import { useUsernameStore } from '@stores/useUsername.ts'
+import { useTierStore } from '@stores/useTier.ts'
+import { useReviewStore } from '@stores/useReviewStore.ts'
 
 const Mypage = () => {
+  const nickname = useUsernameStore((state) => state.nickname)
   const myProfile = useMyProfile((state) => state.myProfile)
+  const tier = useTierStore((state) => state.Tier)
+  const tierLevel = useTierStore((state) => state.TierLevel)
+  const reviews = useReviewStore((state) => state.reviews)
+  const setTier = useTierStore((state) => state.setNicknameTier)
+  const setTierLevel = useTierStore((state) => state.setTierLevel)
 
   const [isActive, setIsActive] = useState(false)
+
+  useEffect(() => {
+    if (nickname) {
+      setTier(reviews, nickname)
+    }
+
+    if (tier) {
+      setTierLevel(tier)
+    }
+  }, [nickname, setTier, tier, setTierLevel])
 
   const handleActive = () => {
     setIsActive(!isActive)
@@ -26,7 +45,7 @@ const Mypage = () => {
           </NavLink>
         </div>
         <div className='flex flex-col items-center mt-4'>
-          <p className='mb-1 font-semibold text-center'>즐거운캐스타당근도둑</p>
+          <p className='mb-1 font-semibold text-center'>{nickname}</p>
           <NavLink to='/mypage/nickname'>
             <div className='flex items-center'>
               <p className='text-xs text-text-secondary mr-0.5'>닉네임 변경하기</p>
@@ -36,11 +55,11 @@ const Mypage = () => {
         </div>
         <div className='flex flex-col justify-center w-full py-4 mt-4 border-t border-bg-50/30'>
           <div className='flex items-center justify-center'>
-            <p className='mr-2 text-sm font-semibold'>Gold</p>
+            <p className='mr-2 text-sm font-semibold'>{tier}</p>
             <div className='relative w-40 h-1.5 bg-text-tertiary/50 rounded-full'>
               <div className='absolute left-0 w-16 h-1.5 bg-gaugeGradient rounded-full' />
             </div>
-            <p className='font-semibold text-2xs ml-2.5'>1 / 3</p>
+            <p className='font-semibold text-2xs ml-2.5'>{tierLevel} / 3</p>
           </div>
           <p className='mt-1 text-center text-text-tertiary text-2xs'>
             후기를 작성하고 포인트를 얻어, 새로운 캐스타 프로필을 얻어보세요!

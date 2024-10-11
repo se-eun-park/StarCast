@@ -37,6 +37,7 @@ type RequestType = {
 type ReviewStore = {
   reviews: Review[] // reviews는 배열이어야 합니다.
   createReview: (req: RequestType) => void
+  changeReviewAuthor: (author: string, nickName: string) => void
 }
 
 export const useReviewStore = create<ReviewStore>((set) => ({
@@ -65,4 +66,10 @@ export const useReviewStore = create<ReviewStore>((set) => ({
       ],
     }))
   },
+  changeReviewAuthor: (author: string, nickName: string) =>
+    set((state) => ({
+      reviews: state.reviews.map((review) =>
+        review.author === author ? { ...review, author: nickName } : review,
+      ),
+    })),
 }))
