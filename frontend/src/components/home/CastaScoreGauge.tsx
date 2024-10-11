@@ -5,12 +5,11 @@ import CastaScoreInfoModal from '@modal/home/CastaScoreInfoModal'
 
 type CastaScoreGaugeProps = {
   status: string
+  score: number
 }
 
-const CastaScoreGauge = ({ status }: CastaScoreGaugeProps) => {
+const CastaScoreGauge = ({ status, score }: CastaScoreGaugeProps) => {
   const { Modal, open, close } = useModal()
-
-  const score = 23
 
   return (
     <>

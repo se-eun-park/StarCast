@@ -4,8 +4,13 @@ import { useCheckOutsideClick } from '@hooks/useCheckOutsideClick'
 import { useWelcomeMessage } from '@hooks/useWelcomeMessage'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useLocationControllerState from '@stores/useLocationControllerState'
 
 export default function LocationController() {
+  const setLocationState = useLocationControllerState((state) => state.setLocationState)
+  const nowLocation = useLocationControllerState((state) => state.nowLocation)
+  const setNowLocation = useLocationControllerState((state) => state.setNowLocation)
+
   const navigate = useNavigate()
   const divRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -39,7 +44,7 @@ export default function LocationController() {
         ref={divRef}
         className={`flex space-x-[6px] pl-5 pr-[10px] py-[10px] ${isOpen && 'opacity-0 absolute'}`}
       >
-        <p>역삼동</p>
+        <p>{nowLocation}</p>
         <SvgGtIcon className='w-5 h-5' />
       </div>
       {isOpen && isExpanded && (
@@ -48,7 +53,11 @@ export default function LocationController() {
             <p>내 위치 설정</p>
             <div
               className='flex items-center justify-end h-10 pr-4 cursor-pointer w-14'
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => {
+                setNowLocation('역삼동')
+                setLocationState('GPS')
+                setIsOpen(!isOpen)
+              }}
             >
               <SvgCloseIcon className='w-4 h-4' />
             </div>
@@ -65,7 +74,11 @@ export default function LocationController() {
             </div>
             <div
               className='flex items-center justify-between w-full py-2 pl-5 pr-4 cursor-pointer hover:bg-bg-900/30'
-              onClick={() => navigate('/mypage/location')}
+              onClick={() => {
+                setNowLocation('연천읍')
+                setLocationState('MYPLACE')
+                navigate('/mypage/location')
+              }}
             >
               <p>주소지 직접 입력</p>
               <SvgGtIcon className='w-5 h-5' />
