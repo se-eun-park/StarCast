@@ -12,10 +12,10 @@
 
 <p>
   <img src="https://i.ibb.co/5W7Tc1N/image.png" alt="image" width="50px" style="vertical-align: middle;"/>
-  <span style="vertical-align: bottom; font-size: 24px; font-weight: bold">프로젝트 소개</span>
+  <b style="vertical-align: bottom; font-size: 24px; font-weight: bold">프로젝트 소개</b>
 </p>
 
----
+<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
 
 
 >**StarCast는 사용자가 하늘을 더욱 가깝고 쉽게 즐길 수 있도록 돕는 것이 목표에요!** 천체 관측을 원하는 사용자에게 데이터 기반의 맞춤형 분석 서비스를 제공하여 최적의 관측 경험을 줄게요.
@@ -28,7 +28,6 @@
 * **특정 날짜를 선택**하면 그 날짜에 볼 수 있는 **천체 현상**을 정리하여 제공받을 수 있어고, **분석된 관측 장소 리스트**도 함께 제시해줘요. 사용자는 언제 어디서 관측을 해야 할지 데이터를 기반으로 쉽게 결정할 수 있게 될 거예요!
 
 
-![-----------------------------------------------------](https://i.ibb.co/4pRmTc6/Union-1.png)
 
 ### 목차
 
@@ -37,19 +36,19 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
 
 ### IA
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
 
 ### FIGMA
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
 
 ### Tech Stacks
 <br />
@@ -82,7 +81,7 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
 
 ### Contributors
 <br />
