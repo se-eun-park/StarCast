@@ -28,28 +28,6 @@
 * **특정 날짜를 선택**하면 그 날짜에 볼 수 있는 **천체 현상**을 정리하여 제공받을 수 있어고, **분석된 관측 장소 리스트**도 함께 제시해줘요. 사용자는 언제 어디서 관측을 해야 할지 데이터를 기반으로 쉽게 결정할 수 있게 될 거예요!
 
 
-
-### 목차
-
-
-### 프로젝트 목표
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
-
-### IA
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
-
-### FIGMA
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<img src="https://i.ibb.co/4pRmTc6/Union-1.png" width='100%' alt="line"/>
-
 ### Tech Stacks
 <br />
 <div style="display:flex;">
